@@ -1,0 +1,198 @@
+Pulsar synthesis:
+
+------
+Greek composer Iannis Xenakis is known as the inventor of the granular synthesis technique.
+Granular synthesis is a sound synthesis method that operates on the microsound time scale. It is based on the same principle as sampling. However, the samples are split into small pieces of around 1 to 100 ms in duration. These small pieces are called grains.
+Curtis Roads was the first to implement granular synthesis on a computer in 1974.
+
+grains are part of a larger group of 'microsound' sounds, on the time scale shorter than musical notes, longer than the sample time scale. examlples of these microsounds include granular synthesis grains, wavelets and pulsars.
+microsound includes part of the audio frequency range (20 Hz to 20 kHz) as well as part of the infrasonic frequency range (below 20 Hz, rhythm).
+
+::Pulsar synthesis is a type of synthetic sound generation described by Curtis Roads and belongs to the group of granular synthesis. it uses 'pulsarets' as audio lemeents in oulars, microsounds that are involved in the sound generation.
+
+pulasr synthesis is a form of electronic sound synthesis based on creating pitched tones and pulses similar to some previous obscure old instruments that employed filtered pulse trains as the source of sound.
+although employing filtered impulse generation and processing to create electronic sounds that are easily altered and controlled in ways that are intersting/creative/different to basic attempts to model physical soudns via certain synthesis tehcniques implemnting such similar pulsetrains, fltered or inherently mathematically processed  too produce resulting sounds akin to passing through at certain stages forms of filtering that could affect timbre/tone/formant etc.
+::
+
+pulsar synthesis manages to involve techniques from 'microsound' or 'particle synthesis' in such a particular unique manner so to result in ability to produce sounds similar to those from a bandpass filtered impulse generator based synth, yet employs no filter, and hence,
+pulsar synthesis involves 'pulsar trains' similar to the 'impulse trains' mentioned above, but also having elements similar to certain forms of particle synthesis: a pulsar is a single particle of a pulsartrain.
+
+pulsar synthesis ranges in a pulsar repetition period of 1hz- 5khz and a duty cycle range of 80hz - 10khz.
+
+the oscillators in pulsar synthesis generate individual periods from the length of the pulsaret and the 'intergrain' silence time, which change in length independently of the fundamental the frequency can become.
+Pulsar synthesis oscillators are sound generators that provide the usual raw material of waveforms, in our case sourced from samples, which then are used to synthesise the waveform in discrete pulses (the grains).
+
+
+------
+::we load a pulsaret waveform [w] from a preset bank or user input.
+
+a pulsaret can be _any_ arbitrary waveform including a multicycle choice. @.@...
+
+preset bank:
+
+the waveform [w] is played with a period of silence [s] in a repeating cycle as an overall multicycle waveform [o]. this muticycle waveform is the output pulsetrain and is fed into the modal synthesis section of the 'pulse physics' device.
+::
+
+||taking square waves as a special case of the class of waveforms called pulse waves, all of which share the same 'rectangular' shape, but differ in ||the ratio of the time the signal spends at the 'top' and 'bottom' of the wave. We call this ratio the 'duty cycle'.
+||
+||Since the square wave spends exactly half its time at the 'top' of the wave, it has a ratio of 1:2, and we say that it has a duty cycle of 50 ||percent.
+||A similar wave that spends just one-third of its time 'at the top' has a duty cycle of 1:3 (33.3 percent), while one that spends a quarter of the ||time 'at the top' has a duty cycle of 1:4 (25 percent).
+||
+||Note: sometimes there are references to duty cycles greater than 50 percent - in essence, for any number x lying between zero and 50, a duty cycle ||of (50+x) percent is identical to that of (50-x) percent, but the phase is inverted. For the purposes of this discussion, you need not worry about ||this.
+||
+||pulse waves with different duty cycles have quite different audible characteristics:
+||- narrow cycles (usually in the range 5 to 10 percent) are thin and nasal, and are often used to create sounds such as oboes.
+||- as the duty cycle becomes closer to 50 percent the sound thickens considerably, but at exactly 50 percent it has a distinctively hollow character ||that is ideal for simulating clarinets and other 'woody' sounds
+||
+||of its nature duty cycle never goes outside ofthe boudns of max or min, it being duty cycle not an absolute value with unlimited bounds------
+||in a pulsartrain multicycle  waveform, 
+
+
+[p] is pulsar period, [d] is duty cycle, [s] is silence duration. 
+
+
+[p] : [p] :  [p] : ...
+
+[p = d + s] : [P = d + s] : [p = d + s] : ...
+
+[/-\...]  :  [/-\...]  :  [/-\...]  :  ...
+
+
+[p] affects the overall frequency of pulsars in the output pulsechain, and results in variations in pitch.
+[d]:[s] is a balance between the silent period and duty cycle, the duty cycle/silence _ratio_ can never exceed a value of 1 or drop below 0. 
+
+fp = 1/p = frequency variable, waveform pitch 
+fd = 1/d = duty cycle variable, formant effect akin to filtering
+
+fp and fd are contiuously variable values, i.e. _both_ the 'fundamental frequency', [fp] [rate of pulsar emission] _and_ 'formant frequency', [fd] [duty cycle] can be portrayed according to separate envelopes which are _independent_ ,and yet can be used simultaneously or stand alone independent of the other. these can both vary across a span of an entire pulsar train, i.e. multiple pulsar repeats.
+
+this allows just pitch to be varied for a given timbre/range of contrlled timbres, and likewise, just timbre/tones/etc. to be varied for a given continuous pitch or string of pitches/phrse, and/o, a combination of [d:s] and [p] be varied together to result in a very complex final output so really inspiring creativty/experimentation
+
+- a lower fundamental frequency = increased [s] [changing silence legnth gives a safe change in fundamental pitch, whilst avoiding changing [d], duty cycle, which would change timbre]
+- a raised fundamental frequency = decreased [s] [again, [s] has to be varied because changing s has no effect on output sound in a way that matters other than the desired.]
+
+[altering [d], and thereby the resultant duty cycle, woud bringing about a different total time of the actively audible element, specifically altering the percieved formant - and results in the sound emulating the effects of a filter, so changing timbre/tone/nature of sound!]
+
+
+------
+
+in analogue synthesis, Pulse Width Modulation [PWM] is the modulation of a rectangular/pulse/square waveform such that the modulation controlling the duty cycle [d], whilst maintaining constant fundamental frequency [p], results in a variation of upper odd harmonics. this gives a unique and very identifiable 'sawing' effect - akin to some varities of sync and phase/harmonic modulations. at the extremes of PWM the signal is silent. it is a shame it can only be produced with pulse/squarewaves...
+
+
+PW = 0%					   PW = 50%				     PW = 100%
+
+[p = d + s] : ...		    ... : [p = d + s] : ...		      ... : [d + s = p]	
+
+[0+s = d+s] : ...		    ... : [d = s = .5] : ..		      ... : [d+s = p+s]
+
+   d = 0    : ...		    d = .5  [d+s = 1] s = .5		      ... :  d = p = 1
+
+[|______||] : [|_____|-|] : [|____|--|] : [|___|---|] : [|__|----|] : [|_|-----|] : [||------|]
+
+signal of									    signal of
+0 amplitude									    constant amplitude
+
+nothing is heard at ouput.							    nothing heard at output.
+
+
+it's a real cool option that gives that very identifiable and eternally popular tearing/searing with zero alteration to pitch. also, being a timbre based dynamic variation in sound that preserves the fundamental [p], pitch, in a constant/consistent manner [yes, you read it right...], the damn thing's still entirely open to being musical!
+
+Pulsaret Width Modukation [PulWM], is the variation of the duty cycle [d] of the pulsaret in pulsar synthesis. as stated earlier, the pulsaret waveform [p] can be _any_ arbitrary waveform, incuding a multicylce waveform itself... i.e., it allows us to perform duty cycle modulation on waveforms other than pulse/square waves. it also allows the dyuty cycle to pass through and below the fundamental frequency whilst continuing to produce an audible output!
+
+::i.e. with PulWM, not only does d = 0 still generate an audible signal, but even p < d produces an audible signal - when the fundamental period cuts off the duty cycle of the pulsaret, we just have to choose what occurs, either we accept a sharp cutoff and hence a high edge factor or implement a user-controlled crossfade:
+
+
+[  p  ] : [  p ]  : [  p  ] : ...
+
+[p=d+s] : [p=d+s] : [p=d+s] : ...
+[d + s] : [d + s] : [d + s] : ...
+[/-\..] : [/-\..] : [/-\..] : ...
+
+[d + s] : [d + s] : [d + s] : ...
+[/- \.] : [/- \.] : [/- \.] : ...
+
+[  d  ] : [  d  ] : [  d  ] : ...
+[/ - \] : [/ - \] : [/ - \] : ...
+
+[   d|] : [   d|] : [   d|] : ...
+[/  -|] : [/  -|] : [/  -|] : ...
+
+either [/  -|] is a sharp edge so something like a ramp in this v simple case,
+
+
+or
+
+[/  -|] : [/  -)] : [/  -\] : ... 
+
+fades in a way we need yet another knob for.
+
+knob [f] = [|] - [)] - [\]
+
+
+------
+finally, there is the additional possibility of 'overlapped' or OPulWM, where the fundamental period is defined as the rate of pulsar emission independent of duty cycle. i.e. duty cycle always completes even when it drops below the fundamental frequency. whenever the fundamental period expires it spawns a new pulsar - although because d > p resulting in multiple pulsars overlapping with others whose duty cycle have yet to complete, it means that as d increases the number of overlapping pulsars generated continues to increase
+
+
+[p=d+s] : [p=d+s] : [p=d+s] : ...
+
+[/   -   \] : ...
+          [/   -   \] : ...
+		    [/   -   \] : ...
+
+*[note: an arbitrary overlap limit has to be imposed - for efficency/optimisation thoughts as well as sound design reasons...]
+
+generally, because OPulWM results in a high degree of phase cancellation across the various overlaps, the sound is more subtle and hence there is a distinct difference in sound when employing OPulWM.
+
+
+-------  
+
+
+if [w] is the multicycle total impulse waveform, and time is limited by rectangular function [v ~], this rectangular function would be delineated the 'pulsaret envelope'.
+[n.b. technically [v ~] can be any shape, this shape having a strong effect upon the pulse train spectrum]
+
+[w]   = multicycle impulse waveform
+[v ~] = pulsaret envelope 
+
+[w] is shaped by enelope [v ~]
+
+
+
+  -----------------------------------------------------------------------------------------------------------------------------
+ `		     	   pulsar				   			  modal			  whole
+     
+     wave select	   timing		   amplifier 		    	    timbre/modelling		  output
+       ------		   ------		    -------		            ----------------		 --------
+  
+  -----------------------------------------------
+  [						]				
+  [    [ <-------     [o ~]     -------> ]	]      fine       coarse	geometry	 brightness	  output		   
+  [    	  [fp] -> [[w]] | [d:s] : [cf/Od]	]      semi      BIG KNOB	  [g0]	            [b0]	  [vol.]
+  [	     [v ~]      |     [fd ~] 	   	]     [tune]      [PITCH]      p-s-b/t-b/b       w-n-w-s-g  	      		   
+  [						]            		       
+  -----------------------------------------------	     				 					    
+  			  	    					 	 			             				    pulsaret [w] sel	[fp] 'frequency' 	PulWM crossfade 	    		   		         				        waveform select  	pulsar emission rate	[cf]		   	   	 									  										  [d0]	            [p0] 	  single 	
+  pulsaret [v ~] sel 	pulsaret [v ~]		OPulWM				damping	  	  position	  [trig.]                
+  envelope select	envelope size		[Od] on/off switch 		 m - o		    c - f    	   [vco] 
+  								      					    		         			  duty cycle [fd ~]	[fd ~]	duty cycle	[o ~] to modal				
+  envelope select	envelope size		envelope attack	
+ 										   				            				
+  ----------------------------------------------------------------------------------------------------------------------------
+
+
+all '~' are envelope
+
+------
+
+at the bottom is the 'screen'. this displays the bank of waveforms to be selected from using [w sel] - there would  be a waveform [w] combined with a silence [s], where dutycycle [d] can be set as a base start point ad will result in repeating [p = d+s] bits which out out as a stream in the form of a pulsartrain, [pt] which has an envelope [o ~].  
+
+by varying the duty cycle with the dutycycle envelope [fd ~], the optional PulWM crossfade [cf], the pulsaret waveform envelope select [v ~], and option to engage the OPulWM [d option switch] all allow control over certain tonal and timbre aspects.
+
+the resulting output pulsetrain [pt] is then fed into the modal, synthesis section as an exciter source. this pulsartrain outpus with pitch contolled by [p] and the overall frequency of output defind by [o ~].
+
+finlly the modal section:
+
+------
+
+
+*curtis roads says per grain processing/effects is cruical to getting non shit sound - only relevant if using as final sound?
+**wofl note: unipolar waveforms for the impulse modulator waveform are generally advantageous, but it is generally important that the the unipolar nature is generated only by halfwave rctification, not fullwave.

@@ -1,0 +1,20 @@
+
+
+
+`https://github.com/pichenettes/eurorack/blob/master/elements/resources/lookup_tables.py`
+data in resources.cc
+
+
+54	Coefficients for approximate filter, 32Hz to 16kHz ; Q = 0.5 to 500
+
+110	Stiffness table.
+
+138	Envelope increments and curves.
+
+242	"""----------------------------------------------------------------------------
+243	Delay compensation factor for SVF
+244	----------------------------------------------------------------------------"""
+245
+246	ratio = 2.0 ** (numpy.arange(0, 257) / 12.0)
+247	svf_shift = 2.0 * numpy.arctan(1.0 / ratio) / (2.0 * numpy.pi)
+248	lookup_tables += [('svf_shift', svf_shift)]

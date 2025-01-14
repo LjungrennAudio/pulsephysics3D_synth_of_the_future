@@ -1,0 +1,152 @@
+full list of  all the limits.constraints/short cuts/chokes etc.
+
+most to fit within 32bit architecture 32khz 16bit sound.
+
+def not all.
+some major lazy/shortcuts/weak ass crap in there.
+
+
+-------
+desires
+
+upgrade filters					depends why the filter was used
+make it run past 52 modes max			down to computing
+way more nonlinearities				just add the math to the model
+better interpoltion?				def can be improved
+extend/warp geometry morph filt function?	not even used - may become relevant if mutliple models employed
+add models?					will look into
+try dif variables				https://ccrma.stanford.edu/~jos/pasp/Alternative_Wave_Variables.html
+impove interpolation in delauline		uses hermite - could be better
+iir filters 				could have better interpolation too
+delayline CONSTRAIN(delay, 4.0f, kDelayLineSize - 4.0f);
+other waveguides: fir filters? tube?
+
+
+
+dsp.h sets us at:
+static const float kSampleRate = 32000.0f;
+const size_t kMaxBlockSize = 16;
+
+stiffnessdelay line is same delayline so same interpolate etc.
+voice.h limits knumbstrings = 5
+voice.cc resonator resolution limited = 52 
+
+resonator.h 	const size_t kMaxModes = 64;
+		const size_t kMaxBowedModes = 8;
+		const size_t kMaxDelayLineSize = 1024;
+
+		inline void set_resolution(size_t resolution) {
+    		resolution_ = std::min(resolution, kMaxModes);
+
+		stmlib::Svf f_[kMaxModes];
+  		stmlib::Svf f_bow_[kMaxBowedModes];
+ 		stmlib::DelayLine<float, kMaxDelayLineSize> d_bow_[kMaxBowedModes];
+
+
+resonator.cc
+		// Update the first 24 modes every time (2kHz). The higher modes are
+    		// refreshed as a slowest rate.
+
+
+		 if (i < kMaxBowedModes) {
+ 		       size_t period = 1.0f / partial_frequency;
+		       while (period >= kMaxDelayLineSize) period >>= 1;
+		       d_bow_[i].set_delay(period);
+		       f_bow_[i].set_g_q(f_[i].g(), 1.0f + partial_frequency * 1500.0f);
+
+i.e. kbowedmodes limits max delayline size, and makes tuning less accurate.
+
+
+	    // Note: For a steady sound, the correct way of simulating the effect of
+	    // a pickup is to use a comb filter. But it sounds very flange-y when
+	    // modulated, even mildly, and incur a slight delay/smearing of the
+	    // attacks.
+	    // Thus, we directly apply the comb filter in the frequency domain by
+	    // adjusting the amplitude of each mode in the sum. Because the
+	    // partials may not be in an integer ratios, what we are doing here is
+	    // approximative when the stretch factor is non null.
+	    // It sounds interesting nevertheless.
+
+i.e. at a certain number of modes a bandpass cob filter fiddle is used - not necessarily bad tho
+
+
+remaining is just gain normalising i think - probly no loss in qulaity even tho  filter is changed slightly due to q.
+
+
+
+
+exciters are all 8bit!
+
+exciters are filtered by:
+https://raw.githubusercontent.com/pichenettes/eurorack/master/elements/resources.cc
+
+i.e. svf lookup tables ewwwwwww
+
+
+
+exciter.cc
+lp_.Init();
+
+float Exciter::GetPulseAmplitude(float cutoff) {
+  uint32_t cutoff_index = static_cast<uint32_t>(cutoff * 256.0f);
+  return lut_approx_svf_gain[cutoff_index];
+
+void Exciter::Process(const uint8_t flags, float* out, size_t size) {
+  damping_ = 0.0f;
+  (this->*fn_table_[model_])(flags, out, size);
+  // Apply filters.
+  if (model_ != EXCITER_MODEL_GRANULAR_SAMPLE_PLAYER &&
+      model_ != EXCITER_MODEL_SAMPLE_PLAYER) {
+    uint32_t cutoff_index = static_cast<uint32_t>(timbre_ * 256.0f);
+    if (model_ == EXCITER_MODEL_NOISE) {
+      uint32_t resonance_index = static_cast<uint32_t>(parameter_ * 256.0f);
+      lp_.set_g_r(
+          lut_approx_svf_g[cutoff_index],
+          lut_approx_svf_r[resonance_index]);
+    } else {
+      lp_.set_g_r_h(
+          lut_approx_svf_g[cutoff_index],
+          2.0f,
+          lut_approx_svf_h[cutoff_index]);
+    }
+    lp_.Process<FILTER_MODE_LOW_PASS>(out, out, size);
+
+
+exciter.h
+inline const stmlib::Svf& filter() const { return lp_; }
+
+
+tube.cc
+really crappy filtered self assembled delayline tube model with some extra tweaks for breath and reed - such poor effort.
+
+
+
+https://github.com/pichenettes/stmlib/blob/master/utils/dsp.h
+LUT for interpolations/crossfades
+
+which feed this:
+https://github.com/pichenettes/stmlib/blob/master/dsp/parameter_interpolator.h
+
+i.e. all interpolations except delayline hermteand svf are LUT!
+
+
+
+https://github.com/pichenettes/stmlib/blob/master/dsp/units.h
+https://github.com/pichenettes/stmlib/blob/master/dsp/units.cc
+use the:
+
+https://github.com/pichenettes/stmlib/blob/master/dsp/dsp.h
+integral fractional
+
+plus LUT for pitch ratios - i.e all tuning. 
+
+may not matter cos quantised midinote?
+
+
+
+https://github.com/pichenettes/stmlib/blob/master/dsp/dsp.h
+all other interpolation in here from integral fractional/hermite.
+could be improved.
+
+
+

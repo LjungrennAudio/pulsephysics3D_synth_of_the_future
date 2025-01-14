@@ -1,0 +1,68 @@
+
+General Modeling Procedure used in elements:
+- Formulate a state-space model: exciter -> dual delayline -> fir dispersion/iir damping filter -> add extras like nonlinearities etc.
+In the linear case, diagonalize the state-space model to obtain the modal representation: kinda not really actually follwed this procedure
+Implement isolated modes as second-order filters (``biquads''): filters are caled etc. but not made into a integrated single function model.
+Implement quasi-harmonic mode series as digital waveguides: again - more of a delay > filt > fb x64 instead of integrated function for efficiency.
+
+i plan to:
+
+instead of feed from badly scanned 8bit granulised samples that are then poorly interpolated and mixed, use the pulsar synth as exciter source
+
+improve waveguide string model	- upgrade allpass filters in delay line
+				- upgrade interpolation methids in delay line
+				- maybe increas sample rate of delay line
+
+				- improve fir disperion filter and its intepolation
+				- improve iir damping filter and its interpolation
+
+				- add all kinds nonlinearit custom tweaks for more creative/organic/intersting behaviour
+https://ccrma.stanford.edu/~jos/
+
+derive integrated function for above into a synthesis body model.
+derive a number [10?15?] of different bdy models to morph between:
+https://www.researchgate.net/publication/2565842_Morphing_Instrument_Body_Models 
+
+
+feeds into filterbank for modal.
+
+this newer filterbank https://www.mdpi.com/2076-3417/8/1/96
+bit adapt to make less special analysis/reconstruct bank - purely synthesis.
+then will use as a better filterbank than the one used in elements.
+
+also plan to add 3 highest gain modes calced sum/dif pairs for efficient nonlinearity modelling.
+
+
+real time convolve output of this with
+live convoution		https://www.mdpi.com/2076-3417/8/1/103
+
+
+using below as other input:
+
+
+BLEX analytic pluck synthesis
+https://signalsmith-audio.co.uk/writing/2021/analytic-pluck/#the-exponential-frequency-click
+informed by BLIT/BLEP/BLAMP synthesis
+https://www.music.mcgill.ca/~gary/courses/2020/307/week5/bandlimited.html
+
+to excite another of the improved waveguide based synths.
+
+
+
+
+this then goes out to a simplfied and adapted version of the hyperspherical mapping of multiple mixspaces for
+
+mid/side, 3 band eq and gain.
+
+
+
+
+this then feeda into a spatial mapping spectrum model to give cool effects
+
+
+and on
+
+
+
+
+

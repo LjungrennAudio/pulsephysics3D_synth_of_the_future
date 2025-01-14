@@ -1,0 +1,28 @@
+- flexible to extreme
+- user loadable as much as possible
+- true future proof - all formats, models, wavforms, etc. etc. must be so mathematical they can be endlessly added/upgraded/exported/imported/open sourced etc.
+- user editable
+- customisable
+- make full use of available power but easily upgradeable or newer version compatible as more power/complex/memory/etc.
+- support development in further nonlins, detail, new math, etc.
+- therefore allow for ai/machine learning and future devs of?
+- non-prescriptive
+- is c++/py future proof?
+- must be vst3/hardware compat. is browser capable future too?
+- ir somehow as opt? maybe ability to input ir and convert to wdf optimised by machine learn?
+>> all ir/env/s.cycle/convolve/sample/etc. as universal format, future proof > 24 bit 44khz wav?
+
+key future tech is machine learn and browser?
+
+- even 2.6ghz 4 core/?ram @ 192khz/24bit too much?
+- is usb c future proof enough?
+is xlr combi future proof?
+- is 3.5 for analogue cv future proof?
+
+is 4 16/9 widecreen type display right? 5 more 4:3?
+
+ROUTING - rail shunting yard?
+MODULATION - 5th control block?/mod select?
+https://i.etsystatic.com/26299795/r/il/77cef1/4003118896/il_fullxfull.4003118896_td12.jpg
+
+https://divoom.com/cdn/shop/products/1.jpg?v=1689847920&width=1400

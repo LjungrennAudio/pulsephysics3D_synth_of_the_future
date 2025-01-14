@@ -1,0 +1,45 @@
+General Modeling Procedure
+
+Formulate a state-space model.
+In the linear case, diagonalize the state-space model to obtain the modal representation.
+Implement isolated modes as second-order filters (``biquads'').
+Implement quasi-harmonic mode series as digital waveguides.
+
+
+
+a digital waveguide is defined as a bidirectional delay line - two delay lines,one for each direction, each delay line contains a sampled acoustic traveling wave.
+since the vibration of an ideal string can be described as the sum of two traveling waves going in opposite directions, a bidirectional delay line (a digital waveguide) can model any one-dimensional linear acoustic system - such as a string or pipe etc.
+in real acoustic strings and bores, the 1D waveguides exhibit some loss and dispersion, it is convenient to have separate damping and dispersion filters in a model since the damping filter tends to be significantly less demanding than the dispersion filter.
+
+If a traveling wave attenuates as it propagates, with the same attenuation factor at each frequency, the attenuation can be simulated by a simple scaling of the delay line output.
+For accurate acoustic modeling, it is usually necessary to replace the constant scale factor g by a digital filter G(z) which implements frequency-dependent attenuation, a linear time-invariant (LTI) filter can provide an independent attenuation factor at each frequency.
+usually can be a lower-order IIR filter.
+
+wave-propagation medium is said to be dispersive if the speed of wave propagation is not the same at all frequencies
+As a result, a propagating wave shape will ``disperse'' (change shape) as its various frequency components travel at different speeds. Dispersive propagation in one direction can be supplied by a filter in the basic feedback loop, with inharmonicity coefficient B or 'stretch factor'.
+
+an input signal interacts with the state of the system at one point along the waveguide it only depends on the ``incoming state'' (traveling-wave components) and the driving input signal the interaction depends only on the amplitude of the simulated physical variable (such as string velocity or displacement).
+incoming amplitude is formed as the sum of the incoming traveling-wave components.
+
+geometry solved?
+Applying the inverse warping to the parametric resonator via a first-order allpass filter, the time duration of the high-frequency modes is extended while the low-frequency modes are contracted in time duration. Thus, the modal decay times show less of a spread versus frequency.
+https://ccrma.stanford.edu/~jos/pasp/Body_Factoring_Example.html
+
+nonlinearities:
+Since longitudinal waves travel an order of magnitude faster than transverse waves, this coupling gives rise to high-frequency inharmonic overtones (corresponding to longitudinal modes of vibration) in the sound.
+
+https://ccrma.stanford.edu/~jos/pmudw/pluck.c
+
+there are hints in emilie's setup jat there's 64 strings, 8 bowed strings and a tube model - not certain tho:
+
+https://ccrma.stanford.edu/~jos/pasp/Digital_Waveguide_Bowed_String.html
+
+also brief mention of reed:
+https://ccrma.stanford.edu/~jos/pasp/Digital_Waveguide_Single_Reed_Implementation.htm
+
+suspect i spied some tweaks such as:
+https://ccrma.stanford.edu/~jos/pasp/Enhancing_Even_Harmonics.html
+
+
+too...
+

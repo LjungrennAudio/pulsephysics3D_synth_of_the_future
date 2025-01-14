@@ -1,0 +1,101 @@
+\cite {int:\Proceedings of the 23^rd International Conference on Digital Audio Effects (DAFx2020), Vienna, Austria, September 8–12, 2020-21\}
+
+\introduction
+
+	{RECOGNIZING GUITAR EFFECTS AND THEIR PARAMETER SETTINGS}
+	\Henrik Jürgens, Reemt Hinrichs and Jörn Ostermann\
+	\Institut für Informationsverarbeitung\
+	\Leibniz Universität Hannover\
+	\Hannover, Germany\
+	`juergens@tnt.uni-hannover.de`
+
+
+\section{1:abstract}:
+this paper introduces a method to estimate the parameter settings of guitar effects. the results show that the method is generally suited for this task with average estimation errors of \[ \±{5\%} − \±{16\%} \] of different parameter scales and could potentially perform near the level of a human expert.
+
+\begin{2:relevant previous work}:
+{Stein:8} investigated the classification of eleven different digital guitar effect classes. for this publication they assembled a database of guitar samples, which were processed with different effects. this database was also used as training and evaluation set for this paper. {Stein:8} achieve a classification accuracy of \[ {95.5}\% \], meaning that \[ {95.5}\% \] of the samples in the test set have been assigned the correct effect class. similar to the previously mentioned publications, a 'Support Vector Machine' \[ (SVM) \] was used as classifier.
+
+\section{3:overview}:
+the approach that is proposed in this paper for extracting the guitar effect and its parameter settings first, needs the effect class to be determined. afterwards, the effect parameters can be estimated for this specific effect. this approach allows to design specific algorithms for each effect class.
+
+\section{4:guitar fx recognition}:
+the ten guitar effects of the database {Stein:8} can be split into the three
+categories: nonlinear effects, ambience effects and modulation effects. additionally, there is one extra class which contains the unprocessed samples and samples that have been processed with an equalizer to further diversify the sounds. thus, all eleven classes contain the same amount of processed guitar samples. a list of all effects and their categories can be found in {table:1}.
+
+\footnote{Stein:8}
+
+
+\{table:1}: list of effect classes in the database and their category\
+  ____________________________________________________________
+  category		effect class(es)
+  ____________________________________________________________
+  nonlinear		distortion, overdrive
+  ambience		feedback-delay, slapback-delay, reverb
+  modulation		chorus, flanger, phaser, tremolo, vibrato
+  clean			unprocessed except for EQd
+  ____________________________________________________________
+
+
+	there are 624 monophonic samples, containing all pitches of
+the guitar until the 12th fret in standard tuning, recorded by using two different guitars and two different pickup settings each. additionally, 420 polyphonic samples are part of the database, covering various intervals and chords spread over the guitar neck, also using the same two guitars and two pickup settings. these 1044 samples have been processed with 3 parameter settings of every effect, resulting in roughly 16 hours (excluding silence) of 2 second clips or about 34,500 samples respectively. to avoid bias, the guitar samples need to be peak normalized before feature extraction, since
+the audio level could allow the classifier to draw a conclusion on the effect class.
+
+	for training/prediction of samples, four steps are incorporated the silence is cut from the beginning of the samples. this is achieved using onset detection to find the start of the played note. With the {Librosa:14} implementation of the onset detection, several features are then extracted. a complete list of the used audio features can be found in {table:2} several features are then extracted. the frameworks {Librosa:14} and a Python interface for {Praat:15} have been used for feature extraction.
+
+\{table2}: used audio features for guitar effect recognition\
+  ____________________________________________________________
+  feature		framework 	time  		delta
+  \fract{#features}{frame}		series
+  ____________________________________________________________
+
+  Mel frequency Cep-	Librosa		yes 		yes
+  stral coefficients
+  \= 20 + \fract{20}{\∆}	
+  spectral contrast	Librosa 	yes 		no
+  
+  \= 7
+  zero crossing		Librosa 	yes 		yes
+  rate \= 1 +
+  \fract{1}{\∆}
+  root mean square	Librosa 	yes 		yes
+  energy \= 1 +
+  \fract{1}{\∆}
+  unwrapped phase	(None) 		yes 		no
+  of max freq bin
+  \= 1
+  pitch curve		Praat 		yes 		no
+  
+  \= 1
+  voiced probability	Praat 		yes 		no
+  
+  \= 1
+  harmonics to		Praat 		no 		no
+  noise ratio
+  \= \-
+ ___________________________________________________________
+
+
+\{table 3}: used functionals and number of {#} values as output of the functionals\
+  ___________________________________________________________
+  functional 						# scalars
+  ___________________________________________________________
+  \max 					 		1
+  \min							1
+  \avg							1
+  \std							1
+  {2_lin}r_coef + {res}					3
+  {3_quad}r_coef + {res}				4
+  \max{FFT}						1
+  \sum							12
+  ____________________________________________________________
+
+\training time for SVM scales at least quadratically with the input          vector size \cite {17:Léon}. this allows for more flexibility through     shorter testing cycles for new features. despite the smaller input vector,
+similar results were achieved, classifying the guitar samples with an   accuracy of {94.85}\%.\
+
+\footnote {{17:Léon} Léon Bottou and Chih-Jen Lin, “Support vector machine
+solvers,” Large Scale Kernel Machines, 01 2007}
+
+\cite {{8:Stein} Michael Stein, Jakob Abeßer, Christian Dittmar, and Gerald Schuller, “Automatic Detection of Audio Effects in Guitar and Bass Recordings,” in \Audio Engineering Society Convention 128\, 2010, Data retrieved from\ `https://www.idmt.fraunhofer.de/en/business_units/m2d/smt/guitar.html.`}
+
+

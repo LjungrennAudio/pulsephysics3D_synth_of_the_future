@@ -1,0 +1,629 @@
+\usepackage[english]{babel}
+\usepackage{amsthm}
+
+\documentclass{article}
+\swapnumbers
+\theoremstyle{plain}
+\newtheorem{def}{Definition}[def]
+\theoremsyyle{}
+\newtheorem{prop}{Proposition}[def]
+\theoremstyle{theorem}
+\newtheorem{thm}[section]{Theorem}
+\theoremstyle{prf}
+
+
+\theoremstyle{remark}
+\newtheorem*{example}{Example}
+
+\qedsymbol{$\blacksquare$}
+
+
+\zbox 
+
+
+Definitions
+(Propositions/Lemmas)
+'Wofl' Theorem (name of the person who proved it, along with year of discovery or publication of the proof)
+Proposition
+Corollaries (associated necessary Proofs)
+Proof
+	Lemmas
+	...
+Description of proof
+End ∎
+
+
+{this document will use Standard \LaTeX{} delimiter format for math:
+
+	e.g.	| \begin{equation} \label{eq:0} \int_{-\infty}^{n=\infty} \frac{dx}{e^x} =  \frac{e-1}{e} \end{equation} \ref{eq:0} |
+
+QED is an initialism of the Latin phrase quod erat demonstrandum, meaning “thus it has been demonstrated”
+
+\footnote{62:\texttt{http://ccrma.stanford.edu/\~{}jos/sasp/sasp.html}}
+
+
+\section{Derivation of Shift Theory}
+we'll start by going back to some basics and following through the derivation of Shift Theory for the continuous Foruier transform function. assuming basic quadratic funtions aren't too advanced;
+
+there's also convenient links to the derivations of, and implementation of:
+\ref{the sinusoid function}
+\ref{the DFT}
+\ref{Euler's Identity}
+\ref{De Moivre's Theorem}
+
+
+\begin{theorem}[Quadratic Formula]
+\label{Quadratic Formula}
+
+A root of a polynomial is a zero of the corresponding polynomial function. The fundamental theorem of algebra states that every polynomial of degree \n\ has \n\ complex roots, counted with their multiplicities.
+
+the quadratic formula allows us to express the quadratic polynomial \[ p(x) = x^{2} +4 \] in terms of its roots as 
+
+		\[ p(x) = (x + 2j)(x - 2j) \]
+\end{theorem}
+
+
+We can think of these as ``imaginary roots'' in the sense that square roots of negative numbers don't really exist, or we can extend the concept of ``roots'' to allow for complex numbers, that is, numbers of the form
+
+\begin{equation} \label{eq:1}
+						\zbox {z = x + jy}
+\end{equation}
+where \x\ and \y\ are real numbers and the algebraic object \begin{equation} \label{eq:2} \[ j \triangleq \sqrt{-1} \end{equation}.
+
+note: for complex numbers polynomials can always be factored completely.
+
+
+the following derivations will assume some prior knowledge again but quick ref links to the derivations/equations used are below:
+
+\href{63:https://ccrma.stanford.edu/~jos/mdft/Sinusoids.html}{the sinusoid function}
+\href{64:https://ccrma.stanford.edu/~jos/mdft/DFT.html}{the DFT}
+\href{65:https://ccrma.stanford.edu/~jos/mdft/Euler_s_Identity_I.html}{Euler's Identity}
+\href{66:https://ccrma.stanford.edu/~jos/mdft/Direct_Proof_De_Moivre_s.html}{De Moivre's Theorem}
+
+
+
+\begin{theorem}[Continuous FT Shift Theorem]
+when \x(t)\ is a general sinusoid at frequency \omega, noting that the radian frequency \omega is equal to the time derivative of the instantaneous phase of the sinusoid \begin{equation} \label{eq:3} \frac{d}{dt} (\omega t + \phi) = \omega \end{equation}
+
+the shift theorem for Fourier transforms states that delaying a signal \x(t)\ by \tau seconds multiplies its Fourier transform by \label{eq:4} e^{-j\omega\tau}:
+
+(in which \j\ \triangleq \ref{eq:2})
+
+	FT_{\omega}(S\textscale[0.8]{HIFT}_{\tau}(x)) \triangleq \int_{-\infty}^{\infty} x(t-\tau)e^{-j\omega\tau}dt
+
+	(define \label{eq:5} \sigma = t-\tau)
+     
+						      = \int_{-infty}^{\infty} x(\sigma)e^{-j\omega(\sigma+\tau)}d\sigma			
+					     
+						      = e^{-j\omega\tau} \int_{-infty}^{\infty} x(\sigma)e^{-j\omega\sigma}d\sigma 
+						   	     
+						      \triangleq e^{-j\omega\tau} X(\omega)
+				
+				thus
+					    
+				     \zbox {x(t-\tau) \longleftrightarrow e^{-j\omega\tau} X(\omega) \label{Shift Theorem} }
+				
+
+			   	bearing in mind that \ref{the DFT}, X(\omega_k), gives us the transform kernel:
+					  
+				e^{-j\omega_{k}t_{n}} = \cos(\omega_{k}t_{n}) - j\sin(\omega_{k}t_{n})
+\end{equation}	   
+
+
+
+\section{Pulse Trains}[Pulse Trains]
+now we switch from the derivation of Shift Theorem over to the mathematic of Pulse Trains:
+
+
+\begin{theorem}[The Continuous-Time Impulse]:
+an impulse in continuous time must have ``zero width'' and unit area under it. One definition is
+
+\label{continuous-time impulse}		\omega(t)  \triangleq   \lim_{\tringle \to 0} 	\left\{																		\begin{array}{rl}
+											frac{1}{\triangle}, 0 \leq t \leq \triangle,\\
+											0, otherwise \right.\\
+											\end{array} \right. 
+
+also, An impulse can be similarly defined as the limit of any pulse shape which maintains unit area and approaches zero width at time 0. As a result, the impulse under every definition has the so-called sifting property under integration,
+
+				\int_{-\infty}^{\infty} f(t)\omega(t)dt=f(0),
+
+
+provided \f(t)\ is continuous at t=0. This is often taken as the defining property of an impulse, allowing it to be defined in terms of non-vanishing function limits such as
+
+				\omega(t) \triangleq \lim_{\Omega \to \infty} \fract{\sin{\Omega t)}{\pi t}
+
+
+(noting, that fract{\sin(\Omega t)}{\pi t} is in \mathnormal{L_2} but not \mathnormal{L_1} .)
+
+an impulse is not a function in the usual sense, so it is called instead a distribution or _generalized function_. (it is still commonly called a "delta function", however, despite the misnomer.)
+\end{theorem}
+
+
+
+\begin{theorem}[Impulse Trains]:
+The impulse signal \delta(t) has a constant Fourier transform \ref{the DFT}:
+
+		     FT_{f}(\delta) \triangleq \int_{-\infty}^{\infty}\delta(t)e^{-j\fract{2}{\pi}ft}dt=1  \forallf \in \mathbb{R}
+
+
+an impulse train can be defined as a sum of shifted impulses:
+
+\label{Sum of Pulses}	\psi_{P}(t) \triangleq \sum_{m=-\infty}^{\infty} \delta(t-mP)			
+
+
+Here, \P\ is the period of the impulse train, in seconds i.e., the spacing between successive impulses. The \P\-periodic impulse train can also be defined as
+
+		        \psi_{P}(t) = \fract{1}{P}\Ш(\fract{t}{P})
+
+	
+where where \Ш\ is the symbol 'shah' for an impulse train or Tate-Shafarevich group:
+
+\label{Impulse Train}	      Ш(t) \triangleq \sum_{m=-\infty}^{\infty} \delta(t-m)					
+
+
+note that the scaling by \1/P\ in \ref{Impulse Train} is necessary to maintain unit area under each impulse.
+as a result, it can now be shown that
+`						
+		       \zbox {Ш(t) \longleftrightarrow Ш(f).}
+
+
+that is, the Fourier transform of the normalized impulse train \Ш(t)\ is exactly the same impulse train \Ш(f)\ in the frequency domain, where  \t\ denotes time in seconds and \f\ denotes frequency in \Hz\.
+
+by the scaling theorem \ref{footnoteB.4},
+
+		   Ш(\fract{t}{P}) \longleftrightarrow PШ(Pf),
+
+
+so that the $ P$ -periodic impulse-train defined in (B.46) transforms to
+
+	     	       \psi_{P}(t) = \fract{1}{P}\Ш(\fract{t}{P}) \longleftrightarrow Ш(Pf) = \sum_{m=-\infty}^{\infty} \delta(Pf-m)
+
+			 	   = \fract{1}{P} \sum_{m=-\infty}^{\infty} \delta(f-\fract{m}{P})
+
+			 	   = \fract{1}{P}\psi_{\fract{1}{P}}(f) = \psi_P(f)
+
+
+thus, the \P\-periodic impulse train transforms to a \(1/P)\-periodic impulse train, in which each impulse contains area \1/P\:
+
+	       \psi_P(f) \triangleq FT_{f}(\psi_P) = \fract{1}{P}\psi_{\fract{1}{P}}(f)
+
+\begin{Proof}
+Let's set up a limiting construction by defining
+\end{Proof}
+
+
+
+so that $ \lim_{M\to\infty}\,\raisebox{0.8em}{\rotatebox{-90}{\resizebox{1em}{1em}{\ensuremath{\exists}}}}_M(t)=\,\raisebox{0.8em}{\rotatebox{-90}{\resizebox{1em}{1em}{\ensuremath{\exists}}}}(t)$ . We may interpret $ \,\raisebox{0.8em}{\rotatebox{-90}{\resizebox{1em}{1em}{\ensuremath{\exists}}}}_M(t)$ as a sampled rectangular pulse of width $ 2M$ seconds (yielding $ 2M+1$ samples).By linearity of the Fourier transform and the shift theorem (§B.5), we readily obtain the transform of $ \,\raisebox{0.8em}{\rotatebox{-90}{\resizebox{1em}{1em}{\ensuremath{\exists}}}}_M(t)$ to be
+
+
+
+
+
+
+Using the closed form of a geometric series,
+
+
+
+with $ r=e^{-j\pi f}$ , we can write this as	
+
+
+
+
+
+where we have used the definition of $ \hbox{asinc}$ given in Eq.(3.5) of §3.1. As we would expect from basic sampling theory, the Fourier transform of the sampled rectangular pulse is an aliased sinc function. Figure 3.2 illustrates one period $ M\cdot\hbox{asinc}_M(\omega)$ for $ M=11$ .
+
+The proof can be completed by expressing the aliased sinc function as a sum of regular sinc functions, and using linearity of the Fourier transform to distribute $ \hbox{\sc FT}_f$ over the sum, converting each sinc function into an impulse, in the limit, by §B.13:
+
+
+
+
+
+
+
+by §B.13. Note that near $ f=0,2,4,\ldots$ , we have
+
+
+
+
+
+as $ M\to\infty$ , as shown in §B.13. Similarly, near $ f=1,3,5,\ldots$ , we have
+
+
+
+as $ M\to\infty$ . Finally, we expect that the limit for non-integer $ f$ can be neglected since
+
+
+
+whenever $ n<a\leq b<n+1$ and $ n$ is some integer, as implied by §B.13.
+
+Using a similar limiting construction as before,
+
+
+
+
+
+a direct inverse-Fourier transform calculation gives
+
+
+
+thus the peaks occur every $ P$ seconds and reach height $ (2L+1)/P$ . Also the peak widths, measured between zero crossings, are $ P/(2L+1)$ , so the area under each peak is of order 1 in the limit as $ L\to\infty$ . 
+
+remembering that the shift theorem for inverse Fourier transforms is $ e^{j\nu t}x(t) \;\leftrightarrow\;
+X(f-\nu)$ , and $ {\textscale[0.8] IFT}_t(\delta)=1/(2\pi)$ ,
+
+
+\footnote{B.4{\texttt{https://ccrma.stanford.edu/~jos/sasp/Differentiation_Theorem.html}}
+
+
+
+
+now the real fun; here we have a real cute bandlimited impulse:
+
+			( 2pix - e^-k/2(k cdot sin(pix) + 2pix cdot cos(pix)) ) / ( k^2 + (2pix)^2 )
+
+give it linearly increasing k and you get a beautiful pluck impulse :) perfectly pitched alias free!
+
+
+
+{67:[`https://ccrma.stanford.edu/~jos/sasp/Convolution_Theorem.html`]}
+
+{68:[`https://ccrma.stanford.edu/~jos/sasp/Flip_Theorems.html`]}
+
+{69:[`https://ccrma.stanford.edu/~jos/sasp/Power_Theorem.html`]}
+
+
+
+
+\end{document}
+
+
+
+\documentclass{article}
+\title{Appendix i}
+Signal Notation used:
+
+\section{f and t conventions}
+Frequency and Time:
+$ \omega$ denotes continuous radian frequency (rad/sec)
+$ f$ denotes continuous frequency in Hertz (Hz)
+$ \omega =
+2\pi f$
+$ \omega_k$ denotes discrete frequency, $ \omega_k = 2\pi (k/N) f_s$
+$ \omega, \omega_k \in \mathbb{R}$ (frequencies are always real)
+$ T = $ sampling interval (sec)
+$ f_s = $ sampling rate, $ f_s=\frac{1}{T}$
+$ t_n = nT $ (discrete time)
+$ n,k \in \mathbb{Z}$ (integers)
+$ t,t_n \in \mathbb{R}$ (time is always real)
+
+\section{FT conventions}
+Fourier Notation:
+x \in \mathbb{C}^N $ means $ x$ is a length $ N$ complex sequence
+x = x(\cdot)$
+X = {\textscale[0.8] DFT}(x) \in \mathbb{C}^N $
+X(k) = {\textscale[0.8] DFT}_k(x) $
+X(k) = {\textscale[0.8] DFT}_{N,k}(x)$ denotes the $ k$ th bin of a length $ N$ DFT
+X(k) \in \mathbb{C}$
+x(n) = {\textscale[0.8] IDFT}_n(X) $
+x(n)\in\mathbb{R}$ or $ \mathbb{C}$
+n,k \in \mathbb{Z}$ or $ n,k \in \mathbb{Z}_N$ (integers modulo $ N$ )
+For $ x\in \mathbb{C}^\infty$ , $ X = {\textscale[0.8]{DTFT}(x) \in \mathbb{C}_{2\pi}^{\infty}$
+$ \overline{x} = $ conjugate of $ x$
+$ \angle x = $ phase of $ x$
+
+\section{FT calc notation}
+calculation notation for Fourier Transform:
+The following notation will be used to state that $ X(\omega_k)$ is the Fourier Transform of $ x(t_n)$
+
+$\displaystyle x \;\longleftrightarrow\;X \qquad [X=\hbox{\sc DFT}(x)]$	(A.1)
+
+where $ \;\longleftrightarrow\;$ is read as ``corresponds to''. The notation $ XY$ or $ X\cdot Y$ denotes the vector containing $ (XY)_k=X(k)Y(k)$ , $ k=0,\ldots,N-1$ . This is denoted by `X .* Y' in Matlab, where X and Y are either column or row vectors.
+
+\end{document}
+
+
+
+\documentclass{article}
+
+\style=alphabetic
+
+\title{Bibliography}
+\author{me}
+\date{15/08/2023}
+
+\begin{document}
+
+\maketitle
+
+\section{overview}
+this bibliography is divided into sections, by citation type;
+
+\section{\LaTeX\ math code}
+\cite{latexcompanion} the {The \LaTeX\ Companion} book, 
+\cite{ctan} the {The Comprehensive Tex Archive Network} (CTAN) {https://mirror.apps.cam.ac.uk/pub/tex-archive/}
+\cite{overleaf} Overleaf is an on-line LaTeX editing tool {https://www.overleaf.com/learn}
+\cite{ctan2} had to go to saery LaTeX 2E cos i had advanced math {https://mirror.apps.cam.ac.uk/pub/tex-archive/info/lshort/english/lshort.pdf}
+\cite{unicode} ad a real obscure cryllic letter need {https://www.fileformat.info/info/unicode/block/cyrillic/list.htm}
+are \LaTeX\ and type setting related items;
+
+\section{SASP}
+these are all dedicated to the actual terrifying spectral audio processing math/code,
+\cite{SASP} the book \footnote{\texttt{http://ccrma.stanford.edu/\~{}jos/sasp/sasp.html}} 
+(SPECTRAL AUDIO SIGNAL PROCESSING - Julius O. Smith; online book, 2011 edition; accessed <15/08/2023>)
+\cite{wiki} good ol' wikipedia for some universal overviews/definitions/factchecking/reference sourcing {https://en.wikipedia.org/wiki/Complex_number},
+\cite{BLEX} the obscure souce of the idea for BLEX synthesis {https://signalsmith-audio.co.uk/writing/2021/analytic-pluck/#the-exponential-frequency-click}
+\cite{}
+
+
+
+
+\section{}
+
+\cite {11} autoencode for waveorms
+\cite {12} deforming poscillator
+\cite {13} continuous state parametric model control
+\cite {18} audio morphing using matrix decomposition and optimal transport.
+\cite {14} time varying stability of filter matrix products
+\cite {15} fast temporal convolutions for real time audio
+
+\cite {20} bad cicuit
+
+\cite {16} antialiasing
+
+
+
+\medskip
+
+\printbibliography
+\end{document}
+
+
+\cite {bs} not-cite https://www.dafx.de/paper-archive/2006/papers/p_107.pdf
+
+in {1} and {2} read texture as timbre:
+\cite {1:L. A. Gatys, A. S. Ecker, and M. Bethge, “Texture synthesis using convolutional neural networks,” in Advances in Neural Information Processing Systems 28, May 2015.}
+- introducing a new model of natural textures based on the feature spaces
+of convolutional neural networks optimised for object recognition. Samples from the model are of high perceptual quality demonstrating the generative power of neural networks trained in a purely discriminative fashion.
+
+\cite {2:[`https://arxiv.org/pdf/1606.00021.pdf`] texture synthesis using shallow convolutional networks with random filters}
+- the current state of the art in parametric texture synthesis relies
+on the multi-layer feature space of deep CNNs that were trained on natural images {1}.
+
+\cite{3:[`https://dafx17.eca.ed.ac.uk/papers/DAFx17_paper_44.pdf`] automatic cotnrol of the sdyamic range compressor using a regression model and a reference sound.}
+hardware (analogue) audio effects as well as knowledge of their parameters and how they change the sound is crucial when controlling digital audio effects. this often presents barriers for musicians and casual users in the application of effects. these users are more accustomed to describing the desired sound verbally or using examples, rather than understanding and configuring low-level signal processing parameters. this paper addresses
+this issue by providing a novel control method for audio effects - one that automates it by dynamic [?] function.
+
+\cite {4:[`https://dafx2020.mdw.ac.at/proceedings/papers/DAFx2020_paper_2.pdf` ] Proceedings of the 23rd International Conference on Digital Audio Effects (DAFx-20), Vienna, Austria, September 8–12, 2020, Henrik Jürgens, Reemt Hinrichs and Jörn Ostermann.}
+recognising guitar effects and their parameter functions.
+
+\cite {5:[`https://dafx2020.mdw.ac.at/proceedings/papers/DAFx2020_paper_29.pdf`] Proceedings of the 23rd International Conference on Digital Audio Effects (DAFx-20), Vienna, Austria, September 8–12, 202, Yuta Kusaka†, Katsutoshi Itoyama†, Kenji Nishida†, and Kazuhiro Nakadai†‡}
+onset-inforned source separation factorisation with binary asks better - than WMF.
+
+\cite {6: [`https://dafx2020.mdw.ac.at/proceedings/papers/DAFx2020_paper_52.pdf`] Proceedings of the 23rd International Conference on Digital Audio Effects (DAFx-20), Vienna, Austria, September 8–12, 202, Boris Kuznetsov, Julian D. Parker and Fabián Esqueda}
+differentiable IIR filters for machine learning applications.
+
+\cite {7[`https://dafx2020.mdw.ac.at/proceedings/papers/DAFx2020_paper_41.pdf`] Proceedings of the 23rd International Conference on Digital Audio Effects (DAFx-20), Vienna, Austria, September 8–12, 202, António Ramires, Gilberto Bernardes, Matthew E. P. Davies, Xavier Serra}
+https://sites.google.com/site/tonalintervalspace/home
+https://github.com/aframires/TIVlib/tree/master
+/README.md
+The Tonal Interval Space is an extended type of pitch space that represents human perceptions of pitches, chords and keys as well as music theory principles as distances. Multi-level pitch configurations are represented in the space as 12-dimensional Tonal Interval Vectors (TIVs). Inspired by Euler's Tonnetz, Chew’s Spiral Array, and Harte et al.'s 6-dimensional Tonal Centroid Space, the Tonal Interval Space refines the intervallic relations of the above-mentioned spaces by an increased numbers of dimensions. 
+In this paper, we present TIV.lib, an open-source library for the content-based tonal description of musical audio signals. Its main novelty relies on the perceptually-inspired Tonal Interval Vector space based on the Discrete Fourier transform, from which multiple instantaneous and global representations, descriptors and metrics are computed — e.g., harmonic change, dissonance, diatonicity, and musical key.
+
+\cite {8:[`file:///C:/Users/Tab/Downloads/10.1007978-3-030-01692-011.pdf`] Bernardes, G., Davies, M.E.P., Guedes, C. (2018). A Hierarchical Harmonic Mixing Method. In: Aramaki, M., Davies , M., Kronland-Martinet, R., Ystad, S. (eds) Music Technology with Swing. CMMR 2017. Lecture Notes in Computer Science(), vol 11265. Springer, Cham.}
+We present a hierarchical harmonic mixing method for assisting users in the process of music mashup creation.
+
+\cite {9:`https://github.com/aframires/loop_synth_eval]}
+browser based evaluation of audio quality and comparative listening environment
+
+\cite {10:[`https://github.com/aframires/instrument-classifier`]}
+Framework for automatic instrument classification using the NSynth dataset and augmenting this dataset with audio effects. 
+
+\cite {11: [`https://github.com/aframires/SpectrogramVAE`]}
+TensorFlow implementation of a Variational Autoencoder with Inverse Autoregressive Flows for encoding spectrograms.
+
+\cite {12: [`file:///C:/Users/Tab/Desktop/synth/DAFx20in22_paper_23.pdf`] Proceedings of the 25th International Conference on Digital Audio Effects (DAFx20in22), Vienna, Austria, September 2-10, 2022, Georg Essl}
+deforming the ocsillator: iterative phases over parametrizable closed paths.
+
+\cite {13: [`file:///C:/Users/Tab/Desktop/synth/DAFx20in22_paper_37.pdf`] Proceedings of the 25th International Conference on Digital Audio Effects (DAFx20in22), Vienna, Austria, September 6-10, 2022, Tim-Tarek Grund and Henrik von Coler}
+Continuous State Markovian Spectral Modelling is a novel approach for parametric synthesis of spectral modeling parameters, based on the sines plus noise paradigm.
+
+\cite {14: [`file:///C:/Users/Tab/Desktop/synth/DAFx20in22_paper_41.pdf`] Proceedings of the 25th International Conference on Digital Audio Effects (DAFx20in22), Vienna, Austria, September 6-10, 2022, Kurt James Werner, Russell McClellan}
+tme-varyign filter stability and state matrix products.
+
+\cite {15: [`file:///C:/Users/Tab/Desktop/synth/DAFx20in22_paper_43.pdf`] Proceedings of the 25th International Conference on Digital Audio Effects (DAFx20in22), Vienna, Austria, September 6-10, 2022, Stepan Miklanek and Jiri Schimmel}
+fast temporal convolutions for real-time audio processing.
+
+\cite {16: [`file:///C:/Users/Tab/Desktop/synth/DAFx2020_paper_35.pdf`] Proceedings of the 23rd International Conference on Digital Audio Effects (DAFx-20), Vienna, Austria, September 2020-21, Davide Albertini, Alberto Bernardini and Augusto Sarti}
+antiderivative antialiasing in nonlinear wave digital filters.
+
+\cite {17: [`file:///C:/Users/Tab/Desktop/synth/DAFx2020_paper_40.pdf`] Proceedings of the 23rd International Conference on Digital Audio Effects (DAFx-20), Vienna, Austria, September 2020-21, Eloi Moliner, Jussi Rämö, and Vesa Välimäki}
+virtual bass system with fuzy separation of tones and transients.
+
+\cite {18: [`file:///C:/Users/Tab/Desktop/synth/DAFx2020_paper_42.pdf`] Proceedings of the 23rd International Conference on Digital Audio Effects (DAFx-20), Vienna, Austria, September 2020-21, Gerard Roma , Owen Green and Pierre Alexandre Tremblay}
+audio morphing using matrix decomposition and optimal transport.
+
+\cite {19: [`file:///C:/Users/Tab/Desktop/synth/DAFx2020_paper_33.pdf`] Proceedings of the 23rd International Conference on Digital Audio Effects (DAFx-20), Vienna, Austria, September 2020-21, Judy Najnudel and Rémy Müller, Thomas Hélie and David Roze}
+a power-balanced dynamic model of ferromagneic coils.
+
+\cite {20: [`file:///C:/Users/Tab/Desktop/synth/BadCircuitModels.pdf`] Center for Computer Research in Music and Acoustics, Jatin Chowdhury}
+bad circuit modelling. https://github.com/jatinchowdhury18/bad circuit modelling
+
+\cite {21: [`C:\Users\Tab\Desktop\synth\7%.txt`] [1] Howard Johnson, “7% solution,” https://www.edn. com/7-solution/, 2010.}
+7%.
+
+\cite {22: [`file:///C:/Users/Tab/Desktop/synth/article6.pdf`] © 2014 IEEE. Reprinted, with permission, from S. D Angelo and V. Välimäki.}
+Generalized Moog Ladder Filter: Part II Explicit Nonlinear Model through a Novel Delay-Free Loop Implementation Method.
+
+\cite {23: [`file:///C:/Users/Tab/Desktop/synth/article5.pdf`] © 2014 IEEE. Reprinted, with permission, from S. D Angelo and V. Välimäki.}
+Generalized Moog Ladder Filter: Part I Linear Analysis and Parameterization. IEEE Trans. Audio, Speech, and Lang. Process.
+
+\cite {24: [`file:///C:/Users/Tab/Desktop/synth/article4.pdf`] © 2012 IEEE. Reprinted, with permission, from R. C. D. de Paiva, S. D Angelo, J. Pakarinen, and V. Välimäki.}
+Emulation of Operational Amplifiers and Diodes in Audio Distortion Circuits.
+
+\cite {25: [`file:///C:/Users/Tab/Desktop/synth/article3.pdf`] © 2013 IEEE. Reprinted, with permission, from S. D Angelo, J. Pakarinen, and V. Välimäki.}
+New Family of Wave-Digital Triode Models.
+
+\cite {26: [`file:///C:/Users/Tab/Desktop/synth/isbn9789526059068.pdf`] A doctoral dissertation completed for the degree of Doctor of
+Science (Technology) (Doctor of Philosophy) to be defended, with
+the permission of the Aalto University School of Electrical Engineering, Stefano D'Angelo} 
+Virtual Analog Modeling of Nonlinear Musical Circuits.
+
+\cite {26: [`file:///C:/Users/Tab/Desktop/synth/reliability.pdf`] Cornell Dubilier, Sam G. Parler, Jr., P.E,}
+Reliability of CDE Aluminum Electrolytic Capacitors
+
+\cite {27: [`file:///C:/Users/Tab/Desktop/synth/ceramic-capacitor-aging-made-simple.pdf`] JOHANSON DIELECTRICS INC, Christopher England Applications Engineer HVS Products} 
+ceramic cpacitor aging made simple.
+
+\cite {28: [`file:///C:/Users/Tab/Desktop/synth/US20170060527A1.pdf`] United States (12) Patent Application Publication, Provisional application No. 62/212.813, filed on Sep. 1, 2015.}
+A digital emulation of an analog device with tolerance modeling is disclosed. In operation, a model of an analog circuit is provided. 
+
+\cite {29: [`file:///C:/Users/Tab/Desktop/synth/carnhill_design_guide.pdf`] Carnhill Transformers Design Guide (preliminary) - Issue 1e}
+
+\cite {31: [`file:///C:/Users/Tab/Desktop/synth/modalpaper.pdf`] Modal Synthesis for Vibrating Objects, Kees van den Doel and Dinesh K. Pai, Department of Computer Science, University of British Columbia, Vancouver, Canada}
+The JASS development environment is available for non-commercial use from the JASS website www.cs.ubc.ca~/kvdoel/jass (Doel, 2003), where you can also try out several interactive audio synthesis applets which run in all modern web browsers.
+
+\cite {32: [`file:///C:/Users/Tab/Desktop/synth/SoundCompwithPulsars.pdf`] pulsar synthesis original paper by curtis roads,}
+
+\cite {33: [`Filtered-Feedback Comb Filters https://ccrma.stanford.edu/~jos/pasp/Filtered_Feedback_Comb_Filters.html`]}
+
+\cite {34: [`C:\Users\Tab\Desktop\synth\SoundCompwithPulsars.pdf`] 
+derivtion of pulsar synthesis math/code comes mostly from impulse train 
+math/code:
+\cite {impt}https://ccrma.stanford.edu/~jos/sasp/Impulse_Trains.html
+
+c++ in bout 100 lines
+\cite {35:c++}C:\Users\Tab\Desktop\synth\c++.txt
+
+would be fucking incredible to use real transformer in/out with vintage tranformers 
+\cite {36:trans}https://www.sowter.co.uk/cgi-bin/sh000001.pl?
+WD=8344&PN=VINTAGE%2dCOMPRESSOR%2dTRANSFORMERS%2dA%2dto%2dK%2ehtml#a260
+
+a large chunk of my yet to be cobbled into one uniersal upto date doc for 
+synth:
+\cite {37:pul3d}C:\Users\Tab\Desktop\synth\design consids pulsar synth.txt
+
+tape emul [note: waves j37 is a studer model]
+\cite {38:tape}https://ccrma.stanford.edu/~jatin/420/tape/TapeModel_DAFx.pdf
+
+speaker cab emul
+\cite (39:fxname}https://www.dafx.de/paper-archive/2008/papers/dafx08_17.pdf
+
+general overal 'vintage' control
+\cite {40:sos}https://www.soundonsound.com/techniques/analogue-warmth
+
+orig concept inspiration
+\cite {41:elem}https://github.com/pichenettes/eurorack/blob/master/elements/
+
+relevant to efficient stiff string model: Filtered-Feedback Comb Filters
+\cite {42:comb}https://ccrma.stanford.edu/~jos/pasp/Filtered_Feedback_Comb_Filters.html
+
+
+how i will properly write out the math/code:
+
+syntaxfor mathematical proofs/derivations etc:
+\cite {43:syntax}https://en.wikipedia.org/wiki/Theorem
+
+language for writing out math in raw txt docs: LaTeX
+\cite {44:leaf}https://www.overleaf.com/learn/latex/List_of_Greek_letters_and_math_symbols#
+
+Miscellaneous_symbols
+LaTeX math language:
+\cite {45:ctan}https://mirror.ox.ac.uk/sites/ctan.org/macros/latex/required/amscls/doc/amsthdoc.pdf
+
+BLEX concept for something efficient, pulsetrain but not boring saw/sqr/tri:
+\cite {46:BLEX}https://signalsmith-audio.co.uk/writing/2021/analytic-pluck/#the-exponential-frequency-click
+
+one of many possibly no longer relevant references towards real time convolution of time varying filts:
+\cite {47:LazConlv}https://www.mdpi.com/2076-3417/8/1/103
+one of many promising sources for morphing multiple filter based synth maps: 
+
+this is the spectral bible thanks to to stanfords julius iii:
+\cite {48:sasp}https://ccrma.stanford.edu/~jos/sasp/sasp.html
+
+the collection of the majority of the non-journal research into harmonic distortion
+\cite {49:dist}C:\Users\Tab\Desktop\synth\distortion.txt
+
+why i am near totally abandoning all elements code except maybe top level architecture/arrangement
+\cite {50:limits}C:\Users\Tab\Desktop\synth\elemments limits.txt
+
+
+details of every single thing in the entire elemesnts code controlled by geom knob. proof shes bs.
+
+\cite {51:geom}C:\Users\Tab\Desktop\synth\geom.txt
+the basic math derivations and proofs to refeer to when employing latst 
+journal resarch to make my math
+\cite {52:math}C:\Users\Tab\Desktop\synth\math proper.txt
+
+fascinating paper containing an entire modal synth written using the existing java class [modal]
+\cite {53:java}C:\Users\Tab\Desktop\synth\modalpaper.pdf
+
+has bits that need to go into the final manual
+\cite {54:keep}C:\Users\Tab\Desktop\synth\pulsar synth controls and manual.txt
+
+a few things to include in final doc
+\cite {55:ideas}C:\Users\Tab\Desktop\synth\good ideas.txt
+
+a diagram of pulse phyysics 3d with the correct math labels on controls
+\cite {56:scartch}C:\Users\Tab\Desktop\synth\scartch.txt
+
+possibly wrote out some really crucial fourier math of some sort - looks like a morph?
+\cite {57:why?}C:\Users\Tab\Desktop\synth\why sumdif seems convolv.txt
+
+refer to this when actually starting sorting out this doc:
+\cite {58:rules}C:\Users\Tab\Desktop\synth\synth design rules.txt
+
+may have valuable math defining aliasing issues
+\cite {59:alias}C:\Users\Tab\Desktop\synth\half ass math for abandonded anal test vco.txt
+
+i think unciteable usual synth\wave idea.doc has BLEX synthesis
+
+the antialiasing bible
+\cite {60:alias}C:\Users\Tab\Desktop\synth\why we dont need to be anti-
+
+aliasingm math geniuses.rtf
+the only unsolved filter design mystery - emilie's elements svf workhorse - recursive code til compiled. :|
+\cite {61:esvf}C:\Users\Tab\Desktop\synth\your challenge.txt
+
+cool nonlinear eqn paper
+\cite {70:file:///C:/Users/Tab/Downloads/DAFx20in21_paper_9.pdf}
+
+virtual bass boost thing
+\cite {71:file:///C:/Users/Tab/Desktop/synth/DAFx2020_paper_40.pdf}
+
+antialias
+\cite {72:file:///C:/Users/Tab/Desktop/synth/DAFx2020_paper_35.pdf}
+
+\cite {73:file:///C:/Users/Tab/Downloads/download.pdf}
+MORPHING INSTRUMENT BODY MODELS
+
+Live Convolution with Time-Varying Filters
+
+Audlet Filter Banks: A Versatile Analysis/Synthesis
+Framework Using Auditory Frequency Scales
+
+
+DIFFERENTIABLE WHITE-BOX VIRTUAL ANALOG MODELING
+file:///C:/Users/Tab/Downloads/DAFx20in21_paper_39.pdf
+
+file:///C:/Users/Tab/Downloads/DAFx20in21_paper_47.pdf
+AMP-SPACE:
+A LARGE-SCALE DATASET FOR FINE-GRAINED TIMBRE TRANSFORMATION
+
+
+NON-ITERATIVE SCHEMES FOR THE SIMULATION OF NONLINEAR AUDIO CIRCUITSfile:///C:/Users/Tab/Downloads/DAFx20in21_paper_9.pdf
+
+Emulating Diode Circuits with Differentiable Wave Digital Filters
+file:///C:/Users/Tab/Downloads/0.pdf
+
+file:///C:/Users/Tab/Downloads/10.1007978-3-030-01692-011.pdf
+A Hierarchical Harmonic Mixing Method
+
+separates out top 3 - perfect for sum dif
+THE ROLE OF MODAL EXCITATION IN COLORLESS REVERBERATION
+file:///C:/Users/Tab/Downloads/2023_February_Statement2.pdf
+
+Learning to mix with neural audio effects in the waveform domain
+file:///C:/Users/Tab/Downloads/2020-Christian-Steinmetz.pdf
+
+lockhart paper
+C:\Users\Tab\Desktop\synth\applsci-07-01328-v2.pdf

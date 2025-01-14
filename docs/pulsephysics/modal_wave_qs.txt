@@ -1,0 +1,166 @@
+ljungren audios pulse phsics is based arou a synthesis technique largely uexlre in commercial hardware synthesisers:
+
+
+------
+
+in the audio world, filters alter the harmonic content of  signal - i.e. they can attenuate, pass or boost a band or number of frequency bands. as such this means they can remove, allow to pass unchanged or even add harmonic content to an audio signal. complex filters can even do multiple actions from those mentioed above, passingsome portions of a signal unchanged, attenuating or boosting others and even introducing new content entirely in yet other bands.
+
+------
+boosting of a signal or introducing actual new harmonic content not preiously present, when cosidering audio filters, is most commonly achieved via the use of feedack loops.
+
+many will be familiar with audio feedback as the brain curdling squaeal from moving a microphone too close to a speaker or turning the mic gain/speaker volume too high. all that is occurring here is the mic is picking up the output ofthe speakers, then the system amplifies it beforre outputting from the speakers, and then it is picked up, this time at a greater volume, y the microphone only to be sent around the amplification loop generated yet again - until eventuallt it becomes intolerable or the equpiment is damaged.
+
+------
+when employed in an audio filter, a feedback loop does the same thing as mentioned above, re-amplifying a signal by passing the output repetedly back to th input, but since the signal is passing through a filter, only ertain frequencies are being fed back so either a limited range of bands are boosted/introduced into the output signal, or the fed back souns are repeatedly processed by the filter so having more and more of a given frequency band booste or introduced effectively as new content sice the amplified signals now shifted by the filter passband are no longer at the frequency f the origial iput signal.
+
+------
+self-oscillation in an audio filter occurs when a resonnt filter [i.e. on ewith a feedback loop present in the system] has the gain f the feedbck loop so high that it doesn't die away with no input signal present and will inherently generate an audio signal of its own simply via the feedback loop i.e. it resonates or oscillates. in other words the simple presence of an amplifier with a feedback loop system is sufficient under it's current parameters to act as an audio oscillator and geenarate a signal.
+such a filter system issaid to be setup to be self-oscillting. 
+
+------
+if a resonant audio filter is setup to be just on the cusp of self-oscillatio, but o actually generating a signal and then an exitatory signal is fed into the system it will be enoug topush it outt  of it's current equilibrium state and over the edge into self oscillation. if this exitatory signal is a brief burst of noise or other short spike, hen the self-oscillation state will gradually die back down, eturnig to the rest state of non-oscillation, i.e. silence, graduall asthe feedbak loop cycles through repeats of less and less signal being passed through each repeat until it settles. this gives an effect of a 'pluck' of signal as there is an initial peak of sound followed by a dieing away - know in some synthesis circles as 'pinging' a filter.
+
+filter systems such as this 'pluckable' filter are known as _resonators_.
+
+------
+related to filter based resonators such as the above are Karplus-Strong resonators. Rather than using filters, this method uses a very short audio rate delay with a lowpass filter in the feedback loop to create plucked string sounds when fed a noise burst. When fed constant noise, it produces results something akin to a bowed string sound.
+
+note; technically, on paper/mathematically audio rate delays and audio fiters are extremly similar or even identical cases of the same thing, so it's no surprise that when setup similarly - i.e. filter/delay with a feedback loop present the result is a resonator system. although the specifics of a karplus-strong resonator using a delay over an audio filter matters more when it comes t electronic applications and when modelling the imperfections of more real world systems rathe than mathematical setups, it does gives some hints of possible ways to experiment and vary the setup, for example such as swapping the lowpass filter in the k-s feedback loop or another type of filter, or introducing phase shifts in the signal at various pint such as when te sinalis returned to the system from the feedback loop.
+
+------
+as mentioned bove, a number of variations of the k-s resonator systm possibl inpire yet further new resonator setups. one possible is employing multiple parallel filters in a feedback loop - specifically a whole filterbank of bandpass filters, preferrably a minimum of , which results in a specific type of resonator named a 'modal' resonator.
+
+in general, modal synthesis is a form of physical modelling synthesis - i.e. attempts to recreate sounds generated by physical objects via modelling their behaviour.
+
+when, for example, a physical object such as a wooden bar, metal tube or plastic sheet, etc. is struck, as vibrations travel up and dow the long axis along which the main sound generating oscillations occur, 'modes' are generated - a mode is where natural resonances meet - a lengt along which groups of oscillating sections are created by the division of the long resonating axis into two or more mulitple, equal oscillating sections. the specifics of these modes determine the nature of the resulting sound.
+
+by recreating modes mathematically and using that math to calculate the output parameters for a synthesiser, e.g. the number of modes in a real life situation might dictate the number of filters in a filterbank in the feedback loop of a modal resonator, we can recreate [synthesise] the sound of such an object - in this instance we have created a 'modal resonator'.
+
+if we then trigger this modal resonator system to sound using a 'complex  exciter source' - the mathematical equivalent of using a mallet or drumstick or padded beater to strike a gong or snare drum or whatever, [i.e. we pluck the resonant filters of the system as done when 'pinging' the simpler resonator systems dicussed earlier] we have now employed modal sythesis.   
+
+------
+ni 'elements':
+
+the now defunct 'mutable istruments' synthesiser company produced a hardware based code synthesis voice employing modal synthesiser using the concept discussed above as its core.
+
+it employed 64 state variable filters in its filterbank,
+it had control over rsonator general parameters such as:
+- 'geometry' i.e. emulated a variety of structure such as plates, strings, bowls and tubes
+- 'brightness', specifying the character of the resonator material, from wood to glass to nylon to steel.
+- 'damping', simulating a wet material or the muting of the vibrations.
+- 'position', specifying the distance of the exitor from the resontor output pickup.
+there was a complex excitor section, consisting of three sources, bow/struck/blown.
+the bowed and blown excitor inputs had a contour control to shape the input signal since they were not just short sharp impulse.
+granular based noise generators for bowed and blowing sounds to produce continuous/extended signals as well as the initial trigger impulse - these had a degree of tonal variation based variously on either two pole filter or wavetable type scanning between sounds and a percussive gernerator based on an interpolated selection of sources such as plectrums/damped mallets/bouncy particles/etc. with pitch control run thrugh a 2 pole filter.
+there was ability to process external inut ounds, both pre-envolope and direct to resonator.
+all of these various sound sources and exitors could be combined and cotrolled in various ways through mixer and volume controls.
+there was frequency control over the whole output signal to make the thing tonal i nature if chosen.
+the and result was produced as stereo audio.
+
+the open source code for this synth voice is available vi github to present.
+
+------
+pulsar synthesis.
+
+built upon 2 basic principles;
+- impulse synthesis.
+- amplitude modulation synthesis.
+
+pulsar synthesis involves using an impulse as the modulator for a signal in an an amplitude modulation synthesis setup, but with some specific limitations:
+- the two signals, carrier and modulator, should be phase locked (not hard synced) such that they start at the same phase;
+- they should be tonal rather than atonal (so an actual wave instead of noise);
+- the modulation signal should have an obvious period of silence within the total period of the waveform which can be varied.
+
+i.e. there should be an input tonal carrier wave passing though an amplifier which is contoured by a tonal impulse, the two waveforms sharing a trigger such that the phase locked to the carrier, with a period of silence being preset at some point in the modulation signal and finally the out put signal can be fed onward for further processing as desired.
+
+*wofl note: multiple modulation signals with lower frequency than the period may be employed for a unique smearing effect, and they can be of differing shape.
+**wofl note: unipolar waveforms for the impule modulator waveform are generally advantageous, but it is generally important that the the unipolar nature is generated only by halfwave rctification, not fullwave.
+
+------
+'pinging' resonant audio filters acting as resonators in a system, as discussed above is called impulse synthesis.
+
+since pulsar synthesis employs impulse synthesis as part of it's core principle, and we have seen that impulse synthesis can be advance in complexity by developing the resonating body to something more advanced employing  whole bank of filters to result in modal synthesis, this begs the question, what if we replace the impulse genertor providing the modulation surce in a pulsar synthesiser with a modal synthesis setup instead of just an impulse synthesis setup?
+
+we get the concept for the ljunggren audio 'pulse physics' - a pulsar synthesis voice employing modal synthesis as the modulation waveform.
+
+------
+the lunggren audio 'pulse physics' synthesiser voice will employ the mutable instruments open source 64 filter bank modal synth engine as the core for an impulse modulation waveform source to act upon a variety of basic waveforms provided as carrier waves to produce a complex pulsar synthesis type synth voice capable of immensely rich, varied and creatively controllable sounds.
+
+------
+
+from my very brief, very uneducated and very optimistic, but possibly entirely erroneus understanding of some of how the code for ni elements operates: 
+- the trigger excitor waveform sources are simply .wav raw data sounds called from a bank then processed by code for contouring/filtering/amplifying/etc.
+- i'm hoping but of absolutely no clue if the same applies to the sound sources for the continuous excitor waveforms - the mention of 'granular' in the spec description and use of other terms such as 'interpolated' and 'filter' makes itt possible there is a more synthesis based generation option employed.
+- the basic operands for the whole synth voice in general are coded such that, for example a contour envelope is defined by a number of parameter limits between which maximum and minimum values lie - time/peak amplitude/etc. and these  operands are then strung together such that a contour opens/closes an amplifier which feeds into a filter etc. - i.e. the whole code follows a logical architecture graspable according to standard synthesis theory.
+- most parameters used, both in a real world '44.1khz/16bit' sense or as code in relevant programming language terms, are, generally specified somewhere, annd therefore not only relatively easy to refrence, but also to some degree edit and vary as desired.
+- much of the basic math the actual synnthesis concept is based aroud, at core, is available in papers like curtis rhoads'
+original writings on pulsar synthesis and hence can be used both as reference and room for further expansion. likewise, ot only is the existing ni elements code/math extremely well docuennted, but also even if no  reference is to be found, 90% of the math is basic geometric algebra,, and hat which isnt is for the most part calculus 101 - nothing too far beyod those with some experience of audio level math. 
+
+***fundamentally all possible changes to the nature of the way the thing  works that i desire and have come up with comceptually rely to a degree on the whole code system being relatively modular in nature - fortunately, the degree to which i have banked on this is kinda at the level the actual math and logic around which the code is based around is known to be by its very essence 'modular'. i.e. i'm not just pulling shit outta  thin air.***
+
+[desired but not yet investigated]
+
+
+conceptually i would like to steer the sound of this project a little further away from the somewhat 'traditional' nature of the ni elements wind/mallett/string based excitor with bowl/tube/plate resonator featureset and control over damping/distance/brightness/etc. and instead lean towards a much more 'synthetic' experimental kinda sound.
+what this will actually result in as far as the direct real world results of swapping a sample of a violin bow as an exitor or altering the parameters of the geometry of the resonator to things less than sat squarely in the realm of real acustic instruments, i honestly dont fully know.
+what i do know is the biggest risk likely to present itself is destroying the finely tweaked and tuned setup of the elements math currently coded in place such that most likely no sound is produced, or maybe something just plain dissapointing/utterly awful. on the other hand, with careful experimentation, gradually pushing limits of parameter boundaries, and keeping changes on the simple side at first before getting too creative, it should be possible to create something really quite novel and special.
+
+i should stress here, i have the advantage of 30 yrs of experience as far as experimentation with synthesis on my side, so i know very well the potential pitfalls of just randomly making changes and hoping good sounds will result - i know quite well how best to proceed to get decent results and also have a deep understanding of what's actully going on under the hood and hence what to expect from any given change.
+
+- probably just selection of simple saw/square/sine/maybe a few other options as carrier wave.
+- although the bowed/struck/blown sections are no longer preset as broken down separate parts, instead, there's a selectable variety of [posssiby interpolated between?] sound sources as triggers for the modal resonator. [contour control may not be relevant here if simplcity is keptuner wraps by sticking to a range of fairly basic fast attack wave options to choose from as triggers].
+- instead of granular, tone controlled/selectable percussive 'strike' with pitch and filter option generators for continuous source options, instead have [?] some sort of interesting[/not] sound source as befits best sound after testing. [depends on whether a choice of intersting electronic synthy sources offers a more creative less 'traditional' synth sound or just results in a mess].
+- probably not have the external input option as present in the ni elements, although given that the sound options would already be limited if the bowed/struck/blown sections and coninuous source options are removed/reduced, then maybe this would prove essential as something to leave in - to the point that haveing it useable as a sound processor as much as generator might even be key to the whole success of the thing.
+
+------
+real analogue circuitry is cool right now - 'vintage' in the industry in general is in - i.e. super popular, and as with any other 'fashion over actual engineering' based consideration, it desnt really matter quite how snakeoil the actual reality of it's implementation is, as long as its present in a real enough sense to be able to legally claim it's there, any actual analogue electronic circuit that can be tacked on, preferrably for the lowest cost/space/time taken to achieve will technically do, integrity as far as caring about making a decent sounding, relevant pieces of design aside.
+
+since at any point within the signal flow, interrupting it to break-out and then reinsert a signal, from digital to analogue and back to digital, would require dac/adc implementation and a whole buncha other excessively unnecessary circuitry/design/engineering problems, it seems, realistically the only choice is to place the analogue circuitry element at the final output of the synth voice where not only is there no need for re-insertion of the signal to the signalflow, but also a dac is already present as part of existing design setup to some degree.
+experience and instinct suggests the two best options are either a filter or vca of some sort.
+
+::a vca has the advantages that it can offer an honest, true improvement in sound and allows option of utility purposes - contouring of the end sound ouput/application of AM/provide an exit point for eurorack compatibility/etc., but a vca isnt the simplest circuit to build as far as parts/budget/complexity, and also isnt the most exciting opportunity as far as marketing goes, which fundamentally is the point of the exercise;
+::a filter has the advantges that it has a very appreciable effect on the final sound, can be extremely simple to implement and is a marketing dream as far as people just kinda get em on some level - they have an idea of how they sound when you 'twist-the-knob'. nailing a filter on the nd does have the disadvantage you are now restricted to a paraphonic mono output or delve into same horrendous complexities/expense to solve stereo and balance issues.
+
+further to the ends of adding an analogue circuitry both marketing and actual benefits to sound quality suggest a discrete component based circuit, which although more customisable as far as tunning to the specifics of this is a bonus, it makes it less efficient spacewise/more complex/more expensive/a particular problem as far as vcas are concerened because it excludes the use of ic  based vca solutions, the ntural way out of ost difficulties  stemming from the commmon requirement for matched transistor pairs or hard to source transistors required for the core gain control element.
+
+all this strongly points towards adding a a discrete analogue circuitry mono paaphonic filter setup at tthe end of thhe signal chain of the synth voice.
+
+------
+- since the effects section present in the ni elements open source code only affects the modal synnth part of the synth acting as the impulse generator, and not the overall voice as a whole;
+- and no matter how good an effects section is, it will never compete with external effects, whether provided by the user of the synth via other hardware effects units/processing through items likke modular synthhs/further online and offline processing with software in computer daws etc. downstream;
+- furthermore, in the case of elements, certain effects options were very poorly impleented in the original circumstance anyways - e.e. the 'reverb' being one control, amount present, adjustable by turning the same knob that did the output volume from past-halfway to max;
+- the entire eurorack compatible 'cv' control system for applying control volatages allowing automation/processing and connection of the elements voice to other eurorack gear can be completely stripped out - i pray  with all my heart this was achieved via a relatively mechanical engineering solution and so there isnt a fuckton of code to allow for an adc in place converting cv signals present on every single rotary encoder from analogue voltage to digital controller values...
+- i'm not sure a full coarse/fine tuning over modal modulator source is necessary - and especially not fm option. ffm input/control over carrier wave on the other hand mght be desirable.
+- 
+
+
+to be researched:
+- do people want a 'stand-alone' type single trigger button? is useful whilst programming just to check what current sound is like.
+- do people want built in keyboard or equiv control source?
+- 
+
+
+i do know:
+- synth voice pitch is defined mostly by the carrier wave frequency.
+- modulator voice pitch, i.e. modal synth pitch is defined by waveform frequency not resonator length - i.e. not by filter frequency.
+- timbre of the overall synth voice is strongly defined by the relationship between the phase and pulsewidth/waveshape of the carrier and modulator.
+- timbre of the modulator voice is defined by the pulsewidth/waveshape of the mmodulator waveform.
+- modulator formant is defined by the cutoff frequency of the modal synth voice filters.
+- amount [read 'level'] of an individual voice element in the modal synth modulator impulse is dictated by the resonance of that filter element.
+- overall length of an impulse sound from a modal synth voice sound is defined by both the resonance and the frequency of the longest [i.e. highest frequency vs. highest resonance] element of the modal synth voice, for a given pitch.
+- modal synth impulses created with a higher attack and greater volume overall exciter strike will be louder and last longer.
+- frequency balance of the filter bank makeup in the modal synth will affect th  brightness of sound and to some dregree the length of the impulse/volume it presents at but with careful control over individual elements a great degree of variety can be achieved whilst retaining consistent duration/volume of final result.
+- 
+
+since a great degree of complexity in control is available over formant/timbre/level balance/individual level/element duration etc., by mixing different lengths and levels of various timbres/formants, levels and durations of the various chosen elements resulting in these, an incredible variety of resulting sounds can be achieved even ignoring choice of actual exciter/waveform/variety in such pre-/post- sound options.
+
+it is likely the filters in the elements filterbank not only have control over cutoff and q, but also actual level so allowing separate control of mixing of any element as well as the more frequency/time dependent use of q to control level.
+
+------
+
+items of deep importance that migt be  cruicial to things as they are/likewise might lead to even more fantastic things than current concept...
+
+- partly because i'm not certain, but, does it matter whether a modal synth is based on a v short delay vs. a resonant filter? according to my understandinng no because a) mathematically the two are basicallyy the same and i think stuff like elements is implemented with a filterbank of independent 'single' filters in parallel - i.e. 64 individual statevariable filters in parallel, so behaviour with respect to any other element in the system is moot.
+- if so, and excitingly so as a prospect, what happens if in some way a multiple element filter/multiple filters in series per element or something like a comb filter is used per element?
+- suddenly controls over parameters such as 'spread' as well as individual bandwidths or various cutoff frequencies/q/etc. get interesting.
+

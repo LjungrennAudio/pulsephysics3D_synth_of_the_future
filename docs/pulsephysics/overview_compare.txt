@@ -1,0 +1,51 @@
+
+exciters
+- blend of bow/blow/strike in complex wy to get quite a variety of near most kinds of real instrument input from only few knobs.
+
+tube
+- listens to certain exciter inputs in quite clever way
+- very complex intepretation of pressure in resulting in change of pressure over time alltering tonging/reed response etc, feedinng back to change resulting response etc.
+- variable tube length n nonlinearities n filters n stuff affected by geometry/position
+- all varies with tuning/brightness/damping/geometry
+- not quite as advanced as string model re comb/allpass below but still some clever variation.
+- spatial
+
+string
+- listens to dif combo of exciter inputs in dif equally clever way
+- complex interpretation of inuput pressure to get bowing/plucking stuff
+- variable stiffness/stretch n nonlinearities n stuff affected by geometry/position
+- all varies with tuning/brightness/damping/geometry
+- mixes fir/iir and allpass/comb to get complex string model with variety from nonlinearities and controls.
+- spatial
+
+resonator
+- strings in
+- tuning results in modes + harmonics + partials
+- look up table dictates how trictly adhheres to notes in scale
+- runs as many x model as it as computing for
+- varies with tuning/brightness/damping/position/geometry
+- nonlinearites mostly from tuning stuff via extra 1024 delay line fractoined for partials
+- spatial
+
+voice
+tube
+modal resonator strings/bowed strings
+harmonics
+partials
+spatial
+
+part
+makes seed from serial nmber, uses it to randomes coefficients in involving geometry/position/brightness/damping/tuning/verb/etc.
+
+how to blend how much of what exciters
+feeds em into tube plus resonator
+spatial
+mixdown
+clipping
+verb
+
+out.
+
+
+seems as much to be about allowing entire thing to be controlled by the tuning plus geom/pos/damp/bright.
+as it  is about processing power - i.e. keeping it easy torun real time parametric control with like 5 knobs.

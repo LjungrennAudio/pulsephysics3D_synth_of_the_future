@@ -1,0 +1,13 @@
+This review chapter aims to strengthen the link between frame theory and signal processing tasks in psychoacoustics. On the one side, the basic concepts of frame theory are presented and some proofs are provided to explain those concepts in some detail. The goal is to reveal to hearing scientists how this mathematical theory could be relevant for their research. In particular, we focus on frame theory in a filter bank approach, which is probably the most relevant view point for audio signal processing. On the other side, basic psychoacoustic concepts are presented to stimulate mathematicians to apply their knowledge in this field.
+
+1.
+As given by any fixed analysis filter bank.
+
+2.
+Different frequency ranges are given varying importance in the auditory system
+
+3.
+A sequence Φ is called a Schauder basis for H
+ if every element x∈H
+ can be written as x = ∑ k ∈ K c k ϕ k with unique coefficients (c k ) k ∈ K .
+

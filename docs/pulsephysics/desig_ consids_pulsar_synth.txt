@@ -1,0 +1,956 @@
+describes design considerations wrt both manfuacture, coding, marketing and real world.
+
+------
+
+Ljunggren Audio Pulse Physics3D:
+
+_"the ultimate sound designers friend"_
+
+
+specs.
+
+launch price: $1250
+synth engine: hybrid			polyphony: monophonic
+keyboard:     no			sequencer: no
+architecture: dual independent engines  technology: hybrid/digital/analogue
+effects:      analogue bbd/reverb	midi   i/o: in/out/thru
+connectivity: main out, pulsar out, wavetable out, ext. audio in, usb A/B, sd slot, exp/sus pedal in, rear cv outs, headphone,
+
+
+reasons:      unique dual engine architecture, ultimate sound design machine, very intuitive
+to buy
+
+reasons:      no keyboard, no patch recall [?]
+to avoid
+
+
+ --------------------------------------------------------------------------------------------------------------------------------------
+	 `       Pulsar Synthesis Exciter Section		   		  Modal Synthesis Resonator Section	    Main
+ 	    														   Output
+ 	  wave select	     timing	       amplifier 		    	           timbre / modelling		   
+> user	    ------	     ------	        -------		            	            ----------------		  --------
+  wave	  
+  in	  -----------------------------------------------         					  
+	  [						]      	   Tuning				    		 mod/pul/bbd
+ 	  [   | 	    /\	/\ | 		    |	]     -----------------          CUTOFF          GEOMETRY    	  main/head 		   
+ 	` [   | ...--/\  /\/  \/   | \  /\-----...  |	]      fine     coarse	       	   |		  plate	   	   [vol.]
+ 	  [   |	       \/	   |  \/ 	    |	]     [tune]   [PITCH]       soft <-> hard          ^       	      ^	     		   
+	  [						]                      		               str <-> tube           ^
+	  -----------------------------------------------	       BIG KNOB		 	            v	         ->>   		     	  			  	    				      -2<>+2 	 5octv	                   	   bowl		`     			       freq.    pulsaret	   `fund freq [pulsar   PulWM		unQ    60 semis   		          		      v		        	 /rate    waveform sel     emission rate]      crossfade	   	   	 					      v				   v	  								                DAMPING	        POSITION   	  trig mode 	
+          pulsaret env     pulsaret env	       OPulWM			        	   |		    | 	  	  [1 shot]                
+ timbre   shape select	   stretch	       on/off		 	    	    muted <-> light   near <-> far         [/vco]         		
+   v								   pul/wvtb
+          formant freq 	   formant freq        pulsarchain    ->    vol. to		
+ timbre   env shape sel	   env stretch	       env attack	    modal
+ 										   	              Ljunggren Audio : Pulse Physics       				`									   				      h
+ -------------------------------------------------------------------------------------------------------------------------------------
+
+
+how make it go?
+
+how save?  ]---> randomise on load so dont need extra buutton?
+how laod?  ]
+
+or         ]---> always non-voilatile. never needs load or save but... only one patch 
+
+from nathan ho, will likely need more modulation or stack waves?
+perhaps do 3 or 5 and make envelopes a little preset spread etc.?
+
+3 or 5 similar but maybe a cycle o so off waves, and each pair  of envs further off but all 3/5 on same tuning?
+
+this whole thing really may need more modulation?
+elements was all about the exciter
+
+i love the idea of analogue vco sampled into single cycle wavetable then wavefold for creativty snd hybrid  - but extra knobs? 
+
+------
+
+Pulse Physics is a synthesiser based on a combination of two core engines: one never seen in the world of commercial hardware synthesisers and the other only found in a couple of manufactured models.
+
+it employs a combination of 'pulsar synthesis' and 'modal synthesis' to enable the user to create a range of weird, crazy instruments that dont exist and to explore exotic bizarre timbres that you'll never get bored - yet it requires no advanced synthesis knowledge or programming skills.
+
+
+***
+
+rewrite above to somehow include some of below - bearing in mind give away too much subtle simple secret and spoils - is dif to 'wow 64 zero delay state var filters'
+
+the whole feel is 'friendly but infinite'
+
+not aiming for but not technically avoiding real noises - sound design for elec music not for foley or cheap instrument
+its musical - think tone and tuning
+
+intuitive - its not programmin gand theory and math - its 16 knobs for two entire engines
+intuitive - like - each knob range, response curve and cross mod interaction with other parameters are well thought out, planned, tested and perfectly tweaked so user can just instinctively create and perform without batttling to seek sweet spots or fighing for what sounds goodnnot just one or other, but two really unusual, very dif synthesis techniques brought together at once
+
+can make an infinity of whacky sounds and weird noises etc. - but this aint just modular bleeps n bloops - they behave like some weird real  instruments, getting more out of tune as hands stretch to reach fingering far down a fret board or getting more dissonant as the resonating bowl shaped metal body has the pickup nearer the throat
+but its varying these things not simply linear fashion across the board - theres varying weighted curves for not just actual control responses,
+but also the way say, chamging geometry also slightly alters the different hints of harmonic series shift deep within the filter core dependent on stiffness etc.
+
+knob per function/no menus/its total wysiwyg. 16 knobs is plenty control as far as looks goes but ots only 8 knobs per engine - thats a fuckling dream, both ease of learing, focusing on design not battling ui and performace under pressure.
+no menu diving, no hidden fuctions, no alt press dopwn/shift key etc ops. the screen is for display/feedback and nothing more.
+
+do i has cred enough to say designed by me of RYOModular? - appeal to sound designers/synthesistsanalogue nuts - but hubris...
+likewise, mention emilie gillet elements engine? mention curtis roads?
+
+its amazing how much lack of usp is instant write off - no matter how smol, gotta have _something_
+
+workstations: dead - you want real sounds/arranging, use a daw or hire session musicians/sample packs.
+quality, players keyboard instrument: fatar keybeds cost money, everrything gotta be _solid_ - and just doesnt excite me
+ultimate synth: isf it aint waldorf quantuum, then no-one payinng 5k. and you aint. 
+interesting engine/architecture: gonna take more than a wavetable or straight up didital subtractive you name a clever 3 letter avbbreviation
+sound design: better offer some actual abilty to do something different - this is one area people see straight throgh snakeoil
+enduring classic: if you wanna sell an analogue subtractive with wood endcheeks for 2.5k you'd better be moog. 
+semi-modular monster: not sure here - i think most people jusyt go eurorack
+boring does the job: brave move - 50% seems to be digital/analogue poly subtractive model keyboard unremarkables...
+
+
+***
+
+
+market research/psychology of product design issues emerging:
+
+
+must describe as engine 'dual/twin/multi/?' cos often engine is specified not just circuitry spoiling my hybrid snake oil.
+
+rn in white/cream metal box case  w/black knobs or dark blue/burgundy knobs would look sexxxy af and taste -  but market research and psychology shows candy flip pink with a hello kitty sticker sells to gen-z and they dont mind plastic box]
+very few go brave tho - occassional bright yelloo or w/e. basically, excepting nords trademark most go black/grey/blue metal b plastic with occassional wood endcheeks 
+
+
+something about the white case/black details is insta eyecatch to me - see 'Modal Electronics 002' - when youre in a world of "judge in 50ms unconcious visual impression" gotta be instant love or someone else steals the sale - note how even if youre judging top trumps style on specs, you keep going back to check the specs of the pretty one?
+likewise, in the case of the Modal Electronics, they also nailed the subtler details - second insta eye grab is the knobs - they have a hint of 'oversize compared to modern technology 'trustworthy bakelite scientist from 50s' even if using only a very tasteful subtle touch of colour says 
+"trust us - we're the experts." when people are fast scrolling through endless lists in pages of 'MusicRdaar identical Synths of 2023'.
+
+i note along with the Modal 002, also caught my eye was the 'Modor NF-1' - sufficiently that i paused to read a bit about it - important lesson thpough, in the same research scoll i also did have attention not so much as caught but rather winced and coudnt look away paasing the moog mother/grandmothr/matriarch series - wtf were they thinking with those bright, clashing colours? i can only guess they were trying to cash in on modular heritage and suggest the 'many dif things in one box' look is a hint to some kind of high quality/desirability that analogue modular has.
+
+further after some musing i'm pretty much torn between two choices:
+
+- safe, really appealing slight off white/cream metal case; thats the kinda construction you can build a reputation on, rock sold metal housing wit tough yet beautiful  powder coat enamel. the slight off although techncially communicating age, actually says 'we been at this so long we dont screw up, were the best and were the goto guys. along with knobs that ech that message and ***stop press - can i have any colour backlight i want on the screen?*** - that could really be  usp lookswise. whenm cpmbined with the solid, trusworthy, technical experts that th name ljunggren audio imples [those scandiwegians -they know audio] - thats a winning aesthetic.  tho i rly dont see endless rotary encoders with led rings around em fitting in there - this is much more 'timeless oberheim SEM' kinda feel.
+
+- the alternative is be very very sure there interest in a slightly less mass-market, commercial appeal sound desing synth to gen-z, and go full on candy flip pink/crazy clashing knobs/leds - maybe... yellow knobs/purple leds...? [have to be careful any leds anywhere, whether an lcd screen backlight or 16 rings of encoder display - too bright and no-0one wantsvto turn the damn ting on.] fun thing is, yes a far as business gos it's like flipping a coin - it does come accompanied by the fun of benig able to get away with adding stickers of japanese cartoon heroes! and people wont forget you, even tho i damit its not in the same league as playing synths on tv - nord just firmly re-enfored their textbook classic example of creating safe yet recognisable brand id. be honest - everyone looks at the gear on stage/tv/youtbube and sees the nords first lol.
+
+
+every single boring fucking thing on the market - like lit. 95% is analogue subtractive style, sometmes even tho virtual/digital. maybe this is cause to play down as much as possible all the weird even tho aiming at sound design. but how???
+maybe just put ridiculously detailed tech specs etc but not say much clever in the text blurb?
+
+$900 Studiologic Sledge offers user loadable wavetables - its not a no go area.
+i.e. sampling/load user waveform is acceptable soluion to satisfy user desire to customise
+
+people like wavetable so much that its a selling point nearly - maybe lean pulsar more toward wavetable than grain/impulse train?
+
+very much people arent scared of digital, tho mostly is wavetable or va. emphasising the pm/organic/real/etc. mmight increase appeal here.
+
+
+its possible ive underestimated how much no keyboard is seen as bad - and i am trying to claim option as performance instrument as well as sound design tool which normally would provide excuse.
+
+
+------
+
+
+
+Ljunggren Audio's Pulse Physics has two core engines buried inside:
+
+- a Modal Synthesiser - a form of 'physical modelling synthesis' - a way of creating sounds based on designing a sound by choosing a resonant structure (in this case turning the GEOMETRY knob to tune in to string, plate, bar, bell, bowl, tube, and more...), the properties of the material it is made of (MUTING, DISTANCE, SUBSTANCE), and then 'exciting' it - introducing a signal  in order to make it produce sound. this is where the other half of the synth comes in:
+
+- how the Modal Synthesiser's resonant structure is excited is as significant as the setup of the Modal Synthesiser itself - commonly a Modal Synthesiser might be induced to make sound by an input of a short sharp impulse signal, or maybe even introduction of an audio signal such as a sample or synthesised version of bowed, blowing, plectrum plucking, damped mallet striking etc.
+- in this case we have a whole extra synthesiser just for this purpose! this exciter section is the 'Pulsar Synthesiser': 
+
+- Pulsar Synthesisers is a whole other type of synthetic sound generation belonging to the group of 'Granular' synthesis techniques. Granular Synthesis generates its waveform in discrete pulses (Grains) - our Pulsar Synthesiser does this in a manner that selects its grains (called Pulsars from hereon) from either a table of preset waveforms in the the synth itself, or a user loaded waveform.
+- A Pulsar consists of the a 'Pulsaret' (the actual audio waveform), and and 'integral time', a length of silence.
+- that pair making up the Pulsar is then played repeatedly in a chain to generate a waveform - think, the sound you picked from the table/loaded in, joined to a tiny bit of silence and then being spewed out so fast over n over it becomes an audio waveform.
+
+- you have a clear display of the pulsaret waveform you've selected or loaded into its pulsar playing back, and the results of changing the various envelopes etc. will be quite visible as you listen to  the results. 
+- the total time taken for the pair of pulsaret (actual audio waveform) and silence to play - (i.e. the frequency the pulsar repeats at) is the pitch of the note your waveform is being generated at; 
+- if you vary the ratio between the those two parts of the pulsar i,e. the 'duty cycle' - its like doing PWM, even better though... its not limited to only pulse waves - you can do it to any waveform from the preset table - or even any audio sample you load!
+- for extra fun there's a coupla envelopes apply to 'duty cycle' and 'pulsaret time' so giving you an immensely varied and rich scope of timbres at the turn of just a few knobs!
+
+- you can even use the same function you used to load custom pulsaret waveforms to load custom envelopes for the duty cycle and pulsaret length - they can even be audio files - this actually is called convolution modulation. ooooh!
+- all you gotta do now is tweak the end of the Pulsar Synthesis Section envelope to get your prefered exciter sound, and then its time for the real funs!
+- all this wonder is neatly enclosed in one box, all hooked up in the right order, and setup just right for you to stick in your own exciter pulsaret shaped by whatever envelope waveforms, make crazy noises, use em to Ping! your custom designed resonator - and enjoy the resulting sounds!
+- its got a nice big fat accessible tuning section, output volume control and easy to see display for feedback on exactly what the hell youre doing when playing with that pulsar synthesis exciter section.
+
+-----
+
+design issues/questions/not sures:
+
+
+- big worry: other people, real people, _normal_ - i.e. not me people expect modulation. maybe not so much with this engine[s] etc., and maybe not so much for sound design - and maybe expression over modulation as a live performance instrument, but neverthless the biggest portion of market by far is 'modulation' people.
+- the modal asi have it came from modular with cv on everything - the peak of modulation. 
+- the pulsar has 3 envelopes - 3 knobs of 8n seems enough.
+
+
+- how to do save patch/preset patch? only save current state as no volatile -> whole read/write bank - sd card? 
+- abbove sd card goews backk tp load user waveform - wont probly use usb to save a patch but migt use sd to load waves - pick one. 
+
+- hybrid gas rears its hed again:
+- real analogue circuitry at either begining or end of the signal chain of the synth voice[s] - no-one wants to dac/adc to get to analogue n back mid signal path.
+- still wants an analogue bit - alternate easy realistic choice to nailing filter on end for paraphonic [is mono anyways] is analogue input wave source/generator/vco/whatever - make your own pulsaret  - only needs  sin/tri/sqr/saw and wavefold?
+- if nailing filter on end, people see state var por pole variety as real  fancy - suckers.
+
+
+- am i rly ok ignoring fx? - the only one without fx offered was singled out for it.
+- analogue fx could be solution  to hybrid issue -  bbd?
+- otoh if want fx then could just leave in emilies/spatial
+- or do emilies mid/ side spatial but... analogue @.@
+- people see reverb/spatial fx for pads n floatys, this would suit more distortion of somesort [back to analogue provides hybrid option - analogue distortion avail in 'novation peak', $1200!, _stereo_ analogue distortion in 'ob6',$3200] or echo delay  - tho flexibilty of same simple one delay going short enough for verb or klang is damn clever.
+- rin mod a lesser seen treat but a)  ring mod with what, b) ring mod sucks.
+*curtis roads says per grain processing/effects is cruical to getting non shit sound - only relevant if using as final sound?
+
+- how much does exciter matter - especially beyond noise? is the whole more synthy/continous source thing even play?8
+
+
+- if exciter does habe signifiant influnce should its tuning be harmonically to linked to master tune? - would involve at minimum [frequency/pulsar emission rate fp = 1/p = 1/(d + s) i.e. the frequency variable, waveform pitch] but we know that - is math, either calced/known or chose and cotrolled  - seems doable? might make control on pulsar synth exciter section an offset of overall tuning value?
+
+
+- how technical should labeling be? that design guy says people actually enjoy a degree of learning curve and i hate being technically/scientifially wrong/excessive snake oil...
+- how does the math compare for swapping the 64 separate filters in the bank for a beeeeg comb filter? does this offer flexibilty of the nuber of modes/comb filter elements used in a given note hence actually have any realistic application in real world use? i'd love a spread conrol or the intersing natural variety of dif q'sdepending on a comb filter architecture
+
+- chain or multiply for polyphony?
+
+- how to implement midi? people like expressivity - tho that is like in this case simply have choice what to map agtertouch or expression etc. to?
+- can be done at the ui knobs level - encoders are digital. but then code cant be too hard to interface midi with either.
+
+**wofl note: unipolar waveforms for the impulse modulator waveform are generally advantageous, but it is generally important that the the unipolar nature is generated only by halfwave rctification, not fullwave.
+
+- if endless rotary emncoders, shpuld the be ring  of light or is that vulgar with 16 knobs?
+
+- havent quite thought through ext. in - can just use the elements ext. in option inducing bypass of pulsar exciter? 
+
+
+------
+
+pulsaret waveform sel > tbl		  
+pulsar emission rate  |<>|		  fine 			CUTOFF`		GEOMETRY		OUTPUT
+PulWM crossfade	|<>|			 [TUNE]	|<>|		|<>|		|<>|			[vol.] |<>|
+
+pulsaret env wavefor sel > tbl		
+pulsaret env waveform stretch |<>|	
+(OPulWM on/off)				BIG GIANT							(trig mode)
+					 coarse			|<>?|		|<>|			[1 shot]
+duty cycle env sel > tbl		[PITTCH] |<>|		DAMPING		POSITION		[/vco]
+duty cycle env stretch |<>|						
+pulsarchain env attack |<>|
+
+
+1 shot test fire button is essential [hehe - people love missile launch]
+
+v cruicial - if in vco mode - how make all anvelopes loop perma/will size still be right? will need silence/hold/? what about output? 
+
+------
+
+i/o
+
+power	ext. in mono?	usb	L mono/stereo balanced 	L mono/stereo	cv?	5pin din	5pin din	5pin din	pedal ins?	
+	real time	[c?]	1/4" jack main out pair	1/4" jack pulsar out	midi in		midi thru	midi out	exp./sust.
+
+
+
+headphrone i/o  on back or better plce option - if so what is good ohm and 1/4" vs 1/8", should have dedicated level knob near - but not so gets knocked or hard to  find, suggests actual panel on right in outs section
+
+outs should offer easilty switchable  consumer -10db line level and a +4db studio pro line level. switch nxt to rear i/o bur not too accident prone.
+
+some offer usb b and a?
+
+
+
+------
+
+how to set envelopes 
+
+	'w ~'	|     |	      |     |       |	  |	  |    |		
+
+		[___/-\...] : [___/-\...] : [___/-\...] : [__/-\...] : ... 
+
+	'fd ~'	|         |   |		|   |	      |	  |	   |
+
+
+------
+
+
+Waveshaping and distortion:
+
+generally speaking, waveshaping is a term for a broad spectrum of techniques that result a different output waveform that the original input, resulting in some change of timbral and/or dynajhic content yet pitch/frequency remains unaffected - exactly what the PulWM process in our pulsar synthesis excitation generator source half of the pulse physics does.
+at the simplest level, it is genrally a process of adding harmonic content to a waveform, statically or dynamically, although sometimes very utilitarian and practical, providing solutions to certain synthesis-related problems, it can also result in  extremely severe effects that transform sounds beyond recognition. 
+
+applying a transfer funtion f(x), to a basic wavefrom xt, then for example even varying the constants 'k' and 'l' in the polynmial transfer funtion;
+
+xt = k.x + l
+
+even at a simple level we can perform offseting, reflection and  and gradient alterations processes to  the output curve [waveform] depending on things like the sign of 'l' etc. by getting more advanced and using exponential functions or logarythmic functions such a as log(k(x)), we can alreay start to get more intersting results than straight offsets, reflections and flattening/squeezing of an output waveform and eventually theoretically, applying the appropriate transfer fucntion will, ideally allow us to convert any shape into any other shape.
+
+smooth edges will result in subtle addition of harmonics to the waveform, while sharp edges will result in more angled output waveforms with rich harmonic content. in analogue electronics, the way of implementing a transfer function relies on utilizing components such as diodes, comparators, resistors, and operational amplifiers, whereas in digital sound processing lookup tables, LUTs, are often used.
+
+[note: whenever the transfer function is nonlinear, this nonlinearity itself refers to to a disproportionate relationship between the changes in the system’s input and its output. the effects of nonlinear systems are distinctly chaotic and unpredictable.im  such systems a slight change of the signal’s amplitude at the input results in drastic changes of the output waveform. as a result it is safe to say that any transfer curve beyond a straight line will always result in some sort of waveshaping or distortion effect. but, remember, ythese two terms are often used interchangeably, even though there are some significant underlying differences.]
+
+waveshaping includes all processes in which the resulting waveform is vividly different than the signal at the input - this effect can introduce a lot of new harmonics to the original sound, the scope of which can not be entirely predicted by the harmonic structure of the source sound, meaning that partials present in the source waveform have no direct significance to the resulting output waveform. some common waveshaping methods include wavefolding, wavewrapping, clipping, and soft clipping.
+
+harmonic distortion directly affects and manipulates the individual partials of the initial sound. the timbre is changed via various kinds of proessing performed on the harmonics that are already present in the waveform. since the harmonics of the original waveform remain present in one form or another in the output signal, it is named specifically so to seaprate it from other distortion processes. There are three main types of harmonic distortion:
+
+— odd harmonic distortion, naturally found in the saturation produced by magnetic tape, an effect caused by the inability of the tape to record sounds exceeding a certain amplitude threshold. The result of this is a sort of symmetrical finishing of the edges of the waveform;
+- even harmonic distortion, an asymmetrical processing of sound waves where the top portion of the wave is amplified more the bottom. this effect is often associated with the sound of tubes, and;
+- total harmonic distortion occuring in analog equipment when the system generates both even and odd harmonics as a result of the overall output approaching the limits of the device’s headroom.
+
+Wavefolding is a very distinct type of waveshaping - it is achieved by using a comparator in a circuit which constantly checks whether the incoming signal goes over the preset threshold level, and if it does the wave’s peak starts mirroring its own image creating a series of folds which contribute to increasingly brighter sounds, drastically richer in harmonics.
+
+Wavefolding a ramp signal, xt, from (0 < t 1) and converting it into an adjustable symmetry waveform employs setting the comparator threshold also from (0 to 1), such that where any portion of the ramp that falls below the threshold becomes the rising part of the waveform, and anything above the threshold becomes the falling part. additional parameters, such as, for example an offset (sometimes labeled symmetry), can allow adjustment of whether the negative or positive portion of the wave gets folded more. control over the number of folding stages, which directly corresponds to the number of folds in the output waveform, often translates to some even digit, like 2, 4, or 6. the more folding stages, the more distorted the output signal.
+
+related to wavefolding is a crossfolding. unlike traditional wavefolder circuits, these devices have two inputs, particularly designed to blend and alternate between a pair of sound sources prior to folding the peaks of the waveforms.
+
+also related to wavefolding is 'wavewrapping' - a type of waveshaping effect that is similar to wavefolding, yet the difference lies primarily in the way multiple folds are generated. a similar comparator circuit is implemented continuously scanning the incoming signal, but whenever the signal exceeds the defined amplitude value the wave first wraps back to zero before folding further, the sonic effect of wavewrapping is notorious for generating a lot of high-frequency content, so placing a low-pass filter after it is sometimes a good idea. wavewrapping is realtively uncokmmon in the world of synthesizers.
+
+---
+
+clipping:
+
+clipping, to those who work with audio in the digital realm will often have a negative connotation, as a result of the uniformly unpleasant sonic response when applied to a digital system at it's limits of amplitude handling capability. for those who work in the analogue realm, i.e. ana;ogue equipment and certain synthesis situations, it is moreo ften a tool that can be utilized creatively.
+
+clipping is a waveshaping process that naturally occurs when an analog circuit is overdriven by a signal of suffient amplitude at the input stage - essentially, the process translates to the top and bottom of the waveform being completely chopped off whenever the signal exceeds the headroom limit allowed by the circuit
+
+when applied to synthesis, it can serve as a tool for transforming a sine or triangle wave into a pulse signall, or simply remving unwanted portioms of a waveform defined by constainsts of amplitude/'headroom' - i.e. a maximium arbitrary amplitude value within possible range as per the system. whenever a pulse wave itself is clipped, the noticeable effect on the sound is... zero!
+
+
+'soft-clipping' [probably familiar to thoae who work in the musical areas of the digital signal processing realm as a technique engaged to reduce the harsh nature of distorion form digital clipping], is achieved using a very similar method as the above-mentioned clipping with only a minor change in the transfer function such that rather than completely squaring out signal peaks, a more round edged transfer function is applied, resulting in significantly lower amplitudes of the newly generated harmonics, and a milder overall effect.
+
+soft-clipping can be a very desirable effect in many digital applications, as the moderate brightening of the soundwaves can give a perception of warmth to sounds that would otherwise have been percieved as becoming very harsh/glitchy/abrasive when exceeding max headroom - a little like employing analoogue equipment for the benefits of its circuitry when pushed to high input amplitudes, but without the expense, trouble of maintennance or space taken up.
+
+------
+
+earlier it was mentioned that in digital systems lookup tables, LUTs, are often used as a tool for realizing transfer functions. wavetable synthesis is primarily associated with the method of using lookup tables to generate new periodic waveforms. an LUT is an array of data with addressable indices describing a particular waveform. so technically, any imaginable (and unimaginable :D) waveshape can be created using this method. scanning the table periodically translates to an oscillation (usually multiple LUTs are implemented with an option for smooth interpolation between them, yielding an effect of continuously morphing waveforms that is highly desirable for sonic diversity). im recent years  as computing power has increased, the option for populating lookup tables to be a dynamic process by sending a signal into an input of a device, which samples the signal and turns it into a ready-to-use wavetable has developed.
+
+-
+-----
+
+
+this leads to three crucial concepts to be investigated:
+
+i) using analogue distortion circuitry specifically imtroducing odd harmonic distortion to add an analogue tape saturaton emulation effect to the output chain fo our synthesier.
+ii) since pulsar synthesis requires 'wavetables' of simgle cycle or multicyle waveforms as the pulsaret source, it seems reaonable to imagine a system whereby we generate one very simple raw source waveform to be sampled and then converted to a custom wavetable of pulsarets on the fly as per the specifications of the user. this popens up the possibilty of generating the simple rae source waveorm using an analoge vco and hence being to label our ;lsar synthesis enine truly 'hybrid' in nature!
+iii) some kind of soft-clipping/even harmonic distortion, an asymmetrical processing of sound waves where the top portion of the wave is amplified more the bottom. this effect is often associated with the sound of tubes combo to get a nice emulated amp sim on output.
+
+------
+
+The Pulse Physics has some roots as far as it's pulsar synthesis aspect harking back as far as the 'Ondioline' - an electronic analog synthesizer capable of creating a wide variety of sounds, developed and built by Frenchman Georges Jenny in 1939. sonically versatile The Ondioline has a filter panel offering up to 17 sliders to modify the tones, and in combination with a bank of switches it can create sounds ranging from near-accurate recreations of symphonic instruments to unique sounds which do not mimic existing instruments. early electronic music composers such as Karlheinz Stockhausen used filtered impulse generation regularly in their creations.
+
+Pulsar synthesis is a digital technique and really shines when it can take most advantage of the of precise programmable control, immense waveform choice and suitablity to graphical interface adaptation. its can generate an entire world of heavily modified sampled sounds
+
+
+------
+
+
+advantages:
+- absultely unique and novel synth engine combo, one of the two engines never implemented in hardware and the other amybe only twice in 25yrs - nothing in active production employing it.
+- hopefully nailed the balance of not too many, not too few knobs - just enough to look coola nd like exciting synth box, fun toy - and not think 'way too complex - run away!'.
+- honestly require no understnaing of the math, physics, musical theory or even architecture inside - its setup so can just turn knobs and feel out how the resultant sound out changes.
+- ive built upon emilie gillet's 'does the work for you' feel of mutable instruments elements by spending hrs finding perfect ranges for knobs etc. - i've tweaked response curves n stuff to make it near all sweet spot and just feel natural.
+- it will always be tamable into something that tracks pitch n stays harmonically pleasing throughout the range of most timbre varitaions - i.e. it is - always viable as a musical instrument that can can generate useful tonal results even when doing some proper whacky and radical new sounds.
+- whether you have some ubiquitous $25 usb midi piano keyboard type controller, are deep into cotnroller land with an expressive multi-dimensional touch/pressure/3d vector technological masterpiece, or you spent years learning e.g. saxphone and have a breath controller that is like an etension of your own body - this is the synth voice for you.
+- massively rich and varied in sounds you can get out of it, yet also wonderfully, naturally responsive due to the curved response of the parameters shaping the sound, resulting in ia incredibly expressive control over the nuances and organic changes in timbre as you explore your weird made up instrument.
+- very high quiality construction and choice of long life components - this is not just a material good to consume, it's a crafted work of art to add to you arsenal of imstruments to hand as a creator of sound or performer of music.
+
+
+
+risks:
+if people see screen and insta assume 'menus = frustrating' or 'programming computer = too hard'.
+if people see too many knobs - think 'too complex = too hard' or 'too complex = mess up live'.
+if people see too few knobs - think 'there's nothing to it = it cant do much' or 'so few knobs = no user intercation or say in the resulting outoput'.
+people don't know the name Ljunggren Audio in the hardware non-modular world - missing a degree of product promoting itself, actively choose a competitor if they recognise the alternate product manufacturer.
+people dont like the aethetic - cant appeal to everyone universally , yes - the blander and less offensive the less attention it grabs, but also, bland  doesnt get avoided due to 'if they took that kinda risks with styling what other risks did they take?'.
+
+
+
+------
+
+physical and scpeciically modal realities.
+
+games eternally the only real money iin elec  music - especially back than 
+'94 fm used smol memory, so was king of pc games
+game companies only really interste in using pm for game sound where was hard ohter routes - nit willing to pay
+nevertheless physcal modellign expecc next, but oop - in 97 memory got cheap - smaplign took over
+way easier to voice samples compared to pm
+
+quoting emilie gillet "modal synthesis - an under-appreciated flavour of physical modelling synthesis." as if physical modelling in general was appreciated.
+eternally people think real real real its all bout using it to amke existing instuments - lost itnerest compre to other methods
+people just dont think - heres cool thing that can do crazy noises.
+
+excepting
+korg kronos 2011
+mutable innstruments elements
+
+notghing recent at all in hardware.
+
+
+digital waveguide goes back toEquivalent to d'Alembert's Solution to the Partial Differential Equation for a string (1747)
+Karplus–Strong string synthesis is a method of physical modelling synthesis that loops a short waveform through a filtered delay line to simulate the sound of a hammered or plucked string or some types of percussion. at first glance, this technique can be viewed as subtractive synthesis based on a feedback loop similar to that of a comb filter for z-transform analysis. however, discovered (1978) as “self-modifying wavetable synthesis”it can also be viewed as the simplest class of wavetable-modification algorithms now known as digital waveguide synthesis, because the delay line acts to store one period of the signal
+elements string section roots in Karplus-Strong (KS) Algorithm (1983)
+tube section digital waveguide 1985
+
+
+------
+resonance occurs widely in nature, and is exploited in many devices. It is the mechanism by which virtually all sinusoidal waves and vibrations are generated. many sounds we hear, such as when hard objects of metal, glass, or wood are struck, are caused by brief resonant vibrations in the object.
+modal is like massive bonus attack of resnance:
+"when an oscillating force is applied at a resonant frequency of a dynamic system, the system will oscillate at a higher amplitude than when the same force is applied at other, non-resonant frequencies."
+
+the modal synthesis results in the resonator making the pitched component cos the these systems do not have one single resonant frequency, but several, called modes.
+frequencies at which the response amplitude is a relative maximum are also known as resonant frequencies of the system.
+resonant systems can be used to generate vibrations of a specific frequency (e.g., musical instruments), or pick out specific frequencies from a complex vibration containing many frequencies (e.g., filters).
+
+resonance manifests itself in many linear and nonlinear systems as oscillations around an equilibrium point. when the system is driven by a sinusoidal external input, a measured output of the system may oscillate in response. the ratio of the amplitude of the output's steady-state oscillations to the input's oscillations is called the gain, and the gain can be a function of the frequency of the sinusoidal external input. Peaks in the gain at certain frequencies correspond to resonances, where the amplitude of the measured output's oscillations are disproportionately large. 
+
+a resonator is a device or system that exhibits resonance or resonant behavior. that is, it naturally oscillates with greater amplitude at some frequencies, called resonant frequencies, than at other frequencies. resonators are used to either generate waves of specific frequencies or to select specific frequencies from a signal. musical instruments use acoustic resonators that produce sound waves of specific tones.
+
+
+[from our analogue synthesis in appendix,]
+
+- resonator [single filter]: resonant filter on cusp of self-oscillation triggered by excitatory signal will tip from equlibirium into oscillation briefly before settling back at rest, pitch component from resonator
+excitatory impulse -> resonant filter set on cusp of self-oscillation
+
+- formant synthesis [3 x filter type]: pitched component from raw material (exciter)...
+
+- modal synthesis [many analogue filter type string model]: raw material is 'bursty' and unpitched, pitched component derived from resonator...
+
+
+a physical system can have as many natural frequencies as it has degrees of freedom and can resonate near each of those natural frequencies; each degree of freedom can vibrate as a harmonic oscillator. many linear and nonlinear systems that oscillate are modeled as harmonic oscillators near their equilibria and hence the math is derived from the resonant frequency for a driven, damped harmonic oscillator.
+as the number of coupled harmonic oscillators increases, the time it takes to transfer energy from one to the next becomes significant. Systems with very large numbers of degrees of freedom can be thought of as continuous rather than as having discrete oscillators
+energy transfers from one oscillator to the next in the form of waves.
+In many cases these systems have the potential to resonate at certain frequencies, forming standing waves with large-amplitude oscillations at fixed positions.
+
+so the single filter and modal employing multiple filter resonators generate their own pitched component because they are recieving excitement at such a wide band of frequencies the resonant frequencies ofc are amongst em, so oscillating at sufficiently higher amplitude generate vibrations of a specific frequency.
+
+------
+
+standing waves on a string
+
+when a string of fixed length is driven at a particular frequency, a wave propagates along the string at the same frequency. the waves reflect off the ends of the string, and eventually a steady state is reached with waves traveling in both directions. the waveform is the superposition of the waves.
+
+at certain frequencies, the steady state waveform does not appear to travel along the string. at fixed positions called nodes, the string is never displaced. between the nodes the string oscillates and exactly halfway between the nodes–at positions called anti-nodes–the oscillations have their largest amplitude.
+
+
+math for standing waves in a string usning same model as the analogue fitler style model in our synth: 
+
+for a string of length 
+L with fixed ends, the displacement y(x,t) of the string perpendicular to the 
+x-axis at time t is
+
+y(x,t) = 2y_max sin(kx)cos(2pift)
+
+where
+y_max is the amplitude of the left- and right-traveling waves interfering to form the standing wave,
+k is the wave number,
+f is the frequency.
+the frequencies that resonate and form standing waves relate to the length of the string as
+
+f=nv/2L
+
+n = 1,2,3...
+
+where v is the speed of the wave and the integer, n denotes different modes or harmonics. the standing wave with n = 1 oscillates at the fundamental frequency and has a wavelength that is twice the length of the string. the possible modes of oscillation form a harmonic series.
+
+excepting the lil tweaks for magic detune etc. thats as advanced as our algo gets - it's just pure number crunching otherwise.
+
+------
+
+quick example of one of the lil tweaks:
+
+a string that is clamped at both ends _can_ be described in ideal with the wave equation, which has modal frequencies fk that are integer harmonics of a fundamental f0That is, fk ∝ k
+
+booooooring.
+
+to make it less boring, we can stretch out the modes with an inharmonicity factor B
+
+fk ∝ k[1+(k−1)B]
+
+which exposes B  in a parameter called “stretch factor” ranging from -0.06 to 2. B=0  tunes the modes to the overtone series. Small, positive values of B on the order of 10−3 will add some pleasant metallic qualities, and larger values will lose the sense of pitch. B<0 compresses the modes rather than stretching them, which sounds quite strange.
+
+note similarit to stiff string calcs in piano modelling papers: fk ∝ k1√+Bk^2
+
+------
+
+the term resonator is most often used for a homogeneous object in which vibrations travel as waves, at an approximately constant velocity, bouncing back and forth between the sides of the resonator. the material of the resonator, through which the waves flow, can be viewed as being made of millions of coupled moving parts (such as atoms). therefore, they can have millions of resonant frequencies, although only a few may be used in practical resonators. the oppositely moving waves interfere with each other, and at its resonant frequencies reinforce each other to create a pattern of standing waves in the resonator.
+the resonant frequencies of resonators, called normal modes, are equally spaced multiples (harmonics) of a lowest frequency called the fundamental frequency. The above analysis assumes the medium inside the resonator is homogeneous, so the waves travel at a constant speed, and that the shape of the resonator is rectilinear. if the resonator is inhomogeneous or has a nonrectilinear shape, like a circular drumhead or a cylindrical microwave cavity, the resonant frequencies may not occur at equally spaced multiples of the fundamental frequency. they are then called overtones instead of harmonics.tThere may be several such series of resonant frequencies in a single resonator, corresponding to different modes of vibration.
+
+hence the chords table in the string synth - an [11 x 5] set of dif alt spacings to account for the changes in frequency with varying geometry.  
+
+------
+
+[woflnotes]:
+
+loss factors
+
+setting all modes to the same decay time rarely sounds good. frequency-dependent damping is important for getting realistic sounds, since real objects have high-frequency losses as vibrations propagate through them.
+in the context of a synthesizer low notes will have dramatically longer decay times than high notes. a good way around this is be to make b3 be a frequency-dependent loss factor for each mode, and introduce a new coefficient b0 controlling the loss factor by pitch:
+
+Rk = b1 + b3fk^2 / f0^2 + b0f0^2 where b1 = 0.5s^−1 , b3 = 1.58⋅10^−10 s for the middle C strings on a piano (note that the cited source uses angular frequency in the above expression, so divided b3 by 4π^2)
+
+this way high-frequency damping and different decay times for each note are enforced, and the two are decoupled.
+
+------
+
+amplitudes
+
+when a resonating body undergoes vibrations, it also has to radiate those vibrations into its environment for our ears or microphones to hear. Different objects have frequency-dependent radiation efficiencies. a simple high-pass filter is used to emulate the effect where low frequencies are more difficult to radiate
+
+Ak^blue ∝ fk
+
+[“blue” here indicates that a 3 dB per octave spectral tilt identical to that of blue noise has been imposed. in fact, the overall spectral shape of the modal synthesis model is in the hands of the excitation signal and whatever EQ decisions you use during mixing, so this isn’t that important of a term.]
+
+
+excitation to a string will affect different modes differently depending on where it is done – for example, striking at a node of a standing wave won’t activate it, while striking it at an antinode will strongly activate it. this is why the position of plucking or bowing a string is critical for getting a pleasant sound out of an instrument.
+
+using x to indicate the excitation position from 0 to 1, a good approximation of its effects is:
+
+Ak^pos = sin(πkx)
+
+the result is a more complex spectral envelope, which is good news. even better, to simulate a human plucking or hitting a string, x can be randomized to create realistic timbral variation – even small random variations will sound like clearly different timbres.
+
+lit. says, i disagree:
+
+"note that, if we change the Ak  to respond to changing x, the multiplication by amplitudes should happen before the resonant filter. That is, the signal path should be excitation → multiply by Ak → resonant filter, not excitation → resonant filter → multiply by Ak. in the latter case, shifting the exciter position will cause the amplitudes to suddenly change, which isn’t physically sensible."
+
+ha.
+
+
+the final amplitudes can be produced by multiplying these components: Ak=Ak^blueAk^pos
+.
+
+------
+
+sum and difference tones: modal synthesis is based entirely on treating resonances as linear filters, and doesn’t take into account nonlinear resonances that can happen in real objects. these are fiendishly hard to simulate, but there is a cool idea from that simulates sum and difference tones that tend to arise from nonlinearities. for pairs of modes fj,fk, create a new mode with frequency fj±fk, loss factor Rj+Rk, and amplitude AjAk.
+
+note: multiplying the amplitudes of the modes now makes this model sensitive to scaling factors, since that is how nonlinearities work.
+
+to avoid adding hundreds of new modes be selective and only do this for a small number of modes e.g. the loudest three.
+
+------
+
+upon excitation signals.
+
+the short burst of energy of the exciter contains many frequencies. some of these fall outside of the modes, and are absorbed. some of these excite the modes, producing a stable, pitched sound. a sound will be perceived as pure if the modes have a high Q - in this case the spectrum has sharp harmonics, and everything else is absorbed. the sound will be more muffled or noisy if the modes have low Q. when the frequencies of the modes are in harmonic ratios, the sound is perceived as very musical and strongly pitched. when the modes are not located at integer ratios of the fundamental, the sound is perceived as metallic, and its pitch is ambiguous. if the burst of energy contains only low frequencies, only the lowest frequency modes will be excited. If the burst of energy contains very high frequency, it might be that some of the low frequency modes will not sound. so what is head is the interplay between the modes present of the system, and the spectrum of the excitation which causes them to sound. the modes are like a mould, they represent a possibility of sound - it's still necessary to fill them with an excitation signal.
+
+
+pulsar pitch, fp < - > geometry [loookup chord table]	- timbre alterations
+also, pulsar resultant pitch overall due freq and timbre will affect which modes are excited hence timbre and to a defgree pitch
+
+depending on geometry, exciter spectrum may be absorbed or result in stable pitched sound.
+
+since fp is linked to fk, but [timbre pulsar]
+
+------
+
+pulsar synthesis involves using an impulse as the modulator for a carrier signal in an an amplitude modulation synthesis setup, but with some specific limitations:
+
+
+- impulse synthesis;
+- amplitude modulation synthesis;
+Pulsar synthesis is a type of synthetic sound generation
+belongs to the group of granular synthesis
+are sound generators that provide the usual raw material of waveforms (such as sine or sawtooth ). They differ from other forms of synthesis only in that they synthesize the waveform in discrete pulses ( Grains)
+pulsaret length can be changed during generation
+
+
+While in other forms of synthesis a whole band is generated from the specific waveform and then pitch-shifted depending on the frequency , the oscillators in pulsar synthesis generate individual periods of pulsaret length and intergrain time, the length of which can be changed independently of the fundamental frequency.
+
+
+effect of spitting out sets of chirrups and trills
+triggering chains of notes or a phrase in a composition, such that each is a kind of litte melody, bird call, animal noise, effect or whatever sharing some commonalitiy as far as perhaps a degree of tone/timbre
+rich varying emissions of complex timbre changing and totally different resultant sounds as the different parameters shift and vary. 
+
+
+
+this is where both the creativity of the user, alng with the special extra possibilities imbued by my 
+
+hybridisation/expansion/additon/combination and additons/extras and further cintr=olls might add to ability to gt desired results or totally to the contrary, be even more random and weird and bizarre, only seeming to have scope for more esoteric sound esign purposes, but then, boooooy is the resultant machine produced from my experimention an absolute dream for sound designers/creators/experimenters/those who get bored easily...
+
+
+
+
+
+although a less 'traditional' synth sound, 
+
+
+tonal rather than atonal (so an actual musical wave sound is produced instead of noise);
+
+it also, being a timbre based dynamic variation in sound that preserves the fundamental, i.e. pitch in a constant/consistent manner - yes, you read it right... the damn thing's still entirely open to being musical!
+likewise, this means a pitched/tonal wave can be modulated to alter tone/timbre without altering the overall pitch in anyway whatsoever else to a pulse trains setup - PulWM on a pulsar train, for these reasons, remember [rn]? considered as the train of a pulsarwave, even though pitch remains stable/continuous therefore predictable, are generally preserved and so pitch is continuous even tho all manner of wild events are occurring to timbre and tone etc.
+
+PulWM can be used for any pulsaret - i.e. not just rectangular waves, but _any_ waveform, even multicycle complex waveforms
+
+
+load user waveforms and envelopes and modulators - even multicycle impulse waveforms and ...
+`technically v can be any shape, this shape having a strong effect upon the pulse train spectrum`
+even to the point of convolution of the pulse train with audio samples.
+
+
+
+possibility of 'overlapped' or OPulWM, where the fundamental period is defined as the rate of pulsar emission independent of duty cycle. i.e. duty cycle always completes even when it drops below the fundamental frequency. whenever the fundamental period expires it spawns a new pulsar
+generally, because OPulWM results in a high degree of phase cancellation across the various overlaps, the sound is more subtle and hence there is a distinct difference in sound when employing OPulWM.
+
+
+
+------
+
+------
+
+
+bowl/tube/plate resonator
+
+
+
+
+
+
+
+------
+
+a climb toward grasping ljunggren audio pulse physics for the analogue synthesist.
+
+
+
+filtering: raw material determines pitch, filters alter the harmonic content by attenuating, passing or amplifying various different bands.
+raw material -> filter
+- filter colours sound i.e. alters timbre, although raw material has most influence on resulting output - filter is merely an 'effect' 
+
+resonant filter: fraw material determines pitch, feedback loop amplifies some frequencies such that signal frequecy spectrum now has shifted, new harmonic content has been introduced
+raw material -> filter with feedback loop
+      ^-----------<
+- filter adds colour not present in original raw material, but much of timbre still dependent on raw material - filter is merely a stronger 'effect' applied to raw material
+
+east coast analog subtractive synthesis: oscillator frequency (raw material) determines the pitch (note)
+raw material -> resonant filter -> vca
+- role of the filter is only to color the raw material, vca only shapes amplitude - relatively synthetic/artificial, non-dynamic sounds
+
+west coast analogue subtractive synthesis: oscillator frequency (raw material) determines pitch
+raw material -> lpg / raw material -> fliter/vca modulated by same source
+- lpg or filter/vca combo colour raw mateial in dynsamic manner wih much more tendency toward 'woody', 'hollow' sounds
+
+Karplus-Strong resonator: very short audio-rate delay with a lowpass filter in the feedback loop excited with a noise burst produces plucked string sounds
+short noise burst -> very short delay
+         ^------------------<
+- resonator detemimnes pitch and timbre, element of realistic string type 'plucked' sounds 
+
+***note: audio-rate delays and audio fiters are extremely similar mathematically hence filter/delay with a feedback loop results in a resonator system***
+
+simple physical modelling: pitched component from raw material (oscilator frequency) 
+raw material -> bank of short delays
+- resonator bank imposes its complex frequency response upon the output from the oscillator, emphasising some harmonics while suppressing others - complex timbres from resonator, violin or piano or some drum sounds can be achieved 
+
+resonator: resonant filter on cusp of self-oscillation triggered by excitatory signal will tip from equlibirium into oscillation briefly before settling back at rest, pitch component from resonator
+excitatory impulse -> resonant filter set on cusp of self-oscillation
+- timbre although complex and richer than a east-coast or west-coast subtractive patch is still somewhat synthetic/articfical 
+
+formant synthesis: pitched component from raw material (exciter), 
+raw material -> complex resonator (bank of resonant band-pass filters)
+- timbre independent of raw material pitch - e.g. singer produces note from vibrating vocal chords, but formant (timbre) via mouth shape (resonator geometry) - timbre can be complex and intersting but somewhat limited in scope
+
+modal synthesis - string model: raw material is 'bursty' and unpitched, pitched component derived from resonator 
+excitation -> very complex resonator (very large number of resonant band-pass filters in parallel for string model)
+both pitch of the note, and timbre comes mostly from the resonator - very complex, rich, realisc acoustic and natural sounds can be achieved
+[also  see late additive but think 64 sines that require pinging to oosciliate.]
+
+modal synthesis - tube model: raw material is 'bursty' and unpitched, pitched component derived from resonator
+excitation -> very complex resonator (banded waveguides synthesis tube model involving large number of delay lines) 
+- timbre dependent on synthesis model parameters and excitation material, note maybe so enharmonic as to  be indiscernable dependent on parameters chosen, nevertheless dependent on resonator mostly - resulting sounds very complex, rich, can be exceedingly realistic or highly novel in nature depending on parameter settings
+
+modal synthesis - multiple coupled advanced resonator models, complex raw material that may be continuous  as well as impulse based in nature, very rich in harmonic content and variety, greatly dynamic - and even tonal in nature
+sample based or very complex oscillator or even resonator derived excitiation -> very complex multiple element resonator (combination of 
+
+additive synthesis:  timbre devolps from summing sine waves together - multiple sines of different frequency and amplitude, each with a different amplitude envelope, sometimes partials numbering as many as 2500+ can theortically produce any harmonic spectrum imaginable. its a comlex world to spew forth from nothing but a buncha  sines... 
+
+sampling: pretty much any manner or playing back a portion (or sample) of a sound recording in any manner and further complexity imagineble, geenrally involves digital tehcnologies to do fast playback and processing such as pitchshifting etc.
+
+wavetable synthesis: milisecond time value single cycle waveform sample loops eepeating for the duration of the note, or maybe involving complications of scanning and interpolating though tables of single cycle samples using methods such as wavetable crossfading and wavestacking (very like aditive synthesis but using single cycle waveform samples more complex than sines) can easily turn seemingly very simple source waveforms or tabsles into surprisingly comple, rich and unusual timbres.
+
+granular synthesis: like additive synthesis, but with samles, employing a combination of thousands of very short samples (grains), usually ~1-50ms - but not single cycle as in wavetable synthesis instead being a signal with an amplitude envelope in the shape of a quasi-Gaussian bell curve, a specific duration, waveform, resulting in grain densities of hundreds of grains per second, grains may overlap and be processed in huge veriety of  ways, such that can complex, dynamically evolving sounds can evolve. 
+
+fitered pulse train: a pulse train is simply a string of sngle cycle or short event waveforms or samles chained together generally a repeat generation of one particular sample or waveform cycle repatedly. used as an alternative to the, to the analogue synthesist, more familiar continuos time-domain wave forms, the resulting audio signal at simples is little different, merely offering the advantag of convenient maniuplation involving applying envelopes of a per cycle basis  to manpulate playback speed, filter parameters, amplitude parameters and frequency parameters. tbh, its mostly just an alternative approach to a problem with advatages to the digital synthesist but reults in little difference to analgue subtractive synthesis at its most basic.  
+
+pulsar synthesis/vosim: a special weird sorta totally ass backwards dance toward some form of physical modelling involving a wonderful combination of microsound/particle/granular synthesis, pulse train synthesis, techniques from bandpass filtered impulse generator synthesis and more. it can be thought of in terms of using an impulse as the modulator for a carrier signal in an an subtractive amplitude modulation synthesis setup if helps but that would make the complexities highly confusing. for the magic of pulsar synthesis to work that amplitude modulation setup has certainrules:
+- the two signals, carrier and modulator, should be phase locked (not hard synced) such that they start in phase;
+- they should be tonal rather than atonal (so an actual musical wave sound is produced instead of noise);
+- the modulation signal should have an obvious period of silence within the total period of the waveform which can be varied.
+i.e. there should be an input tonal carrier wave passing though an amplifier which is contoured by a tonal impulse, the two waveforms [sharing a trigger such that the initial phase of the modulator is locked to the carrier], with a period of silence being present at some point in the modulation signal.
+- synth voice pitch is defined mostly by the carrier wave frequency.- modulator voice pitch,
+- modulator voice pitch is defined by waveform frequency not by some filter frequency.
+- timbre of the overall synth voice is strongly defined by the relationship between the phase and pulsewidth/waveshape of the carrier and modulator.
+- timbre of the modulator voice is defined by the pulsewidth/waveshape of the modulator waveform.
+- modulator formant is defined by the cutoff frequency synth voice filters.
+- amount [read 'level'] of an individual voice element synth modulator impulse is dictated by the resonance of that filter element.
+- overall length of an impulse sound from a synth voice sound is defined by both the resonance and the frequency of the longest [i.e. highest frequency vs. highest resonance] element of the synth voice, for a given pitch.
+- synth impulses created with a higher attack and greater volume overall exciter strike will be louder and last longer.
+- frequency filter in the synth will affect the brightness of sound and to some degree the length of the impulse/volume it presents at but with careful control over individual elements a great degree of variety can be achieved whilst retaining consistent duration/volume of final result.
+
+since a great degree of complexity in control is available over formant/timbre/level balance/individual level/element duration etc., by mixing different lengths and levels of various timbres/formants, levels and durations of the various chosen elements resulting in these, an incredible variety of resulting sounds can be achieved even ignoring choice of actual exciter/waveform/variety in such pre-/post- sound options.
+
+------
+
+
+
+static pulse train is dull, but we want timbre or amp. not pitch:
+
+
+impulse			continuous
+- shaped, at a pitch	continuous, at a pitch
+
+- pick waveform/aux., pick pitch, pick vol/shape of vol.
+
+- pulsaret waveform env affects timbre with time?
+- duty cycle env affects timbre with tim?
+
+- choose env lengths
+- chpose env shapes/aux. - can have audio = convolution
+
+
+
+
+------
+
+Pulsar synthesis:
+
+------
+Greek composer Iannis Xenakis is known as the inventor of the granular synthesis technique.
+Granular synthesis is a sound synthesis method that operates on the microsound time scale. It is based on the same principle as sampling. However, the samples are split into small pieces of around 1 to 100 ms in duration. These small pieces are called grains.
+Curtis Roads was the first to implement granular synthesis on a computer in 1974.
+
+grains are part of a larger group of 'microsound' sounds, on the time scale shorter than musical notes, longer than the sample time scale. examlples of these microsounds include granular synthesis grains, wavelets and pulsars.
+microsound includes part of the audio frequency range (20 Hz to 20 kHz) as well as part of the infrasonic frequency range (below 20 Hz, rhythm).
+
+::Pulsar synthesis is a type of synthetic sound generation described by Curtis Roads and belongs to the group of granular synthesis. it uses 'pulsarets' as audio lemeents in oulars, microsounds that are involved in the sound generation.
+
+pulasr synthesis is a form of electronic sound synthesis based on creating pitched tones and pulses similar to some previous obscure old instruments that employed filtered pulse trains as the source of sound.
+although employing filtered impulse generation and processing to create electronic sounds that are easily altered and controlled in ways that are intersting/creative/different to basic attempts to model physical soudns via certain synthesis tehcniques implemnting such similar pulsetrains, fltered or inherently mathematically processed  too produce resulting sounds akin to passing through at certain stages forms of filtering that could affect timbre/tone/formant etc.
+::
+
+pulsar synthesis manages to involve techniques from 'microsound' or 'particle synthesis' in such a particular unique manner so to result in ability to produce sounds similar to those from a bandpass filtered impulse generator based synth, yet employs no filter, and hence,
+pulsar synthesis involves 'pulsar trains' similar to the 'impulse trains' mentioned above, but also having elements similar to certain forms of particle synthesis: a pulsar is a single particle of a pulsartrain.
+
+pulsar synthesis ranges in a pulsar repetition period of 1hz- 5khz and a duty cycle range of 80hz - 10khz.
+
+the oscillators in pulsar synthesis generate individual periods from the length of the pulsaret and the 'intergrain' silence time, which change in length independently of the fundamental the frequency can become.
+Pulsar synthesis oscillators are sound generators that provide the usual raw material of waveforms, in our case sourced from samples, which then are used to synthesise the waveform in discrete pulses (the grains).
+
+
+------
+::we load a pulsaret waveform [w] from a preset bank or user input.
+
+a pulsaret can be _any_ arbitrary waveform including a multicycle choice. @.@...
+
+preset bank:
+
+the waveform [w] is played with a period of silence [s] in a repeating cycle as an overall multicycle waveform [o]. this muticycle waveform is the output pulsetrain and is fed into the modal synthesis section of the 'pulse physics' device.
+::
+
+||taking square waves as a special case of the class of waveforms called pulse waves, all of which share the same 'rectangular' shape, but differ in ||the ratio of the time the signal spends at the 'top' and 'bottom' of the wave. We call this ratio the 'duty cycle'.
+||
+||Since the square wave spends exactly half its time at the 'top' of the wave, it has a ratio of 1:2, and we say that it has a duty cycle of 50 ||percent.
+||A similar wave that spends just one-third of its time 'at the top' has a duty cycle of 1:3 (33.3 percent), while one that spends a quarter of the ||time 'at the top' has a duty cycle of 1:4 (25 percent).
+||
+||Note: sometimes there are references to duty cycles greater than 50 percent - in essence, for any number x lying between zero and 50, a duty cycle ||of (50+x) percent is identical to that of (50-x) percent, but the phase is inverted. For the purposes of this discussion, you need not worry about ||this.
+||
+||pulse waves with different duty cycles have quite different audible characteristics:
+||- narrow cycles (usually in the range 5 to 10 percent) are thin and nasal, and are often used to create sounds such as oboes.
+||- as the duty cycle becomes closer to 50 percent the sound thickens considerably, but at exactly 50 percent it has a distinctively hollow character ||that is ideal for simulating clarinets and other 'woody' sounds
+||
+||of its nature duty cycle never goes outside ofthe boudns of max or min, it being duty cycle not an absolute value with unlimited bounds------
+||in a pulsartrain multicycle  waveform, 
+
+
+[p] is pulsar period, 
+
+[d] is duty cycle, also the period of [w],  [s] is silence duration. 
+
+
+[p] : [p] :  [p] : ...
+
+[p = d + s] : [P = d + s] : [p = d + s] : ...
+
+[/-\...]  :  [/-\...]  :  [/-\...]  :  ...
+
+[w  + s]  :  [w + s]  :  [w + s]  :  ...
+
+
+[p] affects the overall frequency of pulsars in the output pulsechain, and results in variations in pitch.
+[d]:[s] is a balance between the silent period and duty cycle, the duty cycle/silence _ratio_ can never exceed a value of 1 or drop below 0. 
+
+fp = 1/p = frequency variable, waveform pitch 
+fd = 1/d = duty cycle variable, formant effect akin to filtering
+
+fp and fd are contiuously variable values, i.e. _both_ the 'fundamental frequency', [fp] [rate of pulsar emission] _and_ 'formant frequency', [fd] [duty cycle] can be portrayed according to separate envelopes which are _independent_ ,and yet can be used simultaneously or stand alone independent of the other. these can both vary across a span of an entire pulsar train, i.e. multiple pulsar repeats.
+
+this allows just pitch to be varied for a given timbre/range of contrlled timbres, and likewise, just timbre/tones/etc. to be varied for a given continuous pitch or string of pitches/phrse, and/o, a combination of [d:s] and [p] be varied together to result in a very complex final output so really inspiring creativty/experimentation
+
+- a lower fundamental frequency = increased [s] [changing silence legnth gives a safe change in fundamental pitch, whilst avoiding changing [d], duty cycle, which would change timbre]
+- a raised fundamental frequency = decreased [s] [again, [s] has to be varied because changing s has no effect on output sound in a way that matters other than the desired.]
+
+[altering [d], and thereby the resultant duty cycle, woud bringing about a different total time of the actively audible element, specifically altering the percieved formant - and results in the sound emulating the effects of a filter, so changing timbre/tone/nature of sound!]
+
+
+------
+
+in analogue synthesis, Pulse Width Modulation [PWM] is the modulation of a rectangular/pulse/square waveform such that the modulation controlling the duty cycle [d], whilst maintaining constant fundamental frequency [p], results in a variation of upper odd harmonics. this gives a unique and very identifiable 'sawing' effect - akin to some varities of sync and phase/harmonic modulations. at the extremes of PWM the signal is silent. it is a shame it can only be produced with pulse/squarewaves...
+
+
+PW = 0%					   PW = 50%				     PW = 100%
+
+[p = d + s] : ...		    ... : [p = d + s] : ...		      ... : [d + s = p]	
+
+[0+s = d+s] : ...		    ... : [d = s = .5] : ..		      ... : [d+s = p+s]
+
+   d = 0    : ...		    d = .5  [d+s = 1] s = .5		      ... :  d = p = 1
+
+[|______||] : [|_____|-|] : [|____|--|] : [|___|---|] : [|__|----|] : [|_|-----|] : [||------|]
+
+signal of									    signal of
+0 amplitude									    constant amplitude
+
+nothing is heard at ouput.							    nothing heard at output.
+
+
+it's a real cool option that gives that very identifiable and eternally popular tearing/searing with zero alteration to pitch. also, being a timbre based dynamic variation in sound that preserves the fundamental [p], pitch, in a constant/consistent manner [yes, you read it right...], the damn thing's still entirely open to being musical!
+
+Pulsaret Width Modukation [PulWM], is the variation of the duty cycle [d] of the pulsaret in pulsar synthesis. as stated earlier, the pulsaret waveform [w] can be _any_ arbitrary waveform, incuding a multicylce waveform itself... i.e., it allows us to perform duty cycle modulation on waveforms other than pulse/square waves. it also allows the dyuty cycle to pass through and below the fundamental frequency whilst continuing to produce an audible output!
+
+::i.e. with PulWM, not only does d = 0 still generate an audible signal, but even p < d produces an audible signal - when the fundamental period cuts off the duty cycle of the pulsaret, we just have to choose what occurs, either we accept a sharp cutoff and hence a high edge factor or implement a user-controlled crossfade:
+
+
+[  p  ] : [  p ]  : [  p  ] : ...
+
+[p=d+s] : [p=d+s] : [p=d+s] : ...
+[d + s] : [d + s] : [d + s] : ...
+[/-\..] : [/-\..] : [/-\..] : ...
+
+[d + s] : [d + s] : [d + s] : ...
+[/- \.] : [/- \.] : [/- \.] : ...
+
+[  d  ] : [  d  ] : [  d  ] : ...
+[/ - \] : [/ - \] : [/ - \] : ...
+
+[   d|] : [   d|] : [   d|] : ...
+[/  -|] : [/  -|] : [/  -|] : ...
+
+either [/  -|] is a sharp edge so something like a ramp in this v simple case,
+
+
+or
+
+[/  -|] : [/  -)] : [/  -\] : ... 
+
+fades in a way we need yet another knob for.
+
+knob [cf] = [|] - [)] - [\]
+
+
+------
+finally, there is the additional possibility of 'overlapped' or OPulWM, where the fundamental period is defined as the rate of pulsar emission independent of duty cycle. i.e. duty cycle always completes even when it drops below the fundamental frequency. whenever the fundamental period expires it spawns a new pulsar - although because d > p resulting in multiple pulsars overlapping with others whose duty cycle have yet to complete, it means that as d increases the number of overlapping pulsars generated continues to increase
+
+
+[p=d+s] : [p=d+s] : [p=d+s] : ...
+
+[/   -   \] : ...
+          [/   -   \] : ...
+		    [/   -   \] : ...
+
+*[note: an arbitrary overlap limit has to be imposed - for efficency/optimisation thoughts as well as sound design reasons...]
+
+generally, because OPulWM results in a high degree of phase cancellation across the various overlaps, the sound is more subtle and hence there is a distinct difference in sound when employing OPulWM.
+
+
+-------  
+
+
+if [w] is the multicycle total impulse waveform, and time is limited by rectangular function [v ~], this rectangular function would be delineated the 'pulsaret envelope'.
+[n.b. technically [v ~] can be any shape, this shape having a strong effect upon the pulse train spectrum]
+
+[w]   = multicycle impulse waveform
+[v ~] = pulsaret envelope 
+
+[w] is shaped by enelope [v ~]
+
+
+-----
+
+
+
+MUSIC II		sixteen wave shapes resultant
+
+
+
+- Wavetables are “complex” oscillator shapes; essentially pre-defined sets of tiny wave shapes. a wavetable is a 3D oscillator shape.
+- Wavetables are made three-dimensional by storing many different 2D shapes in a series of frames.
+- oscillators create sound “frame-by-frame” using wavetables. 
+- These frames are selected with a “position” parameter
+- wavetables are arranged so that as the position travels from the first to the last frame, the timbre changes naturally without any jarring moments
+- wavetables contain many different single cycle waveforms stacked together and are rarely longer than 12 seconds.
+
+- the frames in wavetables are all precisely the same length. 
+- up to 255 other waves in the same set
+- 255 waves containing frames. 
+- frames are very small, usually 2048 samples long which is less than 50ms of audio
+
+- Inside each frame, we can have any wave we want.
+- 
+
+
+ind. standrd		256 frames of wves to morph through
+
+ASM Hydrasynth		219 different waveforms
+ableyton		100 wavetablesof 20 - 50?: classic synths; acoustic instruments; harmonic tables; noise; 
+Arturia Pigments	160 wavetables
+
+
+
+------
+
+
+
+Elements: Texture Synthesizer
+
+Elements is a full-blown synthesis voice based on modal synthesis with a strange and abstract feel.
+Elements combines an exciter synthesis section... ...These sources, or external audio signals, are processed by a modal filter bank – an ensemble of 64 tuned band-pass filters simulating the response of various resonant structures (plates, strings, tubes…) with adjustable brightness and damping.
+
+When designing Elements, great care has been taken in selecting parameter ranges and control curves, producing a large palette of sounds – often beyond physical realism – but always well controlled and stable. The "dark spots" of noise and feedback are reached gradually, and they do still react to controls. The module is deliberately menu- and switch-free – what you dial/patch is what you hear!
+
+
+Modal resonator
+Internally uses 64 zero-delay feedback state variable filters.
+Coarse, fine and FM frequency controls.
+Geometry: Interpolates through a collection of structures, including plates, strings, tubes, bowls.
+Brightness. Specifies the character of the material the resonating structure is made of – from wood to glass, from nylon to steel.
+Damping. Adds damping to the sound – simulates a wet material or the muting of the vibrations.
+Position. Specifies at which point the structure is excited.
+
+Two audio inputs: one pre-envelope and diffuser, the other patched straight to the resonator.
+
+Audio input level: calibrated for modular (10 Vpp).
+Audio acquisition and restitution: 16-bit, 32kHz.
+Internal computations on 32-bit floating point numbers.
+
+
+It is also possible to output the raw exciter signal on one channel, and the raw resonator signal on the other.
+
+CONTOUR. A simple envelope is applied to the sound generated by the BLOW exciter.
+
+Excitation mixer. The BLOW knob controls the amount of granular blowing noise sent to the resonator.
+
+FLOW of the BLOW generator. This parameter can be described as a kind of wavetable scanning through various colors of noise. Automatically controlling this parameter with a CV (for example, from a LFO), will create a changing texture reminiscent of a turbulent air flow.
+
+The BLOW generator TIMBRE knob controls the pitch/granulation rate of the noise generator.
+
+External IN 1. The audio signal sent to this input goes through the same path as the blowing noise - it gets diffused, amplified by the envelope, then amplified by the STRENGTH VCA. It finally reaches the resonator.
+External IN 2. This second audio input is unprocessed and directly sent to the resonator.
+
+COARSE frequencyc ontrols the fundamental frequency of the resonator, and thus, the perceived pitch of the note
+
+SPACE When this knob is set to its minimum position, one output channel contains the exciter output, and the other channel the resonator output, and it is up to you to mix and spatialize them. 
+the position of the SPACE knob gives the individual exciter/resonator components.
+
+-geometry :: geometry and stiffness 'It goes from plates, to strings, to bars/tubes, to bells/bowls.' - how?
+-brightness :: how muted the high-frequency modes are 'Low values simulate materials like wood or nylon. High values simulate materials like glass or steel.' - p sure its a fucking lpf.
+-damping :: implies a time based thing 'Modulating this parameter can recreate the effect of muting the sound by blocking the vibrating surface'
+-position :: controls on which point the excitation is applied 'excitation right in the middle of the surface will cause, by symmetry, the even harmonics to cancel each other, resulting in a "hollow" sound reminiscent of a square wave.'
+
+
+------
+		^ ext. 	     ext.
+		|	      ^				
+a vco  ->   wavetable  ->   pulsar  ->   modal	 --->	fx  -->   a filt  -->  
+		|	      |	
+		|	      | -------------------->	
+		|----------------------------------->			

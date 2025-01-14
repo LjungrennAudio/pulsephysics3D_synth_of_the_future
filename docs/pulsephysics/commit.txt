@@ -1,0 +1,275 @@
+file:///C:/Users/Tab/Desktop/synth/0.pdf
+most crucial paper there is, every cite is perfect, solves all if ideal.
+
+
+
+analg	    3 dif eng	   convlv3d   into	real space?
+must ^	    must be para   3d req.      2   	
+						i like para
+choice	    2 inputs.				controlable?	
+i)
+anal	    
+single  ->  1x trig req						`						excit	    wave guide	  ->   			
+other	    stuff like	   spectra  cnvlv ->	which is controllable?
+sources ->  wave guides?  ->		 
+	    other synth
+ii)
+anal
+trig	 ->    synth	  spectra
+excite	     req. exct	  map	       cnvlv ->	which has best sound/
+provides ->    other	  resonate		is workable?
+cont sound    synths   
+
+---------
+anal
+excite trig model morph space spectra  cnvlv ->	fx	 ->	analg?	 
+nec	    synth  ->	or can be eqn			 	fx
+---------
+
+808 -> wv > wave    	spectra of		eqn								kick  fld   guide  ->	wood/metal tube		model				vca/				    impulse  -> wave    and/or	       xsyn ->	and/or	 ->	filt/						table  	    guide  ->	modal	    	   		cnvlv	spectra		bbd
+no excite   BLEX   	resntrs			mapped				need
+
+haredware:
+{  synth  } {  morph  } {  shaping   } {  morph  } {  amp/dist fx  } {	  freq/sp/time    }     {   snake oil    }	
+2 (+1)  3       1             2              1           4?	  	1	  2		  for a  pick 1  
+___________________________________________________________________________________________________________________
+1 -wf>  1  ->  					      eqn tape					      (     vca )
+1   ->  1  ->  mrph  ->   specra of ?  ->  cnvlv  ->  eqn am       ->  	EQ   ->   spatial   ->    out (e.g. bbd )
+	1       ->   ->	  modal of?    ->	      spectra cab      		  modfx		  fx  (     filt)
+___________________________________________________________________________________________________________________
+
+for hardware; a = analogue, e = single equation calc, m = spectral map via fft/ir
+for software; a = emul = e, e = single equation calc, m = spectral map via fft/ir
+note:	- emul needs nonlins, e needs non lins, 
+	- para control _may_ be essential. asses.
+	- somethings are modulation in nature, somethings too complex to vary, somethings need splitting:
+	e.g. tape emul is e, but i'd like the mod effect of wow/flutter to afect syn tun, but technically its 	distort and nonlinear, and freq, and time, etc. etc. 
+___________________________________________________________________________________________________________________
+software														non lin	  non lin  ac	 nl/ac	  ac	nl built in fx    non lin	non lin		snake oil fx			
+											even needed in sw?
+noisy	  wg eqn												trig eqn  string  morph  map		tape eqn			spatial		vca is colour - nl
+implulse  wg eqn   eqn		cnvlv	amp eqn		  eq eqn	map		bbd is fx - nl/real
+table eqn tube		 modal	 eqn	cab map		  mod eqn			filt is mostly colour - nl
+	  blex eqn	  eqn
+			  
+eqn can generally be para control. map can occasionally becontrol but usually via conv to eqn?
+have to decide what want to control para.*
+__________________________________________________________________________________________________________________
+hardware
+a  -a>	  e
+w         e        e	m/e	  e	e						a
+	  e		e		e	       	e		m/e		a	
+					m		       		e		a
+
+__________________________________________________________________________________________________________________
+						      
+
+is soft any amount of control is possible. any amount of non lin/map/emu is pos.
+in hardware limits, plus desirable to marketing etc.
+therefore not only what control want but how much tie in soft vs. hard?
+__________________________________________________________________________________________________________________
+
+for non-lins, use fixed val but dif each? use rng? use rng to gen fixed val but dif? use rng each time everywhere?
+use math but from rng/one fixed val?
+__________________________________________________________________________________________________________________
+
+
+limits i need answered til i can proceed:
+- modular architecture suits me - but are there bottle necks datatransfer-wise between each 'module'?
+- i want 'vintage' sound in places - this requires some degree of nonlinearity that at core ideally would come from rng. if there's 50 nonlinearity coffs/scalars and each is dif rng sorce individ then mult up per calculation - is pos?
+- i prefer modelling things via eqn rather than just mapping an ir to a signal via fft:
+	modelling things is easy to get 'white box' parametric control 
+	mapping an ir means its hard to escape that preset ir - and even if you morph/convolve theres limits.
+but, real time para control takes way more calc, and theres a max of knobs i can put n a hardware box dictated by marketing/people/ui etc.
+- if non-modular but i still intend to do most of it digital, how hard is it to convert an entire softsynth to the code for hardware hence remove the bits that would be analogue controls or a real analg filter etc.?
+-  
+
+___________________________________________________________________________________________________________________
+ideal.
+gb		 gb		  wb	       gb	    wb		  bb		wb	   gb
+												   gb?
+1		 1		  2
+1		 		  2	       1	    2				2	   1
+				  					  1		2	   1	    1
+							    2				1
+				  3			    						    1
+___________________________________________________________________________________________________________________ 
+808 kick      analogue`		digital	      	       |			    |
+analogue  ->  wavefolder  ->	waveguide   ->         |	    		    |
+model eqn     model eqn		string eqn	       |    body		    |
+						morph  ->   model      ->	    |
+impulse				digital		eqn    |    wdf eqn	    convolve|	 tape eqn     spatial eqn
+table	       ------>	 	waveguide   ->	       |		    via	    ->	 amp eqn  ->  mod fx eqn
+source				tube eqn	       |		    eqn	    |	 cab eqn	   |
+--------------------------------------------------------			    |			out fx?
+		  |		BLEX	    |		    modal		    |			   v	
+		  |		synth	    |	---->	    resonator  ->	    |		        out vol
+		  |		eqn	    |		    eqn			    |-------------------------------
+____________________________________________________________________________________________________________________
+
+nl	  ->	 nl	  ->	 wdf	    ->	 nl    ->     nl	      		   wdf		  nl?
+eqn nl?        ------>		 wdf	    ->			       ->     nl    ->     wdf	  ->	  nl? 	
+				eqns?	        ---->	      nl			   wdf		   --> nl?	
+____________________________________________________________________________________________________________________
+math rqd.
+
+for example:
+808 kick simulation model (accurate):
+- eqn contains 160 calculation components
+- requires solving 7 linear systems of equations and 1 nonlinear system
+- simulates 7 semiconductor components (5 transistors and 2 diodes)
+- average pc takes 3.5s to run a simulation of 4s output audio 
+
+808 kick model (compromise):
+- eqn contains 55 calculation components (compared to 160 in accurate)
+- requires solving 3 linear systems (0 nonlinear)
+- average pc for 4s output takes 0.35s (i.e. appox 10x faster)
+
+808 kick source (low cpu option):
+- use wavetable/sample/single calculation simple model
+- requires v minimal calcs, no nonlinear or vector or anything hairy
+- no scope for variation/real 'vintage' non-linearities/control over parameters
+- average pc near inconsequential time taken to generate 4s output audio
+
+
+::state of art tech is all via neural net/ai learning
+(v heavy cpu, no para control, dunno if vector capability helps?)
+
+::current modellings/morphs/convolvs/ir mappings all based on integration/differentiation/fft/vetor/matrix/norm space etc. - basically whole buncha calculus.
+- best tech in research are very high rder, many non-linear elements, complex interpolations
+- common in high end current synths are lower order of above, smaller matrices, etc.
+(high cpu, para control so best forareas needing user access - i.e. whitebox, vector capability great advantage)
+
+::lesser synthesis options abound frm sampling to rough singal gen into filter to more complex emulations
+- varying from simple arithmetic thru scarier polynomials upto all kinds of other algebraics.
+- (lower cpu, not realstic generally, no scope for the nice vintage/real nonlinear elements, parametric control options vary)
+
+also choices in audio quality, spatial degrees, compromisisng 'real' amount of random vs. applying single coeff universally, amount of real time parametric cobtrol possible/desirable, etc.etc.
+
+___________________________________________________________________________________________________________________
+
+exciter source for stiff string digital waveguide model:
+
+808 kick:
+
+
+
+
+
+
+gets folded by
+
+
+lockhart waveflder:
+
+Component values for the Lockhart wavefolder circuit.
+Component Value (kΩ)	R	15	VCC	15
+Component Value (V)	RL	1–50	VEE	−15
+
+Parameter values for the Lockhart wavefolder described by Equation (26).
+Name	Value	Name	Value	Name	Value
+R	15kΩ	Is	10−17A	VT	25.864 mV
+RL	1–50kΩ	η	1	–	–
+
+Vout = αVin − ληVTW (∆ exp (λβVin))
+
+Lambert-W function W() upper branch used, W_0(), where:
+
+α = \fract{2RL}{R}, β = \fract{2RL+R}{ηVTR} and ∆ = \fract{RLIs}{ηVT}.
+
+
+____________________________________________________________________________________________________________________
+
+
+Results
+The table below shows the time taken to process 100 seconds of audio at 192 kHz sample rate, as well as the "real-time" ratio (seconds of audio per second of processing time). The C++ columns are for the C++ implementation using tempaltes, while the C++ poly measurements are for the C++ implementation with run-time polymorphism.
+
+Circuit	Faust (time)	Faust (ratio)	C++ (time)	C++ (ratio)	C++ poly (time)	C++ poly (ratio)  
+LPF	0.47		211.5		0.21		470.7		0.81		123.3		  2xr/2xc
+FF2	1.05		94.9		1.56		64.3		3.07		32.6		  2r2c3s1p
+Diode	3.60		27.8		0.47		214.2		0.62		160.7		  r/c/2xd
+Clipper
+
+diode clipper:
+The audio-rate computational load consists of 5 sums, 9 multiplications, 1 sign function, and 1 ω() evaluation per sample.
+model implemented using different ω(x) approximations
+and running at a sample rate of 44.1 kHz with the sum of two 2 Vpp
+sines of frequencies 110 and 150 Hz. We have set VT = 26 mV,
+Is = 0.1 fA, R = 2.2 kΩ, C = 10 nF
+ω(x) lambert w()/wright omega comes from a sgn calc. for c++ poly is kirchoff/newton-raphson
+
+
+
+____________________________________________________________________________________________________________________
+sgn calc code:
+#pragma once
+
+namespace chowdsp
+{
+/** Methods for implementing the signum function */
+namespace signum
+{
+    /** Signum function to determine the sign of the input. */
+    template <typename T>
+    inline int signum (T val)
+    {
+        return (T (0) < val) - (val < T (0));
+    }
+
+#if defined(XSIMD_HPP)
+    /** Signum function to determine the sign of the input. */
+    template <typename T>
+    inline xsimd::batch<T> signum (xsimd::batch<T> val)
+    {
+        using v_type = xsimd::batch<T>;
+        const auto positive = xsimd::select (val > v_type ((T) 0), v_type ((T) 1), v_type ((T) 0));
+        const auto negative = xsimd::select (val < v_type ((T) 0), v_type ((T) 1), v_type ((T) 0));
+        return positive - negative;
+    }
+#endif
+
+} // namespace signum
+} // namespace chowdsp
+
+____________________________________________________________________________________________________________________
+
+The following SIMD instruction set extensions are supported:
+
+Architecture	Instruction set extensions
+x86		SSE2, SSE3, SSSE3, SSE4.1, SSE4.2, AVX, AVX2, FMA3+SSE, FMA3+AVX, FMA3+AVX2
+x86		AVX512BW, AVX512CD, AVX512DQ, AVX512F (gcc7 and higher)
+x86 AMD		FMA4
+ARM		NEON, NEON64, SVE128/256/512 (fixed vector size)
+
+https://github.com/Chowdhury-DSP/chowdsp_wdf/blob/main/include/chowdsp_wdf/math/signum.h
+simd implementation.
+____________________________________________________________________________________________________________________
+
+		excite1				stiff		
+		source	   ->	folder	   ->	string
+		wdf model	wdf model	wdf model	morph
+							   ->	wdf		resonant
+input		excite2				tube		eqn calc   ->	body
+transormer  ->	source		 ------>	etc.				wdf model	covolve
+model		wdf model			wdf model				    ->	wdf calc
+													|
+						BLEX				modal			|
+						fourier		------>		resonator		|
+						eqn calc			wdf model		|
+													V
+												fx1
+												fx2 ->	fx4 ->	out
+												fx3	fx5	trn													____________________
+													all wdfs
+
+
+____________________________________________________________________________________________________________________
+
+every one of those wdf models could be selected from a few - dif things like transformers, 808 kick drums circuits, string/tube etc models, resonant bodies, tape effects, tube amps, cabinet models, bbd delay effects, etc. etc. - all analogue model emulations with temperature variations/tolerance errors/aging effects
+a whole customisable, vintage analogue emulation synth
+build your own synth but as if you had a array of oldskool 60's tranformers fropultec or a filter from a moog or a modal resonator from a 2000's modular or a tape reel 2 reel from studer, etc. ect
+😮
+would look like a box with maybe 6-8 lil lcd screens and 16-24 knobs  - scolll using a given knob, select the particular model, then use knob to set filter cutoff or tube material or tape brand or age of synth etc.
+then play music with it!
+ooooh.....
+@.@

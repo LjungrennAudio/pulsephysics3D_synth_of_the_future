@@ -1,0 +1,7 @@
+introduce more non-linearities?
+
+better interpoltion?
+
+extend/warp geometry morph filt function?
+
+add models?

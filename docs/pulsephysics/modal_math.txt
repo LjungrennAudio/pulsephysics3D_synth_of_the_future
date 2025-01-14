@@ -1,0 +1,176 @@
+
+note, as stated in the pulsar math document, efficiency is key. this is relevat and true because:
+
+simple fact, modal synthesis is somewhat computationally expensive. there are somme ways discussed in the literature to  mitigate this;
+
+```theoretical models tend to generate an infinite sequence of modes, but only a finite number of them will be in the audible range. an abvious option immediately is to remove any modes if fk ≥ 22kHz (or the Nyquist limit if sample rate is below 44.1kHz), but this has two undesirable side effects:
+- continuously modulating pitch [possibly not relevant?], will result in some modes crossing the 22kHz threshold and so will 'zap' in and out of existence. This will create discontinuities in the output signal.
+- Generally, lower pitches will require more modes, and so will result in a different real-time CPU load depending on which note is played.
+
+although the first issue can be prevented by making a fake lowpass filter that smoothly crossfades modes to 0 as they approach 22kHz, the second is a well-known issue in modal synthesis, and the best attack strategy depending on design goals with regards to audio quality vs. CPU efficiency.
+
+If deterministic CPU usage is a concern, it is probably wise to lose some bandwidth and simulate a fixed set of modes, say the lowest eight modes - it boils down to finding the point resuting in degraded output quality. Standard strategies for reducing CPU cycles also apply. Modal synthesis doesn’t hurt particularly from downsampling.```
+
+this sounds like it might possibly be somewhat moot considering mi elements uses a bank of 64 filterss, implying they are somehw either very efficiently computed - i.e. the techniques employed were significantly different from those used in the literature from which the math below was derived, such as some form of clever complex fourier transform network, such that raw long form calculation of each relevant term one by one in full for every parameter of every mode was avoided, processing power was considered sufficient to be irrelevant or other shortcuts to simplify the total number of calculations were used such as removing all situations where repeat computation of recurring terms occurred.
+
+according to notes in modal synthesis literature, although heavy on computation, modal synthesis is ripe for taking advantage of vectorisation and/or parallel computation on multiple threads - it's worth investigating if this has been employed in the mi elements code, and if not is it applicable or relevant considering the possible techniques employed above and the nature of the [? forgot chip used...], and also, is it even worth it?
+
+considering the above, the basic mah behind moal synthesis is laid out below, long with relevant opportunities for expansion/variation/deveolpment, and hence questios that arise w.r.t. the math used in mi elements and the associated methods of coding employed.
+
+
+------
+------
+
+Modal synthesis is a method of synthesizing sound where an excitation signal is fed into a parallel bank of resonators,  each known as a “mode” [as discussed in other document], with each resonator generating an impulse response of an exponentially decaying sine wave and having three parameters: frequency, amplitude, and decay time.
+
+it immediately becomes apparent that even on a base level, there will be
+
+tn = a+[n-1].d modes, where since tn is known to = 64 [there are 64 state variable filters in the filterbank], and there's three basic parameters per mode,
+
+therefore there's 64 x 3 = 192 basic parameters to calculate and vary, as well ass the myriad of extended sub-parameters whch go too make up three parameters, so leaving possible situtions where up to 
+
+
+
+also of great relevance to the overal usage of this modal synthesis output as an impulse for pulsar synthesis mdulator source is the initial phase state - 0i when the resonator bank is excited. it i possible it always resets to 0 and can be assumed therefore that to achieve 
+
+------
+
+a resonant body can be considered a collection of N modes, each characterised by a triple (fk, Ak Rk), where f is frequency, A is amplitude and R is loss factor, k denoting the mode no., k = 1, 2, 3,...
+
+it is also worth noting there is some sort of resonant filter involved as common in many synths - i think in thecase of elements this may be the brightness control. all i can gather is it is likely a two pole complex resonant filter, digitised with an 'impulse-invariant transform' [quite fully what this means i dont really know and therefore reasons given involving avoiding frequency warping resulting in innacurate rendering of fk and the resulting biquad not responding well to modulation are slightly outta my depth. nevertheless, it's worthy of note that this should inform any attempts to vary the filter employed or the subsequent digitising method - whether good response to frequncy modulation is desirable w.r.t. to the filter as far as puposes of this project are concerned or if the resulting issues can be exploited for creative advantage is wide open.]
+
+------
+
+time:
+note, rather than working directly with the loss factor replacing the usual time contstant, acting, for example, directly as decay in a normal synth equation, e.g. tk decaying from 1 to 1/e, instead we'll jump straight to using Rk = 1/tk [it greatly simplifies most future formulas]
+
+pitch:
+since pitch tends to be a) user defined and  b) synth models such as modal synthesis being agnostic to pitch, requiring  fk only be multiplied by a constant frequency ratio we need just store frequency ratios relative to a fundamental, f0, for each mode, where this is arbitrarily defined f0 = f1, so to decouple frequencies and ratios this will be written:
+
+fk ~ k
+
+where '~' is meaning proportional to, i.e. the rhs should be multiplied by a constant, in this case, to achieve desired pitch,
+
+fk = kf0
+
+------
+
+in at least on part f the equation used in ni elements, a 'stiff string model' is employed, but to slightly add complexity there is an 'inharmonicity factor', B, present. varying values of B shifts or 'stretches' the modes [and hence is sometimes called a 'stretch' factor]such th  suble tuning change alter the quality of the tone at small value changes [think detuning, but by a varying amount], and producing significant tuning loss at great  value changes.
+
+***in elements B ranges from -0.006 to 2 in the equation [?]: we may want to try this with a varying reponse curve?***
+
+fk ~ k[1+ (k - 1)B]
+
+B = 0 [i.e. default non-present results in the modes sat on the overtone series.]
+B = 10^-3 [i.e. small but positive, will result in slightly metallic qualities] 
+B = larger but +ve [will lose tuning more significantly, used to emulate a hand failing to stretch to reach notes on a long necked instrument, for example]
+B < 0 [compresses modes rather than stretchig them, giving a rather strange effect]
+
+[note: this is a fast approximation derived from the stiff string model used in standard piano modal syntesis literature, fk ~ k[SQRT]1+Bk^2 .]
+
+------
+
+time/pitch:
+since frequency dependent damping tends to be desirable [consistent loss factor, i.e. tk being universal for all frequency modes], i.e. real objects tend to have losses as vibrations propagte through the material dependent on frequency, these changes in loss factor usually employ a second-order decay model in literature:
+
+Rk = b1 + b3.fk^2
+
+where b1 is in hz and b3 is in secs.
+b1 being the global decay time variance and b3 the losses to high frequency damping.
+
+values of b1 = 0.5secs^-1 and b3 = 1.58.10^-10secs is used for middle  on a piano string in literature.
+[technically literature uses angular frqequency in above equation, i.e. here b3 has been divided by 4pi^2]
+important when messing wih these values, w.r.t. synths, they result in significantly longer decay times for low notes vs. high notes, so it's helpful to make b3 frequency dependent loss factor per mode, hence we introduce a third co-efficient b0 to vary loss factor by pitch:
+
+Rk = b1 + b3.fk^2/f0^2 b0.f0^2
+
+this decouples decay times from damping amount and so gives the creative controls desirable in a synth.
+
+***[as a result both b1 and b3 are values of interest to vary as individual controls broken out to front panel, not just simply as decay time/damping, but specifically as values with varying curve responses, whilst either varying b0 w/wo varying curve as a front panel control, or simply adding a curve factor to it needs to be investigated.]***
+
+------
+
+amplitude:
+modal synthesis models sound output as vibrations radiating out from the resonating body into the environment for ears/mics to hear. since different bodies hav different efficiencies and higher frequencies are usually harder to radiate further, usually a high pass filter term is employed:
+
+Ak^blue ~ fk
+
+a blue noise type spectal tilt of 3db/oct is used here, but since any eq further on down the line then alters this and it's technically as a result a matter of taste, any model chosen could be employed. i.e. replace the '^blue' term with '^EQ';
+
+***investigate varying this and even inserting some control option involving an eq section at this point.***
+
+since position a stiff-string is plucked at will produce different results - anything from wont activate if plucked at node of a standing wave to strong response if plucked at antinode of said standing wave; position is calculated by the term:
+
+Ak^pos = sin(pi.k.x)
+
+where x = 0 to 1 and since different values of x result in different timbres, not only does this have intersting effects when varied, but adding a response curve [can this simply be altered by changing the 'sin(pi.) function?] or humanise element, 'xh' [how do we generate the random element of xh, and what kind of value range is appropriate? adding further complexity, a degree of frequency dependency to xh - for example an (fk.?)xh term where ? is some necessary scaling factor might be cool] could result in some organic results.
+
+[there are notes in the synth modal synthesis literature the importance of processing the Ak terms before the filter is applied because processing Ak after filtering would result in sudden changes of amplitude with change in exciter position 
+
+as ever this perpetuates the eternal assumption that changes in amplitude are undesirable, and although, yes, sudden changes that produce unmanagable results are a problem, the lazy shortcut resulting assumption that all changes in amplitude resulting from changing parameters other than direct amplitude envelope or tk and their derived results are somewhat flawed.
+
+this attitude results in a lack of any dynamics at all from varying parameters like position and others that affect Ak so either removing a degree of realism or conrol over the organic aspect of a resulting sound whether trying to realistically model or merely offer a creative variety in resulting sound output.
+
+as a result, instead of always operating with the: excitation -> multiply by Ak terms -> filter model used commonly in more basic literature and especially commonly with synth folk who are terrified of dynamics, it might be interesting to allow some variation of amplitude dependent on position etc. and hence proccess the Ak terms after the filter.
+
+ofc, in reality, just swapping the order of processing with Ak after the filter can, as was the original reasoning behind choosing the traditional order of processing, result in some very unmanageable sudden changes in amplitude when varying Ak terms, so a way of balancing the two is required. possibly processing both order options and averaging the results, e.g.:
+
+excitation -> [ (multiplying by Ak -> resonant filter) + (resonant filter -> multiplying by Ak) ]/2
+
+but this would merely result in the overall dynamic variation from Ak term after the filter being halved in variance as would normally be present if the traditional prcessing order were simply swapped, so yes reducing the impact of resulting extreme changes in amplitude from varying Ak but also inherently halving the desirble dynamic variations too. therefore, applying a coefficient, a1, [value range to be investigated] in something more complex like:
+
+excitiation -> [ [(multiplying by Ak -> resonant filter).a1] + [(multiplying by Ak -> resonant filter).inv[a1]] ]/2
+
+where the positive operation involving a1 on the top processing order term [the 'safe', non dynamic one] and the opposing operation involving the inverse of a1 on the bottom processing term [the 'interesting/creative/organic/risky' dynamic one], where values of a1 = 1 giving a more traditonal non-dynamic, flat response amplitude response to varying pos/complex eq/etc., positive values of 0 < a1 < 1 giving an innitially less dynamic but increasingly more so as a1 decreases and values of a1 near 0 resulting in very dynamic, shifting responses in amplitude as pos/complex eq/etc. vary [although with concomittant increase in risk of sudden violent/unpredctable changes in amplitude as the pos/complex eq/etc. parameters are altered.]
+
+this further provides interesting opportunities to vary the amonut of weighting between the two orders in procesing terms, 
+e.g. by replacing the averaging '/2' term with a combo of a coefficient 'a2' and a weighting system that varies both the slope of the curve created by the a1 vs. inv-a1 term, and also the balance between the multiple Ak^ parameters inndividually such that differet weightings/curves affecting a1 vs. inv-a1 actually have a varying resultant output of balance between Ak^ ters between the two halves of the processing order choices. the result is a variable amount of overall dynamics resulting from altering the processing order along with a controllable emphasis over a linear vs. weighted respne to shifting the processing order balance at the same time as an actual shift in the weighting of particular Ak^ parameters. i.e. not only will there be a controllable degree of resultant dynamics from varying the general Ak^ terms i.e. changing pos might have no effect on amplitude or a strong but somewhat occasionally unpredictable effect, also, the curve affecting the resulting change in dynamics will be controllable - from most dynamic variations due to altering position occuring at a relatively consistent, greater change in pos giving greater dynamic resonse, through to hardly any dynamic resonse occuring from a small alteration in pos, yet large changes in pos etc. resulting in very exggerated dyamic change, and in parallel with this change the relative balance of effects of the different individual Ak^ terms varying depending on this alteration in curve response to the a1/inv-a1 balance.
+
+therefore, instead of the existing Ak = Ak^EQ.Ak^pos term found in the current equation, perhaps it may be intersting to expperiment with something like:
+
+Ak = [(Ak^EQ.Ak^pos).a1 + (Ak^pos.Ak^EQ).inv-a1] /a2
+
+where, when values of
+a1 = 1 then the traditional no dynamic response to variance in position etc. results. 
+a1 = 10^-6 then at x = 0 there is always maximum Ak, i.e. no 
+
+
+
+the EQ term might be anything from a simple 'x'dB/oct spectral tilt, whether high pass for realism, value of 'x' varying the degree of extremity in oss of high freequencies to absorptin by radiation medium, a low pass or other alternative simple filter model to provide deifferent intersting phyics with predictable but creative results or even a multiband [parametric] eq system to allow complex control over the respone to varying frequency absorption by radiation medium.
+
+
+
+
+Ak^EQ = 0 to -inf db between fc = 20hz and 22khz
+Ak^pos = sin(pi.k.x) = sin(pi.1.x) for 1st mode 
+
+
+
+Ak = [y.[[sqrt|[1-a].x]^a]] + [x.[[sqrt|[1-a]].y]^a] ] /2 = win
+
+for values of a = 0.01 to 0.9 tested ad successed
+x = 1 to 0.1, y = 0.1 to 1
+
+Ak = [ [x+y] . [[sqrt|[1-a].x]^a] ] /2 =
+
+
+a = 0.9 gives natural downward trend - the lower the x, the smller the out. 
+a = 0.01 gives a total inverse action, he lower the x the greater the out.
+
+or
+
+Ak = [ [[1-x].[[[sqrt|[1-a]].x]^a]]+[x.[[sqrt|[1-a].x]^a]]] ]/2 = win again
+
+Ak = [ [x+[1-x]] . [[sqrt|[1-a].x]^a] ] /2 =
+
+for same values of a, and x same, just used y = 1- x
+
+this means tho can do with one term if wanted, evenif two terms are similar or even just both +ve the vary curve should work!
+
+
+
+
+y(t) = sum K for k=1 
+
+
+arm cortex ic run hot and underperform - you need more oomph than thedev kit ir pc might show - especially the dif between running on intel pc transferring to arm 

@@ -1,0 +1,113 @@
+referring to appendix i for more info on dac/adc's;
+
+
+sampling theory and introduces the concept of aliasing:
+
+why do we tend to think that an analog signal can be converted to digital and back to analog without any significant loss of information?
+
+how can sampling a non-destructive operation, when it by nature has to discard some of the signal behavior that we observe between the individual samples?
+
+How on earth can we dare to claim we are digitising continuous information and then restoring that information such that the original signal can be be recreated with no loss of information?
+
+
+------
+The Nyquist–Shannon Theorem
+
+
+Such a claim is possible because it is consistent with one of the most important principles of modern electrical engineering:
+
+"If a system uniformly samples an analog signal at a rate that exceeds the signal’s highest frequency by at least a factor of two, the original analog signal can be perfectly recovered from the discrete values produced by sampling."
+
+putting that wording into math we get, for example applying the sampling theorem to a sinusoid of frequency fsig, we must sample the waveform at (fs ≥ 2fsig) if we want to enable perfect reconstruction. Another way to say this is that we need at least two samples per sinusoid cycle. Let’s first try to understand this requirement by thinking in the time domain.
+
+a sampling instant, s, is a precise moment at which the analog voltage is measured and converted into a number and occurs at a rate of fs.
+
+i.e. we are sampling at 2fsig samples per cycle (fs = 2fsig)
+
+To better visualize what this sampling procedure has resulted in, try plotting the fs values and then connect them with straight lines. The straight-line approximation looks exactly like the original signal: the sampling frequency, fs, is very high relative to the signal frequency, and consequently the line segments are not noticeably different from the corresponding curved sinusoid segments.
+
+now try reducing the sample rate:
+
+20 samples per cycle (fs = 20fsig)
+10 samples per cycle (fs = 10fsig)
+5 samples per cycle (fs = 5fsig)
+
+reducing the sampling frequency, the appearance of the straight-line approximation diverges from the original.
+
+At fs = 5fsig, the discrete-time waveform is no longer a pleasing representation of the continuous-time waveform. However, notice that we can still clearly identify the frequency of the discrete-time waveform. The cyclic nature of the signal has not been lost.
+
+
+
+The Threshold: Two Samples per Cycle
+
+
+The data points produced by sampling will continue to retain the cyclic nature of the analog signal as the number of samples per cycle decreases below five. However, eventually a point at which frequency information is corrupted is reached.
+
+With fs = 2fsig, the sinusoidal shape is completely gone. Nevertheless, the triangle wave created by the sampled data points has not altered the fundamental cyclical nature of the sinusoid. The frequency of the triangle wave is identical to the frequency of the original signal.
+
+However, as soon as the sampling frequency is reduced to the point at which there are fewer than two samples per cycle, this statement can no longer be made. Two samples per cycle, for the highest frequency in the original waveform, is therefore a critically important threshold in mixed-signal systems, and the corresponding sampling frequency is called the Nyquist rate:
+
+ 
+
+"If we sample an analog signal at a frequency that is lower than the Nyquist rate, we will not be able to perfectly reconstruct the original signal."
+
+
+try comparing plots of:
+
+2 samples per cycle (fs = 2fsig)
+1.9 samples per cycle (fs = 1.9fsig)
+
+they very beautifully demonstrate the loss of cyclical equivalency that occurs when the sampling frequency drops below the Nyquist rate.
+
+
+At fs = 1.9fsig, the discrete-time waveform has acquired fundamentally new cyclical behavior. Full repetition of the sampled pattern requires more than one sinusoid cycle.
+
+However, the effect of insufficient sampling frequency is somewhat difficult to interpret at 1.9 samples per cycle. plotting 1.1 samples per cycle (fs = 1.1fsig) makes the situation much clearer.
+
+lacking knowledge of a sinusoid and performing an analysis using the discrete-time waveform resulting from sampling at 1.1fsig, you would form seriously erroneous ideas about the frequency of the original signal. Furthermore, if all you have is the discrete data, it is impossible to know that frequency characteristics have been corrupted. Sampling has created a new frequency that was not present in the original signal, but you don’t know that this frequency was not present.
+
+The bottom line is this: 
+
+
+"When we sample at frequencies below the Nyquist rate, information is permanently lost, and the original signal cannot be perfectly reconstructed."
+
+
+
+------
+The Nyquist–Shannon Theorem in the Frequency Domain
+
+
+Most signals, unlike those considered in the previous section,  are not single-frequency sinusoids. For example, a modulated RF signal has frequencies associated with the carrier and the baseband waveform, and an audio signal representing human speech will cover a range of frequencies. 
+
+We use the Fourier transform to visualize the frequency content of a signal. Time-domain plots are a good way to convey the effect of insufficient sampling rate in the context of a single-frequency signal, but for other types of signals, lets consider the frequency domain.
+
+
+Frequency-Domain Effect of Sampling
+
+to digitize an audio signal that includes a mixture of many different frequencies within a specified range, the high end of the range is defined as fmax, and assuming that the range extends down to DC, even though that's below the range of human hearing, it suits the math here. the Fourier transform of such a signal might look something like this:
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

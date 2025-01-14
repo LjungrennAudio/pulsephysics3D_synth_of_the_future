@@ -1,0 +1,440 @@
+after reading this txt {laws synth.txt}, follow onto :
+\cite {vntg}C:\Users\Tab\Desktop\synth\n-space emulation.txt
+
+
+- i'm designing a very novel [architecture mathematically/code wise, but hopefully not too offputting outwardly] synthesiser.
+
+- it is on it's 3rd(?) 4th(?) working title change right now:
+the synth is currently named 'LjunggrenAudio PulsePhysics N-space vintage edition'
+
+- it will be a box, with some knobs and a lil screen.
+probably a nice metal case, cram enamel, black kinda vintagey plastic rounded knobs.
+thinking maybe a nice gentle blue backlight for the lil lcd screen.
+
+
+- i'm doing everything i can to satisfy two main design concepts/target market:
+i)  its a synth for sound designers.
+ii) nevertheless, it must be very very simple and intuitive to use.
+
+- corollaries:
+i) if i designed literally _only_ for sound designers, it wouldnt sell a single unit.
+in fact i probably will find 45% of my market would be people who only ever buy one or two hardware synths but like something quite experimental, aim at higher end of market and like to feel they have really made a good choice of decent gear.
+another 45% or so of my market is like to be people who are trying to break away from their current hardware tradtional progression of keyboard subtraactive analogue synths that make up [no hyperbolae here] 95% of exisiting market. and always have.
+the remaining 10% will be those real unexpected unpredictables who actually are sound designers, famous weirdo musicians like aphex twin and me cos i kinda only stard this whole thing just for fun anyways. :D
+
+- all that said, if its going satisfy the identified actual likely market, than it must be instantly and continuingly usable to all - i.e. it an be box open > switch on > make noises, and also keep those who want to get ridiculously complicatedly fucking deep happy for years.
+
+therefore
+a) this thing must have a UI that is very simple, easy to use with _near_ no learning, and be intuitive in a special way - it must have that great quality of satisfying ergonomics, layout, concept, well written documentation etc., no learning to program it, no menu diving via one button and tiny screen;
+b) also be capable of making pretty much an infinite array of totally new sounds, not being too similar to anything on the market or gone befroe reaily available still, and yet tho novel not be so weird or poorly explained that it is unusable.
+c) its gotta sound good, look good and not be boring after 10yrs. were talking absolute instant classic.
+
+yup, i'm attempting to plan for the impossible - to be one of those magic weird things no-one could have predicted would still be a greatest thing since sliced bread asfter 30yrs, everyone loves em, they retain value, and yet they are actually still really well designed - simple, intuitive, aesthtically pleasing, and sound grrrrreat!
+
+------
+
+\cite {vntg} the diagram needs `mix-space` section completely deleting,; total re-labelling of entire synth to not be synthesis/technical language - should satisfy conditions set above; also much, much simplifying of effects section - currently labelled `cheese thru medium of dance` ( :P ).
+
+
+overall:
+
+- specifically super important requirement rule: planning for absolute no meny dive; no interacting with any displays whatsoever: no menus, no alt/shift modes, no nothing - screens are there for info/feedback etc. just so you dont have to try to grasp in a imaginary head space whats going on.
+
+(should mean the one little friendly lcd rectangle - i currently have a concept of gentle `dark blue` backlit with `lighter blue` txt? - it'll be able to communicate every single status/info you could possibly need as a simple graphic for the entire synth.)
+
+
+`introducing: LjunggrenAudio PulsePhysics n-Space Vintage ed.`
+
+a unique sound design synthesiser with four different architecture synthesis engines:
+- 'true-analogue circuitry' roland tr808 clone kick `exciter`; 
+- `BLEX/digital waveguide/fft spectra-map model` : N-space morphing tri-cossynthesis main-engine out. 
+emulated 'vintage' fx engine - gives entire synth parameter space an analogue, aged, warm sound.
+- true analogue lockhart wavefolder circuitry | modelled tape/ir-mapped amp/modelled cabinet : emulators. 
+
+
+overall pitch	- [Pitch affects all 4 synthesis egnines identically]
+		  [fine  affects all 4 synthesis engines identically]
+
+output volume	- [does overall output vol.] [headphone output vol. when headphones inserted]				
+
+		  [balance between 3 main engines controlled by the N_{x,y,z}-(n_{x},n_{y},n_{z}) space controls]
+
+digital waveguide stiff string model;	[stiffness], [damping], [brightness] and [pickup distance]
+BLEX synthesis;				[pulsaret waveform;pulsaret/formant env waveform select],
+					[pulsaret/formant env-shape], [pulsaret/formant env shape],
+					[output env attack]   
+fft spectra-map synthesiser;		[spec1], [spec2], [spec3], [spec4]
+
+Roland tr808 kick clone `exciter`;	[tone] and [decay]
+
+
+
+
+
+all given as real coefficient present in functions representing musical use of modal synthesis in literature, but
+elements genrated all stiffness, pickup position effects, geometry purporting to be different body models and resonating element models - brightness from a damping filter and a dispersion filter - by combing various aoutns of frequency detune and damping scaling or dispersion scaling in an impressively complex set of interactions no actual physical modelling function was ever used. 
+ 
+- 'geometry' or in any other context of modal synthesis the resonating body model, is not really seen as a single continuous variable since it would require morphing entire filter bank functions - interpolating between maybe 10 different fucntions that could have up to 64 separate parts for each value of K.
+hence i dont expect to vary filter function as affects model employed.
+
+i would however love to achieve  some form of 4th control as well as the damping, stiffness and pickup position.
+maybe simply i'll leave that available for the modulation of something - i dodnt leave myself enough scope  for modulation on my previos design attempts.
+
+
+wavguide synths: [need only 4 controls? only one voice model not 64 modes even if theres things being morphed between - the coefficients these controls would vary are consistent across the different fucntions that represent the models]
+- length
+- damping- 
+- dispersion
+- maybe some nonlinearity specific
+that lot are x 2 cos 2 waveguide synths
+
+pulsar synth:
+pulsaret waveform select - just scroll through a wavetable bank
+pulsaret env sel - as above
+duty cycle env sel - as above
+pulsret env scale - simple 1d value change of a waveform
+duty cycle env sccale - as above
+PulwM crossfade amount - it a direct vary coefficient thing
+output env arttack - simple single value very
+single switch for OPulWM on/off
+
+how do i solve the issue of going from internally generated wave choices to user loaded wave choices?
+
+
+waverfolding of vco output that poputlate the internal pulsaret waveform wavetable
+- single value easy avry
+
+
+want some kind of save patch/load patch thing
+how do in only one or two things maximum?
+
+
+think can do the mixing between amount of pulsar/modal fb/waveguides/convolved result/etc. in one simple section using that hyperspherical mix map thing?
+also can probly minimise the mid-side/panning; 3 band eq wiht total of maybe 4 - 6 control inputs?
+
+
+spatial spectral map thing might be justa  single knob to select map to apply...
+
+
+if having analogue BBD or analogue distortion option on outpout then thats not really like to involve the cpu etc.?
+
+
+
+biggest unknown is modulation - scanning around a 3d synthesis model space is the kind of thing synth people love a load of lfos and envelopes for. they really like matrices that allow selsection of a number of source/destination routing setups quite compactly and simply
+[unffortunately i hate that shit so i'm pretending its not an issue yet...]
+
+
+
+
+-----
+
+there's a whole string of crap in the rest of this document that's basically work in progress to put into words in one place what will be the non-math/non-code description in total with all treferences my entire design concept in quite a lot of detail evetually - it'll probab;y become part of the user manual and aslo help the guy who's coding it to translate my math, proto-code, links to research jounrals/websites etc. and turn it into real code.
+
+
+so. what the fuck actually is all this?
+
+i'm designing a synthesiser.
+
+a box that makes electronic noises.
+
+contrary to any possible prior misconceptions, its not for a modular synthesiser - this is a standalone unit as a one off thing just to make sounds on its own or be hooked up to computer in a studio/whatever.
+
+it wont have a keyboard, it wont be impossible for the user to grasp when they can ctually see it, wee a pic of it or actually get their hands on it.
+
+as a result of that and the blurb ive wirtten so far;
+
+heres a few basic design rules i'm following:
+
+- it will assume no prior knwledge of any music makign what-so-ever. 
+- i.e. anything past just power on and turn knobs should be entirely optional.
+- it must be simple/intuitive/inviting - we learned this studying:
+\cite {elem}
+- like all absolute enduring design classics it must satisfy a magic aesthetic conditon that is very hard to define
+  :: it's gotta look real fucking cool to most people who see it, tho it doesnt have to be instantly loveable -      falling in love is acceptable if itcatches the eye readily. [think bright red plastic nord keyboards.]
+  :: it must just look right. like a synth. but not _too_ like all the other synths.
+  :: its gotta have enough knobs n crap to appeal to the synthy nerds, but  not so many it scares the majority.
+  :: it cant looks so new its radical and offends people, bit it cant look so comforting it just ;ooks old quickly. 
+  :: this means timeless, but appealing to both gen-z and youger as well as 65+ pink floyd dad.
+  :: it's gotta have real good ergonomy - you shouldnt _need_ to read the manual. ever.
+
+
+i've by now been through a number of iterations toward fundamental architecture of the synthesis engine math/code required, grasping key design fulcrums - a rough idea of how front panel will be sorta laid out, how the workflow to making a sound will occur hence how the actual synth will work logically, hence how to code it, hence the essential math required, hence the fundamental theortical math to either derive the code from or to resaerch if its yet to be derived.
+
+i have arrived at some fairly solid stable design concepts as a result - other stuff is still radically evolving...
+
+it will be easier here to give a very brief paragraph history of how i got to where i am so that it becomes clear why i'm where i'm not.
+
+...a coupe of the  modular synth modules i own that are not analogue [i.e. are like little computers running behind the frontpanel of knobs etc.] were designed by a great lady called emilie gillet.
+- emilie gillet was [is] a fucking genius.  
+- when she retired from the world of synth making she made all of her designs - code, schematics, documentation, design diaries, lessons learned etc. etc. totally open source :O
+- although i knew this before she eve retired, for some reason a sorta perfect storm of random knowledge gained, motivation developed, access to people/money/time/etc. led me to start investigating this wealth of synth design resources.
+- after many months[?] years[?] of not really doing any synth design, i suddenly was so driven to build something like the wonderful synth modules i owned two[2] of, that i began to quickly accerlerate into the process of what at that point was an intent to create something akin to a mkii of emilie gillet's module.
+...ffw>> about 4 weeks and now i have learned a whole bunch of code basics, new math stuff, new synthesis concepts, read a _lot_ of journals, wikipedia, math text books, university online syllabi, and all kindsa other crap.
+
+and so here we are, this doc, the reference list cited later on and the other doc i'm sending, linked at the start led me to:
+
+
+make some fundamental certain decisions and so do reaserch or come up with solutions to stuff like:
+
+controls, features and effects etc. should be described/labelled as graspable with no prior specialist education nomenclature system, but NOT generated any different:
+- e.g. if we are implementing a chorus effect we should use the traditional delayline/combfilter/lfo/etc.
+- otoh if our intent is merely to warp a non-existent alien 'instrument' into another weird new sound, we do it by the highest qual vs. most computationally efficient means, but otherwise, innovate.
+
+- we shall not try to rewrite the existing accepted meanings of certain effects or synthesis types, or likewise use my weird made up shit and pretend its something defined and accetped as specific.
+
+- i.e. do not listen to the opinions of all peer reviewed jornal reserch, no matter how respectable:
+\cite {bs} not-cite https://www.dafx.de/paper-archive/2006/papers/p_107.pdf ***BS***
+
+
+must choose between:
+
+i.  total made up synthesis approach:
+- doesnt care at all what any inspiration was or what the results are as long as useable:
+- easy for synth sound creation.
+- very raw and risky for effects - its unknown territory; but could be fresh.
+great for sound design, most work to build cos no-ones done half of this before - even theoretically?
+
+ii.  pure reproduction - analysis/sampling and recreation via a sampler whose playback is perfecc as resolution allows:
+- tries to make real existing instruments - why bother, go buy a fucking violin.
+- easy for both synth and effect, everyone done it, boring. 70% of synth designers: pls think outside the box!
+- no real scope for creativity but little risk of horrible results
+so dull for sound design, not much work to build tho - its been done, so well, ...no challenge left :shrug:
+
+iii.  analysis/mapping 're-synthesis' approx approach:
+- still stuck in paradigm of trying to make existing real instruments/effects.
+- pressed right up against the box but looking in.
+- the creativity massively expands but theres also increased risk of succ results - this is where emilie gillet's module i got inspred by shone. it started wth tech derived from a recreation of real instruments but left rooom to go further.
+this method is quite fun for sound designers, but could try harder. kinda been done - new developments in computing leave little rom for challenge.
+
+iv.  synthesis modelling approach:
+- starts with some vague math/code that resembles architecture for creaing things that _could_ replicte real instruments - but, can still do what you like if you can compute it, if it satisfies ui intuiton rules and if current tech can cope.
+- con: such synths been done as long as theres been synths - we been p much going [closer to real instrumemts - i.e. backwards] as hard and fast ever since.
+- pro: effects otoh near unexplored. could be awesome for sound design. 
+- con: ofc both synth and effects extreme risk of crap results.
+- not obvious pro: just because every other idiot fucking synth designer uses this tech/math/code to try to make a violin sound... why not set string stiffness to 1,000,000 :O
+
+
+bear in mind, until approx 4weeks ago i'd never made a dgital synth, didt even know the theory, there for had not s fucking monkeys wrt the code/math.
+
+it would seem obvious despite risks of breaking new cos would be he most likely way to innovate, be clever and genius etc.
+
+but, i reeeeely had no clue. so i started by stufying the open source c++ code availble on github for emilie gillet's 'mutable instruments - elements' module that i loved so dearly.
+
+after all, it was great for sound design, required no prior synth programming knowledge to get sounds out of the module and, could amke an _infinity_ of fuckign weird sounds from like... 20 knobs?
+
+
+so therefore, i made [i.v. the synthesis modelling] approach the way ro start my jorney, since that was the concept elements was based on according to the manuall of this thing so beloved by sound designers.
+
+::::::::::::
+
+time passes by 4 weeks or so and i'm now discovering thar my current design makes the "n-dimensional mix space" moot unlessthe synth is " polyphonic" or _at least_ "outputs stereo signal".
+
+DDDDDDDDDDDDDDDDDDDDD:
+i'm in deep.
+
+------
+
+research so far:
+curtis roads original paper on pulsar synthesis
+\cite {pulsar}C:\Users\Tab\Desktop\synth\SoundCompwithPulsars.pdf
+derivtion of pulsar synthesis math/code comes mostly from impulse train math/code:
+\cite {impt}https://ccrma.stanford.edu/~jos/sasp/Impulse_Trains.html
+c++ in bout 100 lines
+\cite {c++}C:\Users\Tab\Desktop\synth\c++.txt
+would be fucking incredible to use real transformer in/out with vintage tranformers 
+\cite {trans}https://www.sowter.co.uk/cgi-bin/sh000001.pl?WD=8344&PN=VINTAGE%2dCOMPRESSOR%2dTRANSFORMERS%2dA%2dto%2dK%2ehtml#a260
+a large chunk of my yet to be cobbled into one uniersal upto date doc for synth:
+\cite {pul3d}C:\Users\Tab\Desktop\synth\design consids pulsar synth.txt
+tape emul [note: waves j37 is a studer model]
+\cite {tape}https://ccrma.stanford.edu/~jatin/420/tape/TapeModel_DAFx.pdf
+speaker cab emul
+\cite (fxname}https://www.dafx.de/paper-archive/2008/papers/dafx08_17.pdf
+general overal 'vintage' control
+\cite {sos}https://www.soundonsound.com/techniques/analogue-warmth
+orig concept inspiration
+\cite {elem}https://github.com/pichenettes/eurorack/blob/master/elements/
+relevant to efficient stiff string model: Filtered-Feedback Comb Filters
+\cite {comb}https://ccrma.stanford.edu/~jos/pasp/Filtered_Feedback_Comb_Filters.html
+how i will properly write out the math/code:
+syntaxfor mathematical proofs/derivations etc:
+\cite {syntax}https://en.wikipedia.org/wiki/Theorem
+language for writing out math in raw txt docs: LaTeX
+\cite {leaf}https://www.overleaf.com/learn/latex/List_of_Greek_letters_and_math_symbols#Miscellaneous_symbols
+LaTeX math language:
+\cite {ctan}https://mirror.ox.ac.uk/sites/ctan.org/macros/latex/required/amscls/doc/amsthdoc.pdf
+BLEX concept for something efficient, pulsetrain but not boring saw/sqr/tri:
+\cite {BLEX}https://signalsmith-audio.co.uk/writing/2021/analytic-pluck/#the-exponential-frequency-click
+one of many possibly no longer relevant references towards real time convolution of time varying filts:
+\cite {LazConlv}https://www.mdpi.com/2076-3417/8/1/103
+one of many promising sources for morphing multiple filter based synth maps: 
+this is the spectral bible thanks to to stanfords julius iii:
+\cite {sasp}https://ccrma.stanford.edu/~jos/sasp/sasp.html
+the collection of the majority of the non-journal research into harmonic distortion
+\cite {dist}C:\Users\Tab\Desktop\synth\distortion.txt
+why i am near totally abandoning all elements code except maybe top level architecture/arrangement
+\cite {limits}C:\Users\Tab\Desktop\synth\elemments limits.txt
+details of every single thing in the entire elemesnts code controlled by geom knob. proof shes bs.
+\cite {geom}C:\Users\Tab\Desktop\synth\geom.txt
+the basic math derivations and proofs to refeer to when employing latst journal resarch to make my math
+\cite {math}C:\Users\Tab\Desktop\synth\math proper.txt
+fascinating paper containing an entire modal synth written using the existing java class [modal]
+\cite {java}C:\Users\Tab\Desktop\synth\modalpaper.pdf
+has bits that need to go into the final manual
+\cite {keep}C:\Users\Tab\Desktop\synth\pulsar synth controls and manual.txt
+a few things to include in final doc
+\cite {ideas}C:\Users\Tab\Desktop\synth\good ideas.txt
+a diagram of pulse phyysics 3d with the correct math labels on controls
+\cite {scartch}C:\Users\Tab\Desktop\synth\scartch.txt
+possibly wrote out some really crucial fourier math of some sort - looks like a morph?
+\cite {why?}C:\Users\Tab\Desktop\synth\why sumdif seems convolv.txt
+refer to this when actually starting sorting out this doc:
+\cite {rules}C:\Users\Tab\Desktop\synth\synth design rules.txt
+may have valuable math defining aliasing issues
+\cite {alias}C:\Users\Tab\Desktop\synth\half ass math for abandonded anal test vco.txt
+i think unciteable usual synth\wave idea.doc has BLEX synthesis
+the antialiasing bible
+\cite {alias}C:\Users\Tab\Desktop\synth\why we dont need to be anti-aliasingm math geniuses.rtf
+the only unsolved filter design mystery - emilie's elements svf workhorse - recursive code til compiled. :|
+\cite {esvf}C:\Users\Tab\Desktop\synth\your challenge.txt
+
+------
+
+half researched/half abandoned; now part moot:
+
+***assume all total bs***
+
+[pulsar synthesis math for exciter input source is exceedingy simple i think?]
+
+
+
+digital waveguide string model: [used again lalter]
+there will be multiple versions of functions derived here to morph between but the asme order filters etc. used so it will be consistent math required regardless of model in use.
+
+-----
+z-transform of all pass in delay line requires fourier transfer
+do efficient interpolations preferably withoout too much low qual LUT - 	https://ccrma.stanford.edu/~jos/pasp/First_Order_Allpass_Interpolation.html
+z-transform of delay line itself requires fourier transfer
+
+fir filter requires - [see multirate fb below]
+z-transorm i.e. fourier tansfer
+possible decent interpolation
+	https://ccrma.stanford.edu/~jos/pasp/First_Order_Allpass_Interpolation.html
+
+iir filter requires - [see multirate fb below]
+z-transform i.e. fourier transfer
+possible decent interpolation
+https://ccrma.stanford.edu/~jos/pasp/First_Order_Allpass_Interpolation.html
+
+------
+
+then would like to employ:
+
+Multirate filter bank
+A multirate filter bank divides a signal into a number of subbands, which can be analysed at different rates corresponding to the bandwidth of the frequency bands. The implementation makes use of downsampling (decimation) and upsampling (expansion). See Discrete-time Fourier transform § Properties and Z-transform § Properties for additional insight into the effects of those operations in the transform domains.
+
+for
+
+multiband resonator decay/dispersion and as Spectral Coloration Equalizer
+
+- if this is done then the fir/iir are even more complex calcs.
+
+also intereted in these:
+https://ccrma.stanford.edu/~jos/pasp/Tonal_Correction_Filter.html
+
+in which case - yup, more tranfer functions/transforms etc.
+
+------
+
+[note this has to be doen real time from ui control and whilst other parameters change and then esulting output employed as a usable filter as fast is the morphing is done.]
+
+math for morphing looks like this:
+
+convert fir/iir type filter function coefficients to reflection coefficeints
+ the fir/iir 'body' filters are warped IIR filters of order 100. [ D: ]
+
+log area coeffs. [LAR] coefficients allow interpolation directly between other filter coefficients.
+looks simpler doing the LAR calc.
+
+
+------
+[this bit doesnt vary - occurs after morphing if possible]
+non-linearities such as:
+
+i dont like all the regular bowed string/blown reed crap - i want tube amp/cabinet modelling:
+eq integrator pre;
+
+https://ccrma.stanford.edu/realsimple/SimpleStrings/Amplifier_Distortion_Amplifier.html
+
+eq differentiator post
+
+cabinet model filter.
+
+[/end used again later]
+
+------
+
+all of this 
+
+
+------
+[[feeds a filterbank - we dont need to do much scary with this i dont think - its realtively static.
+ours i hope to derive using this tool:
+Matlab/Octave “large time-frequency analysis toolbox (LTFAT)” toolbox - available at http://ltfat.github.io/.
+
+either way, we will end up with a non-uniform 'gammatone FB' - i have done a buncha research and it seems even if you dont choke your K value for number of modes they just p much never even reach 64 let alone exceed.
+
+havent yet settled if will use fir or fft or what for the filter types necessarily - the gammatone i think is some type of fft fb]]
+
+z-transfer calc for a fb - i.e. transform of soemthing with up to 64 terms to expand!
+
+
+------
+
+process the excited waveguide output signal through the fb:
+
+- calc modes then do as many as k =, then there will be decays and mutings and parametrics like brightness or stiffness or pickup postion etvc.
+- maybe extra non-lineariy terms or stuff comeing after too
+
+- always a sum/dif calc set for 3 loudest modes - requires same thing as other calcs but with two k inputs as k_1+k_2 and k_1=k_2 then giving frequencies and amplitudes etc that are either the two values multiplied or summed.
+
+- havent yet decided whether to do partials/weird harmonics and if so how - still researching - latest techniques seem tpo involve AM/FM operations on still separate sub-band signals.
+
+
+------
+
+the BLEX synthesis for the exciter signal to the other waveguide model involves:
+
+combo of inverse fourier and antialiasing filters taht elegantly boil down to a worryingly simple looking sinc() function 
+
+
+this then  goes to a set of morphed waveguide stuff as done earlier:
+
+[repeat of entire used again alter as mentioned above]
+
+
+------
+
+
+these output of gammatone fb and the morphed waveguide excited by BLEX are then realtime convolved using
+
+A time-domain implementation of TVFIR convolution employs two delay lines, one for each signal. implementation very similar to a standard FIR, except for the fact that we are replacing each sample of the impulse response
+
+so p much tho maybe can egt computationally intense boils down to 2 x fir filter delay lines:
+
+z-transforms requiring fft.
+
+
+-------
+
+
+the 3d mix mappingy thing itself shouldnt be too bad - all the maps will be preset/prelearned/pregen;
+
+so its a norm X kinda thingy.
+
+it would be fun to make the thing use the ai machine learn capabilities of cortex m55 to learn peoples mix prefences and populate the hyperspherical mix-space map with em but thats not my bag baby tbh.
+
+-------
+
+
+the spectra based spatial mapping i just a fft operation ithink?
+

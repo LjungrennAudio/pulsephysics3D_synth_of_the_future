@@ -1,0 +1,6 @@
+i honestly over the past decade have deeply become of the view that ux is more mportant than anything else
+i guess is like dif between a nice smooth oiled wood neck on an intrument and one wrapped inbarbed wire
+it ight look cool af but you never actually play the brbe wired guitar.
+hence ts been two monttha and i'm still working on the the ui of synth first and formost am designing
+yes, engine or archeitecture or deised sund etc. might seem to be key apporaches - but tho they dictate certain aspects of design, fundamentally like anything its aleays a trianlge or whatever of competeing aspects - you can favor/focus on something but it always means compromising elsewherre
+the real art of design/engineering is to get as many of the normally opposing 'polygon' points all pullling out to optimal without compromsing elsehwere - but each exta feature of major importance - keyb/no keyb, portability price, massproducable, aesthetics, etc. - the moe there aree thte gretae rchance something s suboptimal and the greater harder the tals of making it all gud or at least woking so that the compromises arent a huge issue for the chose setup 

@@ -1,0 +1,119 @@
+
+			custom user		custom user			new mixes?			custom load
+   			envelopes etc.		filter maps			machines learning?		spectra of spaces
+			    |			       |				|			      |
+			    v			       v				v			      v
+analogue		multivoice		live time-freq			mix-space is 1/2𝑛		spectral
+vco			pulsar grain   ---->	convolution of	    ---->	thesurface of a	     ---->	mapping effect    ---->
+|			    ^			FIR filter banks		hypersphere in			spatialisation
+v			    |							gain-space
+Virtual Analog	 ---->	populates		- real time			
+Models of the		wavetabe		parametric control		- each point in 𝜙		- parametric control
+Lockhart		    ^			of convilution models		is a unique mix
+wavefolder		    |							spectral centroid						
+			custom user						travel allows exploring
+- allows control of	waves from usb						these mixes.
+analogue modelled	/sd/?							even can be
+digital wavefolding								algorithmically auto
+
+
+
+
+
+
+			
+
+mix of n tracks		mix=∑_𝑛=1^𝑁.Ch_𝑛[𝑡] (1)	a point in an n-dimensional vector space, with each axis as the gain of a given track.
+
+
+adding a gain vector, 	𝑦[𝑛]=∑_𝑘=1^𝐾.𝑎_𝑘[𝑛].𝑥_𝑘[𝑛]	allowing for time-dependent changes to the track gains			
+'a' to each track
+
+			mix𝑙(𝑛)=∑_𝑚=0^𝑀−1.∑_𝑘=0^𝐾−1.𝑐_𝑘,𝑚,𝑙(𝑛).𝑥_𝑚(𝑛)	generic control vectors c which modulate the input signals x
+
+
+
+but, these equations considers the mix as the sum of the input tracks - hence these expressions characterise not strictly the mix itself but the output of as a sum also.
+the set of unique mixes is a subset of this set referred to as 'the mix-space'.
+rather than exploring the sum out put or individual gain-space parameters, exploring only the parameter space 𝜙 avoids the redundancies in g, which represents the gain vector of the system:
+
+			(𝑔1, 𝑔2, 𝑔3 , ⋯, 𝑔𝑛) = (𝑟,      ⏟𝜙1, 𝜙2, ⋯, 𝜙𝑛−1)
+			   -------------       --	-------------
+			     gain-space	  master volume	   mix-space
+
+track level, pan position and equalisation are commonly adjust parameters, but i prefer track level, dynamic eq [compression linked]/multiband compression and mid-side processing.
+
+at this point i quote directly from paper:
+
+"Consider the trivial case where two audio signals are to be mixed, where only the absolute levels of each signal can be adjusted. the gains of two signals are represented by x and y, where both are positive-bound. Consider the point p as a configuration of the signal gains, i.e., (p𝑥,p𝑦). From this point, the values of x and y are both increased in equal proportion, arriving at the point p′. The magnitude of p is less than that of p′ (∥p∥<∥p′∥) yet since the ratio of x to y is identical, the angles subtended by the vectors from the y-axis are equal (∠p=∠p). In the context of a mix of two tracks, what this means is that the volume of p′ is greater than p, yet the blend of input tracks is the same.
+As an alternate to Equation (1), a mix can be thought of as the relative balance of audio signals. From this definition, the points p and p′ are the same mix, only p′ is being presented at a greater volume. If the listener has control over the master volume of the system, then any difference between p and p′ becomes ambiguous."
+
+i.e. at any given time the mix is the ratio of all the components - in this case the two components p and p'.
+
+"From p, the level of fader y can be increased by Δy, arriving at q. In this particular example, the value of Δy was chosen such that
+∥q∥=∥p′∥. However, for any |Δy|>0, ∠q≠∠p′. Therefore, q clearly represents a different mix to either p or p′. Consequently, the definition of a mix can be also defined by what it is not:"
+
+when two different audio streams contain the same blend of input tracks but the result is at different overall amplitude levels, these two outputs can be considered the same mix.
+
+mathematically, for n = 2 signals represented by a total of n gain values, the mix is dependant on 𝑛−1 variables - appatently in this case the angle to the vector. The ℓ2 norm of the vector is simply proportional to the overall loudness of the mix.
+
+as n increases to n = 3 we expand into a 3 track gainspace, although this is generalisable to any number of tracks n, using hyperspherical coordinates. As in the two-dimensional case, it is the angles which determine the parameters of the mix and the norm of the vector is related to the overall loudness - i.e. the surface of the sphere (𝕊^2) represents all possible mixes.
+
+unfortunately, this total gainspace contains many redundant maixs since there are many places that would result in the same mix being chosen multiple times at different overall volumes.
+
+considering the mix-space, 𝜙, as a more compact representation of audio mixes than the gain-space, g; so far we've been using polar and spherical coordinates, for n=2 and n=3 respectively, to extend the concept to any n dimensions hyperspherical coordinates must be used.
+
+carrying out the inverse of the conversion from cartesian to hyperspherical, i.e. from hyperspherical to Cartesian 
+
+
+				g_𝑛 = 𝑟.∏_𝑖=1^𝑛−1.sin.𝜙_𝑖		where g_n is the gain of the nth track of a total of n tracks. 
+
+the angles are represented by 𝜙𝑖. By convention, 𝜙_𝑛−1 is the equatorial angle, over the range [0,2𝜋) radians, while all other angles range over [0,𝜋] radians.
+
+In the case of music mixing, only the positive values of g are of interest. Subsequently, the interesting region of the mix-space is only a small proportion of the total hypersurface. This fraction is 1/2^𝑛.
+
+As each point in 𝜙 represents a unique mix, the process of mixing can be represented as a path through the space.
+although real mix engineers do not traverse a random path through the space in order to arrive at the final desires mix, generating a large number of mixes randomly via computer processing and then estimating parameters using statistical methods, further generation and statistical analysis of time-varying mixes could eventually be used to produce a large dataset of 'good' mixes to choose from, or even result in machine learning techniques allowing automatic mixing algorithms.
+
+note: linear distributions, such as the normal distribution, are not appropriate as the domain in question is not linear but a spherical surface. statistics of such distributions are described by a number of equivalent terms in the literature, such as circular, spherical or directional statistics. to generate points close to a desired position on the (𝑛−1)-sphere, points are generated from a von-Mises–Fisher (vMF) distribution. the probability density function of the vMF distribution for a random n-dimensional unit vector 𝐱 is given by:
+
+				𝑓_𝑛.(X;u,K) = C_𝑛.(K).e^K𝜇^T_𝐱
+
+where K≥0, ||u||=1, n≥2 and the normalisation constant C_𝑛(K) is given by
+
+
+				C_n.(K) = (K^𝑛/2−1)/((2𝜋)^𝑛/2.I_𝑛/2−1.(K))
+
+in which I_v is the modified Bessel funtion of the first order v. u and K atre the mean direction and concentration paramters. high K results in high concentration of distribution around the mean direction, i.e. lower variance.
+
+for our purposes:
+
+u where |u| = 1 represents the mix about which others are distribute, akin to the mean in a normal diistribution.
+K represents the diversity of mixes generated, inversely proportional to variance.
+
+people have done some fantastic studies considering for example since vocals are often desired louder in a mix, adding a boost of 6.54dB to the vocal track prouduce a vector that when normalised by dividing by the ℓ2 (Euclidean) norm, resulting in yet another vector, the new u
+ on the unit 7-sphere about which a set of mixes will be generated.
+Each mix generated draws a gain value for each track such that the ℓ2 norm is equal to 1, the median values closely matching the vector u, as expected. although this method doesnt guaranantee mix out comes conforming to thos emedian values, it was demonstrated it can be successful!
+it also was tried for multi instrument/multichannel mixing - changing whole vector groupings at once with success.
+
+one problem - we've still been working entirely mono - summing all tracks too one channel. D:
+
+instead of altering vectors of u in the range [-1,1] in the mix space, it was demonstrated that pan positions p_n where -1 and 1 wer eleft and right allowed the mix space to be  treated as a pan space to generate ppsitions for each teack in the stereo field. pan-space if denoted by 𝜃, we get:
+
+			(p_1, p_2, p_3, ⋯, p)  =      (r_pan,     ⏟𝜃_1, 𝜃_2, ⋯, 𝜃_𝑛−1)
+			   ----------------        -------------   ----------------
+		           absolute panning        width-scaling       pan-space
+
+interestingly, although this is somewhat problematic for panning in that as the mix-space for gains (𝜙) takes advantage of the fact that a mix (in terms of track gains only) is comprised of a series of inter-channel gain ratios, the radius r is arbitrary and represents a master volume. In terms of track panning, one obtains a series of inter-channel panning ratios, the precise meaning of which is not intuitive. additionally, the radius r_pan would still be required to determine the exact pan position of the individual tracks. Therefore, the pan-space describes the relative pan positions of audio tracks to one another. not entirely useful.
+
+otoh as i mentioned before, i prefer mid-side processing to panning - which as a series of ratios relating different channel m/s widths to each other proportionally iss quite inuitive, and its certainly if anything convenient to work from an overall scaling master  ecessary to determine any individual m/s postitioning.
+
+the papaer solved the panning problem by analysing tracks as stereo pairs, with separate u_l and u_r - the vectors of which when summed to mono give the total u vector as processed previously. absolute magnitude of gain values were used to to avoidphase inversions from summing negative track gains produced when generating audio mixes.
+
+as a result the calculated furture pan vectors with a scaling gain vector u_pan alongside the pan vector r_pan. this meant that as K incread the dsistribution of pan positions was narrower - more concentrated on specific pan psotitions specified in randomly chose mixes form various u_pan vectors. in general changing r_pan would alter the spread of pan in a mix woiout changing realitive gains or relatie pan positions. actually appels to me even more than mid-side control!
+
+likewise eq splits can be produced - e.g. g_low/g_mid/g_high although requiring conversion to spherical coordinates [r_EQ,𝜓_1,𝜓_2] - where the values of 𝜓_n control the EQ filter applied, and r_EQ is the total amplitude change produced by equalisation. it's not as intuitive as mid-side or u_pan/r_pan - instead, if all three bands are increased or decreased by the same proportion, then the tone of the instrument does not change apart from an overall change in presented amplitude, r_EQ. instead, the value of 𝜓_2 adjusts the balance between g_mid and g_high, while 𝜓_1 adjusts the balance of g_low to the previous balance. not intuitive.
+
+				(g_1, g_2, g_3, ⋯, g_nbands)  =  (r_EQ, ⏟	 𝜓_1,𝜓_2, ⋯, 𝜓_n𝑛−1)
+
+				     gainsoffilterbands          scaling	     tone-space

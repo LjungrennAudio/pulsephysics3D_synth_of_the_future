@@ -1,0 +1,110 @@
+'	`		[white space, blanks, tabs, and newlines, don't change the interpretation of a program's syntax. i.e. they are purely 				for eady of viewing, but overuse can be as confusing as lack of]
+		
+`//`			[indidcates a comment - it'll be ignored by the progam and not run as code.]
+
+
+
+`file.h`		[header files usually provide a declaration of functions, macros and definitions, etc. Basically, they just provide you 			with information about your code. note: information that _may_ be needed in multiple files.] 
+
+`file.cc`	`	[a "code file." this will provide definitions for those functions, class members, any struct members that need 					definitions, global variables, etc.]
+
+in other words .cc implements code declared in the .h
+			
+'	`		[white space, blanks, tabs, and newlines, don't change the interpretation of a program's syntax. i.e. they are purely 				for eady of viewing, but overuse can be as confusing as lack of]
+		
+`//`			[indidcates a comment - it'll be ignored by the progam and not run as code.]
+
+in both header and code files a C++ program consists of various entities such as variables, functions, types, and namespaces. each of these entities must be declared before they can be used. declaration specifies a unique name for the entity along with some other information.
+
+
+
+`{}`			[body: 
+
+ lines beginning with directives such as:
+
+`#`			[read and interpreted by a thing called the 'preprocessor' - mostly seen for example as:
+`#include <things.file>`[loads the things file before compiling cos it probly has stuff needed to compile.]
+
+namespace std {}	[everything within the braces 
+
+
+// code consists of 
+
+'functions' which are groups of 'statements':
+
+function
+
+`type name()`		example: `int main()` initiates the 'main' function. the parentheses may contain optional parameters.		
+
+
+data structures:
+
+`struct`		[structures: An instance of structure is called the ‘structure variable’.
+			- Members of a structure are public by default.
+			- NULL values are not possible.]
+syntax:
+	   struct structure_name{
+	         type structure_member1;
+	         type structure_member2;
+	   };
+
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/voice.cc
+76	float chords[11][5] = {
+77	    { 0.0f, -12.0f, 0.0f, 0.01f, 12.0f },
+78	    { 0.0f, -12.0f, 3.0f, 7.0f,  10.0f },
+79	    { 0.0f, -12.0f, 3.0f, 7.0f,  12.0f },
+80	    { 0.0f, -12.0f, 3.0f, 7.0f,  14.0f },
+81	    { 0.0f, -12.0f, 3.0f, 7.0f,  17.0f },
+82	    { 0.0f, -12.0f, 7.0f, 12.0f, 19.0f },
+83	    { 0.0f, -12.0f, 4.0f, 7.0f,  17.0f },
+84	    { 0.0f, -12.0f, 4.0f, 7.0f,  14.0f },
+85	    { 0.0f, -12.0f, 4.0f, 7.0f,  12.0f },
+86	    { 0.0f, -12.0f, 4.0f, 7.0f,  11.0f },
+87	    { 0.0f, -12.0f, 5.0f, 7.0f,  12.0f },
+88	};
+
+234	float chord = patch.resonator_geometry * 10.0f;
+
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/resonator.cc
+55	set_geometry(0.25f);
+
+67	float stiffness = Interpolate(lut_stiffness, geometry_, 256.0f);
+
+74	float brightness_attenuation = 1.0f - geometry_;
+
+82	float q_loss_damping_rate = geometry_ * (2.0f - geometry_) * 0.1f;
+
+
+
+
+
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/voice.cc		// geometry controls dispersion
+248	if (num_notes == 1) {
+249        string_[i].set_dispersion(patch.resonator_geometry);
+
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/patch.h		// every time a 'Patch' is mentioned, look here:
+34	struct Patch {									// construct a 		
+	
+45	float resonator_geometry;
+
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.h		
+110	inline void set_dispersion(float dispersion) {
+111		 dispersion = dispersion < 0.24f					// if dispersion less than 0.24
+112	          ? (dispersion - 0.24f) * 4.166f					// dispersion = (dispersion - 0.24) * 4.166		
+113	          : (dispersion > 0.26f ? (dispersion - 0.26f) *1.35135f : 0.0f);	// else 	if greater than 0.26
+											// 	set dispersion = (dispersion - 0.26) * 1.35135
+											//	else dispersion = 0
+114 	   dispersion_ = dispersion;							
+115	  }										// dispersion_ same shit. 
+
+
+											// geometry controls stretch_ point
+152	 float stretch_point = dispersion <= 0.0f					// if dispersion is less than or = 0 then:		
+153	            ? 0.0f								// set stretch_point to 0
+154	            : dispersion * (2.0f - dispersion) * 0.475f;			// else strecth point = 
+
+
+
+
+
+

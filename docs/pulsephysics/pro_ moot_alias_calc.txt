@@ -1,0 +1,112 @@
+
+
+	analogue sine oscillator
+
+		   |
+		   v
+
+		sampled
+
+	      results are
+	processedin the wavetable
+such that a transfer function is applied
+
+
+[math/code for wavefolding within!]
+https://ccrma.stanford.edu/~jatin/ComplexNonlinearities/Wavefolder.html
+ 
+
+to wavefold it and then populate a wavetable with resultant waveforms
+
+these waveforms are called 'pulsarets', refered to mathermaticaly as 'w'.
+
+		-----
+
+
+pulsar synthesis involves generating a tone, a 'pulsetrain'.
+
+this pulsetrain is a string of repeated blocks called pulsars. 
+
+each pulsar has duration p = [d + s]
+
+where 'd' is the period of a pulsaret, 'w' [the waveforms we populated the wavetable with]
+and 's' is the period of a length of silence [the purpose of which will become apparent]  
+
+------
+
+so, we're producing this tone by spewing out a string of pulsars, 'p' :
+
+[p] : [p] : [p] : [p] : ...
+
+and since pulsars are calculated form p = [d + s], we have:
+
+[d + s] : [d + s] : [d + s] : [d + s] : ...
+
+this value of 'd', the period of our pulsaret waveform 'w' is the _duty cycle_ of our pulsar.
+
+------
+
+we can therefore define the frequency of the tone corresponding to the repetition preiod our pulsars are emitted at as:
+
+fp = 1/p		[in the original paper on this typical range for 'fp' was given as 1hz to 5khz]
+
+and like wise the frequncey corresponding to the duty cycle of the pulsar elements of our pulsechain tone as:
+
+fd = 1/d		[in the original paper on this typical range for 'fd' was given as 80hz to 10khz]
+
+------
+
+if 'w' were a single cycle of a sinewave then sweeping the duty cycle, 'd', of the pulsar in a continuous fashion results in an effect akin to sweeping a resonant filter across the tone from the pulsetrain created by the string of pulsars emitted. 
+
+[by keeping d:s ratio constant, 'p', i.e. overall frequency is preserved, varying 'd' alters timbre - so we can vary duty cycle, i.e. change that filter type formant effect independent of pitch. using the period of silence clever, huh! - told you i'd get round to it...]
+
+
+so:
+:: we can change the waveform 'w', drawn from our generated wavetable - it can be anything we want, anything we generate or input to aux. in!
+
+:: we have an envelope, 'v ~' that shapes the waveform 'w' we drew from the wavetable we generated - this envelope can be any waveform, audio even - we can do convolution!
+
+:: we have an envelope, 'd ~' that shapes the duty cycle, 'd' resulting in a formant effect akin to filtering - this envelope can be any waveform, audio even - we can do convolution again here!.
+
+:: and we can modulate the PulWM - pulsewidth of the pulsar, getting the effects of PWM kinda stuff on a pulsewave, but, it works on any waveform - and with PulWM, not only does d = 0 still generate an audible signal, but even p < d produces an audible signal!
+when the fundamental period cuts off the duty cycle of the pulsaret, we just have to choose what occurs, either we accept a sharp cutoff and hence a high edge factor or implement a user-controlled crossfade! so we can vary the degree of PulWM crossfade, 'cf' too.
+
+:: if the fundamental period, defined as the rate of pulsar emission independent of duty cycle, i.e. then, the duty cycle always completes even when it drops below the fundamental frequency - whenever the fundamental period expires it spawns a new pulsar - although because d > p resulting in multiple pulsars overlapping with others whose duty cycle have yet to complete, it means that as 'd' increases the number of overlapping pulsars generated continues to increase.
+so, if we engage this 'overlapped' or OPulWM, generally, because OPulWM results in a high degree of phase cancellation across the various overlaps, the sound is more subtle and hence there is a distinct difference in sound when employing OPulWM. more new sounds!
+
+------
+
+that's 5 dif ways to vary timbre, one of which, since it uses the option of an aux. input for wave source - which can also supply our envelope shapes - when it then has it's pitch adjusted by the knob controlling frequency [pulsar emission rate], 'fp', and then shaped by a final output envelope we get a shaped excitatory signal to feed into the modal synthesiser portion of ths thing, that we have control over pitch/shape/timbre.
+
+'w ~' envelope,  'v ~' envelope, 'd ~' envelope, PulWM, 'cf', turn on OPulWM, size of 'v ~' envelope, size of 'd ~' envelope, alter pitch 'fp' and change the attack of the impulse resulting from enveloping this pulsetrain 
+
+------
+
+The nature of digital methods, and the overall unpredictability of non-linear systems introduces potential for baaaaadaliasing:
+
+
+since the lowest frequency, according to the paper, 'fp' is set to tends to be around 1hz, and the max, 5khz - along with the fact that i suspect this exciter waveform doesnt always have to be of the highest quality audio;
+
+
+since aliasing occurs when the highest frequencies produced by a digital system exceed the Nyquist frequency: ?
+
+according to Nyquist theory highest accurately representable frequency is half the sample rate:
+Nyquist frequency defines upper limit: ?
+
+
+low pass filter: could help?
+
+highest frequency that the system is capable of generating: unknown?
+overall amount of harmonic distortion: unknown?
+
+therefore, extent of necessary oversampling: unkown?
+
+
+the pitch of the pulsar synth, i.e. frequency = pulsar emission rate = fp = 1/p = 1/(d + s) is all controlled by us/known at all given times.
+
+tbh, if 5khz is all we gotta worry about, we ok, right?
+
+plus, due aesthetic judgment and the fact we using this form of microsound/granualar type synthesis for the very readon its poor qual and good for exciting a modal synth resonator...
+
+------
+

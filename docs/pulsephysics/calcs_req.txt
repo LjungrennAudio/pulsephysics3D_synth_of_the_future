@@ -1,0 +1,138 @@
+
+
+[pulsar synthesis math for exciter input source is exceedingy simple i think?]
+
+
+
+digital waveguide string model: [used again lalter]
+there will be multiple versions of functions derived here to morph between but the asme order filters etc. used so it will be consistent math required regardless of model in use.
+
+-----
+z-transform of all pass in delay line requires fourier transfer
+do efficient interpolations preferably withoout too much low qual LUT - 	https://ccrma.stanford.edu/~jos/pasp/First_Order_Allpass_Interpolation.html
+z-transform of delay line itself requires fourier transfer
+
+fir filter requires - [see multirate fb below]
+z-transorm i.e. fourier tansfer
+possible decent interpolation
+	https://ccrma.stanford.edu/~jos/pasp/First_Order_Allpass_Interpolation.html
+
+iir filter requires - [see multirate fb below]
+z-transform i.e. fourier transfer
+possible decent interpolation
+https://ccrma.stanford.edu/~jos/pasp/First_Order_Allpass_Interpolation.html
+
+------
+
+then would like to employ:
+
+Multirate filter bank
+A multirate filter bank divides a signal into a number of subbands, which can be analysed at different rates corresponding to the bandwidth of the frequency bands. The implementation makes use of downsampling (decimation) and upsampling (expansion). See Discrete-time Fourier transform § Properties and Z-transform § Properties for additional insight into the effects of those operations in the transform domains.
+
+for
+
+multiband resonator decay/dispersion and as Spectral Coloration Equalizer
+
+- if this is done then the fir/iir are even more complex calcs.
+
+also intereted in these:
+https://ccrma.stanford.edu/~jos/pasp/Tonal_Correction_Filter.html
+
+in which case - yup, more tranfer functions/transforms etc.
+
+------
+
+[note this has to be doen real time from ui control and whilst other parameters change and then esulting output employed as a usable filter as fast is the morphing is done.]
+
+math for morphing looks like this:
+
+convert fir/iir type filter function coefficients to reflection coefficeints
+ the fir/iir 'body' filters are warped IIR filters of order 100. [ D: ]
+
+log area coeffs. [LAR] coefficients allow interpolation directly between other filter coefficients.
+looks simpler doing the LAR calc.
+
+
+------
+[this bit doesnt vary - occurs after morphing if possible]
+non-linearities such as:
+
+i dont like all the regular bowed string/blown reed crap - i want tube amp/cabinet modelling:
+eq integrator pre;
+
+https://ccrma.stanford.edu/realsimple/SimpleStrings/Amplifier_Distortion_Amplifier.html
+
+eq differentiator post
+
+cabinet model filter.
+
+[/end used again later]
+
+------
+
+all of this 
+
+
+------
+[[feeds a filterbank - we dont need to do much scary with this i dont think - its realtively static.
+ours i hope to derive using this tool:
+Matlab/Octave “large time-frequency analysis toolbox (LTFAT)” toolbox - available at http://ltfat.github.io/.
+
+either way, we will end up with a non-uniform 'gammatone FB' - i have done a buncha research and it seems even if you dont choke your K value for number of modes they just p much never even reach 64 let alone exceed.
+
+havent yet settled if will use fir or fft or what for the filter types necessarily - the gammatone i think is some type of fft fb]]
+
+z-transfer calc for a fb - i.e. transform of soemthing with up to 64 terms to expand!
+
+
+------
+
+process the excited waveguide output signal through the fb:
+
+- calc modes then do as many as k =, then there will be decays and mutings and parametrics like brightness or stiffness or pickup postion etvc.
+- maybe extra non-lineariy terms or stuff comeing after too
+
+- always a sum/dif calc set for 3 loudest modes - requires same thing as other calcs but with two k inputs as k_1+k_2 and k_1=k_2 then giving frequencies and amplitudes etc that are either the two values multiplied or summed.
+
+- havent yet decided whether to do partials/weird harmonics and if so how - still researching - latest techniques seem tpo involve AM/FM operations on still separate sub-band signals.
+
+
+------
+
+the BLEX synthesis for the exciter signal to the other waveguide model involves:
+
+combo of inverse fourier and antialiasing filters taht elegantly boil down to a worryingly simple looking sinc() function 
+
+
+this then  goes to a set of morphed waveguide stuff as done earlier:
+
+[repeat of entire used again alter as mentioned above]
+
+
+------
+
+
+these output of gammatone fb and the morphed waveguide excited by BLEX are then realtime convolved using
+
+A time-domain implementation of TVFIR convolution employs two delay lines, one for each signal. implementation very similar to a standard FIR, except for the fact that we are replacing each sample of the impulse response
+
+so p much tho maybe can egt computationally intense boils down to 2 x fir filter delay lines:
+
+z-transforms requiring fft.
+
+
+-------
+
+
+the 3d mix mappingy thing itself shouldnt be too bad - all the maps will be preset/prelearned/pregen;
+
+so its a norm X kinda thingy.
+
+it would be fun to make the thing use the ai machine learn capabilities of cortex m55 to learn peoples mix prefences and populate the hyperspherical mix-space map with em but thats not my bag baby tbh.
+
+-------
+
+
+the spectra based spatial mapping i just a fft operation ithink?
+
+-------

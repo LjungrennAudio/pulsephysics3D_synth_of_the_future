@@ -1,0 +1,360 @@
+i want to know if the 'improved chamberlin(2021)' or 'emilie's mystery(2016)' is better svf. i suspect she optimised for the crappy stm chip.
+
+desire is useful filters that:
+i) are musically punchy in character,
+ii) have low computational demands,
+iii) and are easy to design or control.
+
+infinite impulse response (IIR) filters have feedback - technically making finite impulse response (FIR) filters only solution to ii).
+modelling analogue filter circuits can dodge this prob.
+i.e. with only a few operations we can have a processor that is capable of several different frequency responses, controlled by only two parameters - freq. cutoff and Q.
+
+we just need a discrete time implementation of a digital integrator. tapping the integrator state (its delay) inserts a 1-sample delay in the middle of the block - keeping the phase difference between the highpass and lowpass outputs as in the original analogue model, so that we can obtain a band reject output - genius!
+
+
+1985				2006				2021				2014
+chamberlin			modified chamberlin		improved chamberlin		emilie's mystery svf
+
+|-------------- <-1 ---		|------- <-1f---------		|-------------- <-1----		not sure, but from the
+|-- -1/Q -----     ---|		|-- f-1/Q ---	  ---|		|-- -1/Q -----	   ---|		similarities in calculating
+|	  |-1^	   |-1^		|	 |-1^	  |-1^		|	  |-1^	   |-1^		hp from bp/lp and bp from hp/lp
+|	  vz |	   vz |		|	 vz |     Vz |		|	  Vz |	   Vz |		and lp from bp/hp along with
+->---f----------f------		-> ------------f------		-> --f----------f------		similar sorta tanf(pif/fs)
+									  |  ^	   |  ^		i wonder if same as improved?
+									   ---	    ---		
+
+<-1 and -1/Q are our 1-sample delays; z^-1 are our integrators; and the 'f' variable gain elements result in cutoff frequency.
+
+compare Q and f placements <->  between these two		Q and f as in original		?
+
+original has two integrator/	modified shifted the gain	as original but with		?		
+gain elements, Q from		elements to give a new		feed forward loops
+1st fb loop			element and one by the Q
+
+
+chamberlain has error - runs a risk, albeit small, of requiring a large value for the tuning coefficient, i.e. it has no bound - this ofc may lead to performance issues whoch although can be minimsed by higher sample rate naturally it requires extra cpu.
+In the case where the value of q is large, performance issues may arise regardless of whether fixed point or floating point math is employed in the filter implementation.
+
+
+remembering:
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/dsp.h`
+
+38	static const float kSampleRate = 32000.0f;
+39	const size_t kMaxBlockSize = 16;
+
+i.e. 16-bit, 32kHz, 32-bit floating point calcs.
+in other words an STM32F405RGT6 @ 168 MHz - Arm Cortex-M4 32-bit RISC not exactly most high tech in 2014.
+we got way better avail now for same money and we not limited to same money.
+
+we can afford to crank sample rates, bit depths, clock speeds and more.
+
+
+
+- original chamberlin:
+will work well if the sampling frequency is sufficiently high - with relatively small unit delay, the original analogue filter will be
+well approximated.
+- modified chamberlin:
+improves on fixed point calc efficency and less noise.
+- improved chamberlain:
+improved frequency response at the sampling rates 44.1 or 48 KHz, warped frequency response that is not equivalent to the analogue case but can produce better results at lower sampling rates. added option of allpass with no high-frequency issues at normal sampling rates!
+- emilie's mystery svf:
+she v gud at rearrnging code so every damn calculation refers to every other damn calculation in recursive loops that should make computer do magic smoke. damned if i can figure it out.
+
+
+[emilie's c++ code derives pi from cmath M_PI value of 3.14159265358979323846.]
+
+
+
+original chamberlin:
+
+csound code from paper - 
+
+since in a digital model, an equivalent expression such as K = 2π f / fs will not be accurate because the digital integrators introduce a certain amount of errors, particularly as the frequency increases a correction factor is applied, yielding the expression
+
+kK = 2sin(πf/fs) where fs is sample rate. [this still isnt perfect]
+
+opcode Svar,aaaa,akk
+set ksmps 1
+abp,alp init 0,0
+as,kK,kQ xin
+alp = abp*kK + alp
+ahp = as - alp - (1/kQ)*abp
+abp = ahp*kK + abp
+xout ahp,alp,abp,ahp+alp
+endop
+
+note: ahp+alp=abr
+
+
+emilie c++ code:
+
+lp = bp*k + lp = f_ * bp = 
+
+  // Set frequency and resonance from true units. Various approximations
+  // are available to avoid the cost of sinf.
+  template<FrequencyApproximation approximation>
+  inline void set_f_q(float f, float resonance) {
+    if (approximation == FREQUENCY_EXACT) {
+      f = f < 0.497f ? f : 0.497f;
+      f_ = 2.0f * sinf(M_PI_F * f);
+    } else {
+      f = f < 0.158f ? f : 0.158f;
+      f_ = 2.0f * M_PI_F * f;
+    }
+    damp_ = 1.0f / resonance;
+  }
+
+    bp_normalized = bp_ * damp_;
+    notch = in - bp_normalized;
+    lp_ += f_ * bp_;
+    hp = notch - lp_;
+    bp_ += f_ * hp;
+
+inline void Process(const float* in, float* out, size_t size, size_t decimate) {
+size_t n = decimate - 1;
+ ++n;
+      if (n == decimate) {
+out = ...
+}
+ n = 0;
+
+she's shuffled the terms to avoid needing 'as' and i think calculated kK differently?
+
+
+
+-------
+
+modified chamberlin:
+
+
+paper gives
+
+H_MC(z) = N(z) / [1-(2-f^2-fq).z^-1 + (1-fq).z^-2]  where 0 < fq < 2
+
+
+
+emilie c++ code:
+
+inline void set_f_fq(float f, float fq) {
+f_ = f;
+    fq_ = fq;
+    x_ = 0.0f;
+
+  lp += f * bp;
+      bp += -fq * bp -f * lp + *in;
+      if (mode == FILTER_MODE_BAND_PASS ||
+          mode == FILTER_MODE_BAND_PASS_NORMALIZED) {
+        bp += x;
+      }
+      x = *in++;
+
+ if (mode == FILTER_MODE_LOW_PASS) {
+        *out++ = lp * f;
+      } else if (mode == FILTER_MODE_BAND_PASS) {
+        *out++ = bp * f;
+      } else if (mode == FILTER_MODE_BAND_PASS_NORMALIZED) {
+        *out++ = bp * fq;
+      } else if (mode == FILTER_MODE_HIGH_PASS) {
+        *out++ = x - lp * f - bp * fq;
+
+
+
+------
+
+and the improved chamberlin
+
+paper gives
+
+H_IC(z)  = 1 + z^-1 / 1 - z^-1  resulting in a kK = tan(πf/fs), where fs is sampling freq. assumed 44.1 to 48khz
+
+
+csound code from paper -
+
+opcode Svar3,aaaaa,akk
+setksmps 1
+as1,as2 init 0,0
+as,kK,kQ xin
+kdiv = 1+kK/kQ+kK*kK
+ahp = (as - (1/kQ+kK)*as1 - as2)/kdiv
+au = ahp*kK
+abp = au + as1
+as1 = au + abp
+au = abp*kK
+alp = au + as2
+as2 = au + alp
+xout ahp,abp,alp,
+ahp+alp,ahp+alp+(1/Q)*abp
+endop
+
+somewhere deep in their text they claim "we have a more reasonable warping of the frequency response." unlike their conclusions i quote at start of this doc.
+
+
+
+------
+
+emilie's mystery svf:
+
+emilie c++ code:
+
+
+stmlib::Svf iir_damping_filter_; from stmlib/dsp/filter.h
+
+220	// Set frequency and resonance from true units. Various approximations
+  	// are available to avoid the cost of tanf.
+222	template<FrequencyApproximation approximation>
+223 	inline void set_f_q(float f, float resonance) {
+224	g_ = OnePole::tan<approximation>(f);
+225	r_ = 1.0f / resonance;
+226	h_ = 1.0f / (1.0f + r_ * g_ + g_ * g_);
+
+where onepole approximmations are, for frequency accurate:
+
+124   } else if (approximation == FREQUENCY_ACCURATE) {
+      // These coefficients don't need to be tweaked for the audio range.
+      const float a = 3.333314036e-01f * M_PI_POW_3;
+      const float b = 1.333923995e-01f * M_PI_POW_5;
+      const float c = 5.33740603e-02f * M_PI_POW_7;
+      const float d = 2.900525e-03f * M_PI_POW_9;
+      const float e = 9.5168091e-03f * M_PI_POW_11;
+      float f2 = f * f;
+      return f * (M_PI_F + f2 * (a + f2 * (b + f2 * (c + f2 * (d + f2 * e)))));
+
+LUT for M_PI/powers values via:
+
+54	#define M_PI_F float(M_PI)
+55	#define M_PI_POW_2 M_PI * M_PI
+56	#define M_PI_POW_3 M_PI_POW_2 * M_PI
+57	#define M_PI_POW_5 M_PI_POW_3 * M_PI_POW_2
+58	#define M_PI_POW_7 M_PI_POW_5 * M_PI_POW_2
+59	#define M_PI_POW_9 M_PI_POW_7 * M_PI_POW_2
+60	#define M_PI_POW_11 M_PI_POW_9 * M_PI_POW_2
+
+
+hp = (in - r * state_1_ - g * state_1_ - state_2_) * h
+bp = g_ * hp + state_1_;
+lp = g_ * bp + state_2_;
+bp normalised = bp * r = bp * 1/Q
+
+state_1_ = g * hp + bp
+state_2_ = g * bp + lp
+
+
+i suspect more emilie witchcraft to avoid requiring excess info.
+
+------
+
+
+note from improvd paper:
+
+"when introducing a 1-sample delay somewhere in the signal path, and we have shown that it matters where this is placed. In some places, a design such as the one derived here where the 1-sample delays all cancel out is called a zero-delay filter, but that is a complete misnomer and such a term should be discouraged."
+
+emeilie describes hers as zero-delay filters.
+
+
+
+
+
+
+
+
+
+
+-------
+
+extra filter from emilie's filter.h - just 2 chamberins in a row p much.
+
+
+
+Linkwitz–Riley crossover filter:
+
+// Two passes of modified Chamberlin SVF with the same coefficients -
+// to implement Linkwitz–Riley (Butterworth squared) crossover filters.
+
+
+inline void set_f_fq(float f, float fq) {
+
+H_LR(z) =
+
+  lp_1 += f * bp_1;
+      bp_1 += -fq * bp_1 -f * lp_1 + *in;
+      if (mode == FILTER_MODE_BAND_PASS ||
+          mode == FILTER_MODE_BAND_PASS_NORMALIZED) {
+        bp_1 += x_1;
+      }
+      x_1 = *in++;
+
+ float y;
+      if (mode == FILTER_MODE_LOW_PASS) {
+        y = lp_1 * f;
+      } else if (mode == FILTER_MODE_BAND_PASS) {
+        y = bp_1 * f;
+      } else if (mode == FILTER_MODE_BAND_PASS_NORMALIZED) {
+        y = bp_1 * fq;
+      } else if (mode == FILTER_MODE_HIGH_PASS) {
+        y = x_1 - lp_1 * f - bp_1 * fq;
+      }
+
+  lp_2 += f * bp_2;
+      bp_2 += -fq * bp_2 -f * lp_2 + y;
+      if (mode == FILTER_MODE_BAND_PASS ||
+          mode == FILTER_MODE_BAND_PASS_NORMALIZED) {
+        bp_2 += x_2;
+      }
+      x_2 = y;
+
+if (mode == FILTER_MODE_LOW_PASS) {
+        *out++ = lp_2 * f;
+      } else if (mode == FILTER_MODE_BAND_PASS) {
+        *out++ = bp_2 * f;
+      } else if (mode == FILTER_MODE_BAND_PASS_NORMALIZED) {
+        *out++ = bp_2 * fq;
+      } else if (mode == FILTER_MODE_HIGH_PASS) {
+        *out++ = x_2 - lp_2 * f - bp_2 * fq;
+
+
+------
+
+
+an interesting selection of alternate ways to process filter outs from filter.h:
+
+
+*out = value;
+      ++out;
+      ++in;
+
+
+inline void ProcessAdd(const float* in, float* out, size_t size, float gain) {
+  *out += gain * value;
+      ++out;
+      ++in;
+
+
+inline void Process(const float* in, float* out, size_t size, size_t stride) {
+*out = value;
+      out += stride;
+      in += stride;
+
+
+inline void ProcessMultimodeLPtoHP(
+      const float* in,
+      float* out,
+      size_t size,
+      float mode) {
+
+float hp_gain = mode < 0.5f ? -mode * 2.0f : -2.0f + mode * 2.0f;
+float lp_gain = mode < 0.5f ? 1.0f - mode * 2.0f : 0.0f;
+float bp_gain = mode < 0.5f ? 0.0f : mode * 2.0f - 1.0f;
+*out = hp_gain * hp + bp_gain * bp + lp_gain * lp;
+
+
+template<FilterMode mode>
+  inline void Process(
+      const float* in, float* out_1, float* out_2, size_t size,
+      float gain_1, float gain_2) {
+ *out_1 += value * gain_1;
+      *out_2 += value * gain_2;
+      ++out_1;
+      ++out_2;
+      ++in;
+
+

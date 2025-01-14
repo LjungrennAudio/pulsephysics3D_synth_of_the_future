@@ -1,0 +1,13 @@
+what is function:
+
+softlimit
+
+does void mean ignore code section?
+or only that line?
+or total dif meaning?
+
+lut?
+
+Audio acquisition and restitution: 16-bit, 32kHz.
+Internal computations on 32-bit floating point numbers.
+

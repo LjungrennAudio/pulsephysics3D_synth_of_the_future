@@ -1,0 +1,54 @@
+ljunggren audio pulse physics - should be hybrid via analogue filter/vca/source.
+
+analogue - vca on output, amplifier done right has arguement for hybrid and could actually sound good.
+
+
+mono?
+44.1khz?
+16bit?
+
+22hz - 22khz
+vco 			->		vca	->	out
+v					^
+sync
+modal:filterbank resonating karpluss style
+
+
+
+
+for simplification:
+
+sine	->				mult? [shape]by v then output			->		
+
+5 freq: w1, w2, w3, w4, w5: excite> splt to wave consist of w's, sum[Axcos(wxt+0x)]
+
+
+---------
+
+original elements:
+
+input wave -> enved vca 'contour' -> 3 way mixer for bow/strike/mallet
+
+possible? flow/mallet are se=lections f wavesource or something for hit and wind/bow sections?
+
+are timbre filters?
+
+---
+
+coarse/fine/fm tuning
+
+GEOMETRY. This essential parameter controls the geometry and stiffness of the resonating structure. It goes from plates, to strings, to bars/tubes, to bells/bowls.
+
+BRIGHTNESS. This parameter controls how muted the high-frequency modes are. Low values simulate materials like wood or nylon. High values simulate materials like glass or steel.
+therefore how many of 64 bank filters are engaged, top heavy?/bottom heavy?
+
+DAMPING controls how quickly energy dissipates through the material. Modulating this parameter by CV can recreate the effect of damping or muting the sound by blocking the vibrating surface with the hand.
+
+F. POSITION controls on which point of the string/surface the excitation is applied. Applying the excitation right in the middle of the surface will cause, by symmetry, the even harmonics to cancel each other, resulting in a "hollow" sound reminiscent of a square wave. This setting will remind you of the PWM control on a square oscillator - or of the comb-filtering effect of a phaser.
+
+space reverb fx to remove but keep volume
+
+-------------------
+
+
+

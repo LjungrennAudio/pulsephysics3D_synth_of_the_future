@@ -1,0 +1,70 @@
+overall:
+
+
+not planning any requirement for interacting with any displays whatsoever - no menus, no alt/shift modes, no nothing - theyre for info/feedback etc. not interacting with. 
+
+output volume - [affects no synthesis part].
+
+pitch - affects: [1 knob over 4 destinations]
+modal fb
+waveguide x 2
+pulsar
+
+
+plan modal to have: [ideally 4 total variables, if the filter is calculated as one functione solved in one go it cant be too bad...?] 
+- stiffness
+- pickup position -i think?
+- damping
+
+all given as real coefficient present in functions representing musical use of modal synthesis in literature, but
+elements genrated all stiffness, pickup position effects, geometry purporting to be different body models and resonating element models - brightness from a damping filter and a dispersion filter - by combing various aoutns of frequency detune and damping scaling or dispersion scaling in an impressively complex set of interactions no actual physical modelling function was ever used. 
+ 
+- 'geometry' or in any other context of modal synthesis the resonating body model, is not really seen as a single continuous variable since it would require morphing entire filter bank functions - interpolating between maybe 10 different fucntions that could have up to 64 separate parts for each value of K.
+hence i dont expect to vary filter function as affects model employed.
+
+i would however love to achieve  some form of 4th control as well as the damping, stiffness and pickup position.
+maybe simply i'll leave that available for the modulation of something - i dodnt leave myself enough scope  for modulation on my previos design attempts.
+
+
+wavguide synths: [need only 4 controls? only one voice model not 64 modes even if theres things being morphed between - the coefficients these controls would vary are consistent across the different fucntions that represent the models]
+- length
+- damping- 
+- dispersion
+- maybe some nonlinearity specific
+that lot are x 2 cos 2 waveguide synths
+
+pulsar synth:
+pulsaret waveform select - just scroll through a wavetable bank
+pulsaret env sel - as above
+duty cycle env sel - as above
+pulsret env scale - simple 1d value change of a waveform
+duty cycle env sccale - as above
+PulwM crossfade amount - it a direct vary coefficient thing
+output env arttack - simple single value very
+single switch for OPulWM on/off
+
+how do i solve the issue of going from internally generated wave choices to user loaded wave choices?
+
+
+waverfolding of vco output that poputlate the internal pulsaret waveform wavetable
+- single value easy avry
+
+
+want some kind of save patch/load patch thing
+how do in only one or two things maximum?
+
+
+think can do the mixing between amount of pulsar/modal fb/waveguides/convolved result/etc. in one simple section using that hyperspherical mix map thing?
+also can probly minimise the mid-side/panning; 3 band eq wiht total of maybe 4 - 6 control inputs?
+
+
+spatial spectral map thing might be justa  single knob to select map to apply...
+
+
+if having analogue BBD or analogue distortion option on outpout then thats not really like to involve the cpu etc.?
+
+
+
+biggest unknown is modulation - scanning around a 3d synthesis model space is the kind of thing synth people love a load of lfos and envelopes for. they really like matrices that allow selsection of a number of source/destination routing setups quite compactly and simply
+[unffortunately i hate that shit so i'm pretending its not an issue yet...]
+

@@ -1,0 +1,15 @@
+Input interpretation
+bass drum 	|	(musical instrument)
+
+Range
+frequency ratio	|	1
+
+Hornbostel-Sachs classification
+Classification	hierarchy
+2		|	membranophones
+21		|	struck drums
+211		|	drums struck directly
+211.2		|	tubular drums
+211.22		|	barrel-shaped drums
+211.221		|	barrel-shaped drums (one usable membrane)
+211.221.2	|	barrel-shaped drums (closed)

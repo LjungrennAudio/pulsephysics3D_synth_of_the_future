@@ -1,0 +1,103 @@
+my git:
+https://github.com/whisprer
+has forks of p much everything crucial - 99% is chowdhury
+
+jasa pm lit review bibble:
+file:///C:/Users/Tab/Desktop/synth/10385316.pdf
+has every cite under sun.
+
+2015
+tensor flow pops up
+2018
+the original neural nets for state-space models?
+http://cse.lab.imtlucca.it/~bemporad/publications/papers/cdc18-autoencoders.pdf
+- has all the cites
+
+https://ccrma.stanford.edu/~jos/joscv/joscv.pdf
+v good lit review cos jos
+
+physical vs neural bibble:
+file:///C:/Users/Tab/Desktop/synth/Synthesis-of-Musical-Instrument-Sounds-Physics-Based-Modeling-or-Machine-Learning-Scott-H.-Hawley.pdf
+
+
+phys mod in va:
+https://searchworks.stanford.edu/view/13250111
+wdfs:
+Proceedings of the IEEE, vol. 74, no. 2, pp. 270±327, Feb. 1986
+phys mod va using wdfs:
+https://searchworks.stanford.edu/view/11891203
+
+if not neural netting, then this needed:
+ S. D’Angelo, L. Gabrielli, and L. Turchet, Fast Approximation of the Lambert W Function for Virtual Analog Modelling, in Proc. of the 22nd Int. Conference on Digital Audio Effects (DAFx-19), Sept, 2019.
+if need calc \omega:
+P. W. Lawrence, R. M. Corless, and D. J. Jeffrey, Algorithm 917: Complex Double-Precision Evaluation of the Wright ω Function, ACM Trans. Math.
+Softw., vol. 38, no. 3, Apr. 2012. [Online]. Available: https://doi.org/10.1145/2168773.2168779
+
+
+
+black box models (via neural net):
+Proc. of the 22nd Int. Conference on Digital Audio Effects (DAFx-19), Sept. 2019
+white box models: DAFx20in21_paper_39
+
+wdfs in general - jchowdhurys lib:
+J. Chowdhury and C. J. Clarke, Differentiable WDFs, https://github.com/jatinchowdhury18/differentiable-wdfs, 2022
+
+
+
+compare::
+csound:
+sucks
+wolfram:
+expense, slow 
+chowdsp wdf:
+https://github.com/Chowdhury-DSP
+see git for wdf
+dafx 2016 RT-wdf:
+git - rt-wdf _lib 
+
+(forget which is wdfds)
+
+neural nets::
+end-to-end deep neural nets for modelling:
+arXiv e-prints, p. arXiv:1810.06603, Oct.2018
+neural nets:
+tensor flow in general: https://arxiv.org/abs/1603.04467
+- neural net modelling:
+J. D. Parker, F. Esqueda, and A. Bergner, modelling of nonlinear state-space systems using a deep neural network, in Proc. of the 22nd Int. Conference on Digital Audio Effects (DAFx-19), Sept. 2019.
+
+
+non-lin state-space neural net modelling:
+DAFx2019_paper_42
+
+dafx22 fast cloning:
+on git
+
+magenta:
+on git - based on tensor flow:
+keras- also based on tensor flow:
+https://github.com/keras-team/keras
+dafx 2022 fno:
+see git neural-instrument-cloning
+RT neural (c++ version of faust above):
+J. Chowdhury, RTNeural: Fast Neural Inferencing for Real-Time Systems, 2021. [Online]. Available: https://arxiv.org/pdf/2106.03037.pdf
+matlab has one too:
+blahblah
+
+
+C++ chowdury neural net compares::
+comparison of 3 c++ neurals:
+rt compile/tr run time/torch
+https://github.com/jatinchowdhury18/RTNeural-compare
+https://arxiv.org/pdf/2106.03037.pdf
+
+
+------
+
+tiv.lib
+library ased on tonal difs - see git
+
+
+
+-----
+icassp19-deep
+has answer: block.

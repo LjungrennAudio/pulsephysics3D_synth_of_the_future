@@ -1,0 +1,76 @@
+
+
+
+
+
+
+
+
+
+
+------
+
+Two functions f(x) and g(x) are orthogonal over the interval a <= x <= b with weighting function w(x) if
+
+ <f(x)|g(x)> = int_a^bf(x)g(x)w(x)dx = 0. 	
+
+If, in addition,
+
+		int_a^b[f(x)]^2w(x)dx    =   1
+
+		int_a^b[g(x)]^2w(x)dx    =   1    then,	
+
+the functions f(x) and g(x) are said to be orthonormal.
+
+------
+
+a Fourier series is an expansion of a periodic function f(x) in terms of an infinite sum of sines and cosines.
+Fourier series make use of the orthogonality relationships of the sine and cosine functions.
+
+the computation and study of Fourier series is known as harmonic analysis.
+it is extremely useful as a way to break up an arbitrary periodic function into a set of simple terms that can be plugged in  and solved individually.
+
+these simplified terms can then recombined to obtain the solution to the original problem or an approximation to it to whatever accuracy is desired or practical. 
+examples of successive approximations to common functions using Fourier series are illustrated below.
+
+
+
+
+------
+
+An ordinary differential equation, ODE, is an equality involving a function and its derivatives. An ODE of order n is an equation of the form F(x,y,y^',...,y^(n)) = 0.  
+
+seriously, thats all you need or want to know...
+
+the 'superposition principle' states that for a linear homogeneous ODE, if y_1(x) and y_2(x) are solutions, then so is y_1(x)+y_2(x).
+
+------
+
+
+
+
+
+
+
+
+------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,196 @@
+Pulsar synthesis:
+
+------
+Greek composer Iannis Xenakis is known as the inventor of the granular synthesis technique.
+
+Granular synthesis is a sound synthesis method that operates on the microsound time scale. It is based on the same principle as sampling. However, the samples are split into small pieces of around 1 to 100 ms in duration. These small pieces are called grains.
+
+Curtis Roads was the first to implement granular synthesis on a computer in 1974.
+
+grains are part of a larger group of 'microsound' sounds, on the time scale shorter than musical notes, longer than the sample time scale. examlples of these microsounds include granular synthesis grains, wavelets and pulsars.
+
+microsound includes part of the audio frequency range (20 Hz to 20 kHz) as well as part of the infrasonic frequency range (below 20 Hz, rhythm).
+
+::Pulsar synthesis is a type of synthetic sound generation described by Curtis Roads and belongs to the group of granular synthesis. it uses 'pulsarets' as audio elements in puslars, microsounds that are involved in the sound generation.
+
+pulsar synthesis ranges in a pulsar repetition period of 1hz- 5khz and a duty cycle range of 80hz - 10khz.
+
+the oscillators in pulsar synthesis generate individual periods 'pulsars', from the length of the pulsaret and the 'intergrain' silence time, which change in length independently of the fundamental the frequency can become.
+
+Pulsar synthesis oscillators are sound generators that provide the usual raw material of waveforms, in our case sourced from samples, which then are used to synthesise the waveform in discrete pulses (the grains).
+::
+
+------
+::we load a pulsaret waveform [wf] from a preset bank or user input.
+
+a pulsaret can be _any_ arbitrary waveform including a multicycle choice. @.@...
+
+the waveform [wf] is played with a period of silence [s] in a repeating cycle as a pulsar. this multicycle waveform is repeated as the output pulsetrain and is fed into the modal synthesis section of the 'pulse physics' device.
+::
+
+
+
+
+of its nature duty cycle never goes outside ofthe bounds of max or min, it being duty cycle not an absolute value with unlimited bounds
+
+
+in a pulsartrain multicycle  waveform, 
+[p] is pulsar period, [d] is duty cycle, [s] is silence duration. 
+
+
+[p] : [p] :  [p] : ...
+
+[p = d + s] : [P = d + s] : [p = d + s] : ...
+
+[/-\...]  :  [/-\...]  :  [/-\...]  :  ...
+
+
+[p] affects the overall frequency of pulsars in the utput pulsechain, and results in variations in pitch.
+[d]:[s] is a balance between the silent period and duty cycle, the duty cycle/silence _ratio_ can never exceed a value of 1 or drop below 0. 
+
+
+_both_ the 'fundamental frequency' [rate of pulsar emission, [fp]] _and_ 'formant frequency' [duty cycle, [d]] can be portrayed according to separate envelopes which are _independent_ ,and yet can be used simultaneously or stand alone independent of the other.
+
+this allows just pitch to be varied for a given timbre/range of contrlled timbres, and likewise, just timbre/tones/etc. to be varied for a given continuous pitch or string of pitches, and/or, a combination of d:s and p be varied together to result in a very complex final output so really inspiring creativty/experimentation
+
+- a lower fundamental frequency [fp] = increased [s] [changing silence legnth gives a safe change in fundamental pitch, whilst avoiding changing [d], duty cycle, which would change timbre]
+- a raised fundamental frequency [fp] = decreased [s] [again, [s] has to be varied because changing [s] has no effect on output sound in a way that matters other than the desired.]
+
+[altering [d] would bring about a different total time of the actively audible element, specifically altering the percieved formant - and results in the sound emulating the effects of a filter, so changing timbre/tone/nature of sound!]
+
+
+------
+
+in analogue synthesis, Pulse Width Modulation [PWM] is the modulation of a rectangular/pulse/square waveform such that the modulation controlling the duty cycle [d], whilst maintaining constant fundamental frequency [p], results in a variation of upper odd harmonics. this gives a unique and very identifiable 'sawing' effect - akin to some varities of sync and phase/harmonic modulations. at the extremes of PWM the signal is silent. it is a shame it can only be produced with pulse/squarewaves...
+
+
+PW = 0%					   PW = 50%				     PW = 100%
+
+[p = d + s] : ...		    ... : [p = d + s] : ...		      ... : [d + s = p]	
+
+[0+s = d+s] : ...		    ... : [d = s = .5] : ..		      ... : [d+s = p+s]
+
+ [d] = 0    : ...		   [d] = .5  [d+s = 1] [s] = .5		      ... : [d] = [p] = 1
+
+[|______||] : [|_____|-|] : [|____|--|] : [|___|---|] : [|__|----|] : [|_|-----|] : [||------|]
+
+signal of									    signal of
+0 amplitude									    constant amplitude
+
+nothing is heard at ouput.							    nothing heard at output.
+
+
+it's a real cool option that gives that very identifiable and eternally popular tearing/searing with zero alteration to pitch. also, being a timbre based dynamic variation in sound that preserves the fundamental [p], pitch, in a constant/consistent manner [yes, you read it right...], the damn thing's still entirely open to being musical!
+
+Pulsaret Width Modulation [PulWM], is the variation of the duty cycle [d] of the pulsaret in pulsar synthesis. as stated earlier, the pulsaret waveform [wf] can be _any_ arbitrary waveform, incuding a multicylce waveform itself... i.e., it allows us to perform duty cycle modulation on waveforms other than pulse/square waves. it also allows the dyuty cycle to pass through and below the fundamental frequency whilst continuing to produce an audible output!
+
+::i.e. with PulWM, not only does [d] = 0 still generate an audible signal, but even [p] < [d] produces an audible signal - when the fundamental period cuts off the duty cycle of the pulsaret, we just have to choose what occurs, either we accept a sharp cutoff and hence a high edge factor or implement a user-controlled crossfade:
+
+
+[  p  ] : [  p ]  : [  p  ] : ...
+
+[p=d+s] : [p=d+s] : [p=d+s] : ...
+[d + s] : [d + s] : [d + s] : ...
+[/-\..] : [/-\..] : [/-\..] : ...
+
+[d + s] : [d + s] : [d + s] : ...
+[/- \.] : [/- \.] : [/- \.] : ...
+
+[  d  ] : [  d  ] : [  d  ] : ...
+[/ - \] : [/ - \] : [/ - \] : ...
+
+[   d|] : [   d|] : [   d|] : ...
+[/  -|] : [/  -|] : [/  -|] : ...
+
+either [/  -|] is a sharp edge so something like a ramp in this v simple case,
+
+
+or
+
+[/  -|] : [/  -)] : [/  -\] : ... 
+
+fades in a way we need yet another knob for.
+
+knob [f] = [|] - [)] - [\]
+
+
+------
+finally, there is the additional possibility of 'overlapped' or OPulWM, where the fundamental period is defined as the rate of pulsar emission independent of duty cycle. i.e. duty cycle always completes even when it drops below the fundamental frequency. whenever the fundamental period expires it spawns a new pulsar - although because [d] > [p] resulting in multiple pulsars overlapping with others whose duty cycle have yet to complete, it means that as d increases the number of overlapping pulsars generated continues to increase
+
+
+[p=d+s] : [p=d+s] : [p=d+s] : ...
+
+[/   -   \] : ...
+          [/   -   \] : ...
+		    [/   -   \] : ...
+
+*[note: an arbitrary overlap limit has to be imposed - for efficency/optimisation thoughts as well as sound design reasons...]
+
+generally, because OPulWM results in a high degree of phase cancellation across the various overlaps, the sound is more subtle and hence there is a distinct difference in sound when employing OPulWM.
+
+
+even tho theres a helluva modulation going on, this means a pitched/tonal wave can be modulated to alter tone/timbre without altering the overall pitch i.e. PulWM on a pulsar for these reasons, because pitch remaining stable/continuous therefore predictable allowws us to infer that technically its of the overall period of the pulsar, varying the width of a given pulse, not just [s]. the whole pulsar changes _duty cycle_, not just [s] or just [d], but the ratios i.e. [s]:[d] and [d]:[s], are generally preserved and so pitch is continuous even tho all manner of wild events are occurring to timbre and tone etc.
+
+------
+
+[fp] = 1/p = frequency variable, waveform pitch 
+[fd] = 1/d = duty cycle variable, formant effect akin to filtering
+
+fp and fd are contiuously variable values, but specifically are both controlled by envelopes, which vary across a span of an entire pulsar train, i.e. multiple pulsar repeats.
+
+
+if [w] is the multicycle total impulse waveform, and time is limited by rectangular function [v], this rectangular function would be delineated the 'pulsaret envelope'.
+[n.b. technically v can be any shape, this shape having a strong effect upon the pulse train spectrum]
+
+[w] = multicycle impulse waveform
+[v] = pulsaret envelope 
+
+[w] is shaped by enelope [v ~]
+
+
+------	------	------	------	------	------
+
+basic wave/pitch	duty cycle/timbre
+------			------
+pulsaret [w]		pulsaret envolope
+waveform select		waveform select	[v]
+
+PulWM crossfade		OPulWM [d option]
+control [cf]		switch
+
+[fp ~] fundamental	[fd  ~] duty cycle
+frequency		frequency
+envelope control	envelope control
+
+[tp ~] pulsetrain 	[v ~] pulsaret 
+envelope		control envelope
+
+[							]
+[   [	         pulsetrain [tp]    	         ] 	]
+[   [		      [tp ~]	                 ]	]
+[							]
+[       [pulsar]        :   [pulsarduty cycle]  	]
+[   [p = [w] + [s]]     :        [ d:s  ]  : ...	]			
+[        [fp ~]         :         [fd ~]   : ...	]
+[							]
+[      [pulsaret]       :				]
+[      [/-\][v ~]       :				]
+[							]
+
+
+all '~' are envelopes
+
+------
+
+
+ok, think i got every thing  with no redundancies nd nothing missing
+and theyre currently grouped in a way that aes sense soundwise  etc.			
+
+the 'screen' below is tripled effectively - there woud  be a pulsetrain [tp] made up of repeating pulsars,[p=d+s]. the [tp] has an envelope [tp ~].
+
+the pulsar consists of a pulsaret [w] and a slinece [s] with a duty cycle of [d]. the [p] value and [d:s] ratio has envelopes [fp] and [fd].
+
+it has a base frequecy control, [p] and a control for PulWM crossfade [cf], amount and a switch for OPulWM.
+
+------
+

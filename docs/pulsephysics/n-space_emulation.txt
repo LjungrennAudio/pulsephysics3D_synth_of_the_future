@@ -1,0 +1,304 @@
+
+	LjunggrenAudio PulsePhysics `N-space`:
+	
+	\"the ultimate sound designers friend"\
+
+
+specs;
+
+launch price: $1250
+synth engine: hybrid			polyphony:  monophonic
+keyboard:     no			sequencer:  no
+architecture: quad-engine  		technology: hybrid digital-analogue
+effects:      'vintage' fx section	midi i/o:   in:out:thru
+samplerate 
+analogue connectivity; 	  combi XLR: 	main out, pulsar out, wavetable out, ext. audio in. 	all British-made Carnhill transformers		digital connectivity ;  easy access:	usb A/B, sd slot
+voltage connectivity ;    combi XLR:	exp/sus pedal in, rear cv outs.				balanced 3.5mm ?ohm; headphone out
+									
+
+reasons:      unique quad-engine, `N-space` hybrid-synthesis architecture; 'ultimate sound design machine'; beautifully very intuitive ui
+to buy											
+reasons:      no keyboard, 
+to avoid
+
+   --------------------------------------------------------------------------------------------------------------------------------------
+        True Analogue Exciters 	      Digital Waveguide:fFt-Spectra:BLEX	N-space	             cheese thru medium of dance			     	     util                        mod   <-drift/wow/flutter->   morph mod		      	 	  	  	   								     |______________________		   	   12AX7:KT88:ECL86  
+   > user	load/	 select     				     	    |      |			    trans:sat:valve
+     wave in	save	 display      stiffness bright  damping  picku p    |	<  x  >	     PITCH    ->     even:odd Harm	
+     ----------------------------	     	       			    |  		  	   	    	       		                   | 	       /\ |    	        |            				  PulWM    	     fine	     spkr-cab sim	Vol.     h>
+     | |..--/\/  \| /\/\---...| |     pulsaret  pulsenv formenv outattk    xf	<  y  >	   	     
+     | 	 	  |/   	        |    					    ^	       		   	 freq:phase‑resp from
+     ----------------------------       				      		  	       trans-damp:tape-eq:bias:
+       808 - kick      lockhart       spec1	spec2	spec3	spec4   	<  z  >		       actv gain‑stg bandwidths		            tone - decay    wavefolder												   												       			LjunggrenAudio PulsePhysics N-Space
+   ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+------
+make tape impulse response
+
+
+------
+flavours of cheese/medium of dance: 
+
+tape - known for odd harmonic; harsh/gritty/edgy but magnetised head even order may present subtly or evens from valve amp circuitry.
+'drift' (which shows up below 0.1Hz),  
+'wow' (0.1‑10Hz),
+'flutter' (10‑100Hz), and
+'scrape flutter' (in the 1‑5kHz region)
+[tape is dragged across the tape heads under tension, its movement sets up a vibrational resonance along the length of unsupported tape between the heads and/or the preceding rollers or guides — just like a violin string being excited with a bow. This resonance will tend to cause the tape to vibrate against the head, effectively causing it to move in a series of short, rapid jerks, which we call scrape flutter.]
+minute cyclical speed fluctuations of flutter, and particularly scrape‑flutter, create subtle harmonic 'side‑bands' and noise modulation around the recorded audio.
+
+faults, design and maintainance/tape formulation/record and replay head construction/tape speed ips/tape width/record and playback equalisations/phase shifts/self erasure/mag saturation non-linearities/intermodulation/		
+
+hot recording max transient squish lack of headroom in record electronics/magnetic heads requires immense record signal level to achieve sat so this dictates tape type (because there will always be a limit to how many magnetic particles can be embedded into a piece of plastic tape, there is a maxamount of saturation possible hence tape type is a major controling factor.)
+
+a magnetised medium such as ferromagnetic tape may have more than one possible magnetic moment in a given magnetic field, depending on how the field changed in the past. this 'history dependence' is the basis of memory in a recording to a magnetic medium - unfortunately it is often associated with irreversible thermodynamic change such as phase transitions and with internal friction; dissipation is a common side effect.
+
+the hysteresis problem is usually overcome by the use of 'Bias'. this is a very high‑frequency, high‑level, pure sine‑wave signal, well above the range of human hearing (typically in the range 75‑150kHz for professional tape recorders, lower for cassette machines), which is mixed in with the audio signal being fed to the record head. magnetic tape has a very nonlinear response - the idea is that the bias signal excites the magnetic particles pushing the signal into more linear zones of the tape's magnetic transfer function to capture the varying magnetic field even when the audio signal itself is very quiet. bias in a tape machine is doing a very similar job to dither in a digital system: it linearises what is inherently a non‑linear recording medium.
+
+being such a high frequency, the bias signal doesn't tend to hang around on the tape (because of self‑erasure), replay tape‑heads have a gap between the pole‑pieces small enough to register such a high‑frequency signal.
+the desire was for the recording medium to be 'linearised' and distortion is reduced enormously.
+- bias signal level is important because it has to be high enough to reduce hysteresis distortion to acceptable levels, but not so high that the frequency response is affected adversely. 
+- the precise waveform of high‑frequency bias, as those familiar with digital dither might connect analagously, matters because it directly correlates to the success with which it restores linearity.
+
+
+ 
+pro machines often aligned slightly 'over‑biased' to minimise low‑ and mid‑frequency harmonic distortions at the expense of high‑frequency extension and transient accuracy, contributing to sound character that modern digital systems with their fancy pants flat/linear response lack. response curve shape is gentler in reel-2-reelsas well, so associated phase response is a lil warmer.
+
+artifacts introduced by the complex internals of tape can result in high‑frequency ringing in the record pre‑emphasis equalisation, a mid‑range bulge in the frequency response (more obvious with slower tape speeds) due to the nature of the bias, and often significant third‑harmonic distortion on loud low‑frequency components
+
+changes, of a decibel or less can affect perception of the sound character so for the engineer setting internal eq/bias level/record level to minimise distortion subtlety is key - v subtlety. resulting effect of magnetic tape on signal transientsin fact as by far the greatest influence - Loud high‑frequency transients don't survive magnetic tape recording well, (Magnetic saturation does the initial damage and 'self‑erasure' takes care of the rest - hence first payback alwys sounds way crisper - how many bounces do you want?) it lose brash initial top end vs. reduction in transient detail level and impact...
+
+
+If you place two coils close to each other, the field from one will induce currents in the other. This is known as 'magnetic coupling'.
+
+Pre‑emphasis
+
+Saturation Compression
+
+self-erasure
+
+
+
+------
+
+amps distortions fall as as signal level rises until ~64dBu
+- 12AU7 triode valve pre Dbx 386: dramatic rise occurs (intentionally - greater levels of sympathetic/smooth/bright harmonic distortion)
+- DC‑coupled, JFET, solid‑state design AEA TRP: continues to fall linearly (supremely clean/transprent)
+progressively richer and thicker sounding Dbx wins over the AEA as drive control is cranked - at best transistor‑based circuits of the AEA manage slight odd order harmonics.
+
+to complexicate things, although neither of those pre's use em, with transformers hysteresis results in quieter signals end up sounding slightly richer and denser (yup - additional harmonics), so the custom‑designed transformers in a Radial Pro‑D2 passive DI box 60% at ‑75dBu is way tastier than a Canford Audio Line Isolating Transformer employing Lundahls acheiveing 1% at ‑75dBu.
+low load impedance will tend to form an under‑damped resonant peak depending on response somewhere just below the cut‑off frequency - but under‑damped transformers produce ringing on HF transients, so engineers tend to over‑damp at the cost of slightly reduced bandwidth.
+transformers arent just exceedingly costly to make and employ, or fantastic as far as the resultant hysteresis induced frequency alterations
+but also transformers exhibit much less low‑frequency phase distortion than dc-coupling capacitors for a given a given high‑pass cutoff frequency - this is by far the reason they are considerded a preferred choice where affordable and hence extremely common in high end gear. 
+since the transformers can be designed to be very low distortion, it's a matter of taste as far as ssignificantly dense/rich low end vs. a tiny deflection in higher end of response curve - tho this does complicate choice and implementation of hardware/emulation solutions.
+
+One way of helping to make amplifier stages more linear and reducing distortion products is to use negative feedback. The technique employs a signal feedback path from the output of the gain stage back to the input, but in opposite polarity. In audio systems, the input signal is changing all the time, and for negative feedback to work accurately, the feedback and 'error cancelling' function has to work infinitely fast. older gear suffered 
+
+
+
+------
+
+
+Power‑supply design can also be a big factor in overall sound quality. It's not unusual, for example, for vintage valve power amps to suffer from saggy power supplies that dip when handling loud signals, resulting in a kind of dynamic compression or even a dynamic modulation effect. But the problem isn't limited to valve amps, and is potentially worse for solid‑state designs, because they tend to operate with lower supply voltages and higher supply currents, while valve amps require the reverse.
+mix desk channel colour
+
+side-bands
+
+transient dynamics
+
+noise/phase issues universal.	
+
+microhone choice distance/angle/driver choice/cabinet design mostly result in more or less transient loss
+
+
+/// continue from distortion.txt top of doc.
+
+------
+------
+
+design note:	
+
+// 	https://github.com/pichenettes/eurorack/blob/master/elements/dsp/part.cc	this is a little touch of emilie magic;
+// 											each and every hardware unit made, upon powerup,	
+// 	80	void Part::Seed(uint32_t* seed, size_t size) {				looks at that paricular module's unique serial #no.	
+// 	81	  // Scramble all bits from the serial number.				and uses it as a seed to add a lil random to five 
+// 	82	  uint32_t signature = 0xf0cacc1a;					of the code variables that cascade down to have 
+//	83										a 0.0001% super subtle effect, of a different 													amount, but applying to near every aspect of the component calcuations that make up the core synth engine - somewhere in the region of 100 different subtle little non-linearities that make the resulting sounda little more organic/human/innteresting/rich/warm/vintage - and cucially, special - everybody who owns one, if only they knew has a unique item in the same way any item of analogue hardware! :)
+				
+
+------
+
+------																
+
+
+https://www.soundonsound.com/techniques/analogue-warmth
+
+
+
+------
+
+Hysteresis and saturation are often shown diagramatically as the tape B‑H curve, where the H‑axis represents the applied magnetic field and the B‑axis is the retained magnetic field. In a linear system, it would be a straight diagonal line. In practice, it looks something like a hash symbol
+
+
+Preisach model of ferromagnetic hysteresis for matlab:
+
+function [f] = RegularPreisach( u )
+%RegularPreisach.m Simulation of discrete scalar Preisach model of
+%hysteresis with regularly spaced hysterons
+%-----INPUTS-----
+% u - input scalar function of time (in vector format), assumed to be -a0 for t<t0
+
+%-----PARAMETERS-----
+% n - number of hysterons up the side of the plane
+% N - total number of hysterons
+% a0 - maximum value of a in distribution of hysterons
+n=10;
+N=n*(n+1)/2;
+a0=1;
+
+%-----VARIABLES-----
+% mu - the 2xN matrix containing the values of a(i=1) and b (i=2) which
+%     describe the jth hysteron. (i=3) gives whether the hysteron is on or off 
+% M - vector whose ith value is the ith local maxima of u
+% m - vector whose ith value is the ith local minima of u
+% f - scalar output function of time (in vector format)
+
+% Step 1: Determine mu
+
+mu=zeros(3,N);
+d=2*a0/(n+1); %vertical/horizontal distance between consecutive relays
+mu(1,1)=-a0+1.5*d;%a value
+mu(2,1)=-a0+.5*d;%b value
+h=mu(1,1);
+count=1;
+for i=2:n
+    h=h+d;    
+    for j=1:i
+        count=count+1;
+        mu(1,count)=h;
+        if abs(mu(1,count))<10^-10 %eliminate rounding errors
+            mu(1,count)=0;
+        end
+        if j==1
+            mu(2,count)=mu(2,1);
+        else
+            mu(2,count)=mu(2,count-1)+d;
+        end        
+        if abs(mu(2,count))<10^-10 %eliminate rounding errors
+            mu(2,count)=0;
+        end
+    end
+end
+
+clear count h d
+
+% Step 2: Calculate the output as a function of time
+L=length(u);
+f=zeros(1,L);
+mu(3,:)=-1; %every hysteron starts in down state by assumption
+    for i=1:N %turn on appropriate hysterons
+        if mu(3,i)==-1 && mu(1,i)<=u(1)
+            mu(3,i)=1;
+        end
+    end
+    f(1)=sum(mu(3,:));
+for k=2:L    
+    if u(k)>u(k-1) %if input keeps increasing 
+        for i=1:N %turn on appropriate hysterons
+            if mu(3,i)==-1 && (mu(1,i)<=u(k) || abs(mu(1,i)-u(k))<.0001)
+                mu(3,i)=1;
+            end
+        end
+    elseif u(k)<u(k-1) %if input decreases
+        for i=1:N %turn off appropriate hysterons
+            if mu(3,i)==1 && mu(2,i)>u(k)
+                mu(3,i)=-1;
+            end
+        end
+    end
+    f(k)=sum(mu(3,:));%calculate output
+%{%}    
+    %-----Plot Results on Preisach graph for each input-----
+    %figure(k)
+    %hold on
+    up=zeros(2,1);
+    down=up;
+    countUp=0;
+    countDown=0;
+    for j=1:N
+    if mu(3,j)==1
+        countUp=countUp+1;
+        up(1,countUp)=mu(1,j);
+        up(2,countUp)=mu(2,j);
+    else
+        countDown=countDown+1;
+        down(1,countDown)=mu(1,j);
+        down(2,countDown)=mu(2,j);
+    end
+    end
+    %{
+    if countUp>0
+    plot(up(2,:),up(1,:),'x','MarkerSize',14)
+    end
+    if countDown>0
+    plot(down(2,:),down(1,:),'rx','MarkerSize',14)
+    end
+    plot([-a0 a0],[-a0 a0],'k')
+    legend('up','down')
+    %}
+    
+    %-----End Plot-----
+end
+
+%Plot Output vs Input
+figure
+plot(u,f)
+xlabel('Input')
+ylabel('Output')
+
+%Plot Input and Output vs Time
+figure
+subplot(2,1,1)
+plot(u)
+ylabel('Input')
+subplot(2,1,2)
+plot(f)
+ylabel('Output')
+
+
+end
+
+
+----------------
+
+
+
+   --------------------------------------------------------------------------------------------------------------------------------------
+        True Analogue Exciters 		     Modelling/Spectra/BLEX	       Morphing	 	   Mix-Space     cheese thru medium of dance			     util                            mod  <-drift/wow/flutter->  mod		      mod	 	  	  	   								             |_________________________________  	      12AX7/KT88/ECL86  
+   > user	load/	 select     				     	    |			       |     	       trans/sat/valve
+     wave in	save	 display     	stiffness bright  damping  pickup   |	<  x  >		   < r_EQ  >	  	even/odd Harm	  
+     ----------------------------	     	       			    |  		  PITCH	   	    	       		          h>       | 	       /\ |    	        |            				  PulWM    		  	   		
+     | |..--/\/  \| /\/\---...| |       pulsaret pulsenv  formant form-env  xf	<  y  >	   ->	   <  𝜓_1  >   ->    
+     | 	 	  |/   	        |    					    ^	       		   		    freq/phase‑resp from
+     ----------------------------       				    O  		  fine	                   trans-damp/tape-eq/bias/
+       808 - kick     lockhart           spec1    spec2    spec3   spec4   	<  z  >		   <  𝜓_2  >       actv gain‑stg bandwidths         tone - decay   wavefolder												   													       			LjunggrenAudio PulsePhysics N-Space
+   ---------------------------------------------------------------------------------------------------------------------------------------
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Filtered-Feedback Comb Filters
+https://ccrma.stanford.edu/~jos/pasp/Filtered_Feedback_Comb_Filters.html

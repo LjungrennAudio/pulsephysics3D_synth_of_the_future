@@ -1,0 +1,77 @@
+`https://github.com/pichenettes/eurorack/blob/master/elements/elements.cc`
+
+70	float blow_in[kAudioChunkSize];
+71	float strike_in[kAudioChunkSize];
+72	float out[kAudioChunkSize];
+73	float aux[kAudioChunkSize];
+74
+75	const float kNoiseGateThreshold = 0.0001f;
+76	float strike_in_level = 0.0f;
+77	float blow_in_level = 0.0f;
+78
+79	void FillBuffer(Codec::Frame* input, Codec::Frame* output, size_t n) {
+
+86	for (size_t i = 0; i < n; ++i) {
+87	    float blow_in_sample = static_cast<float>(input[i].r) / 32768.0f;
+88	    float strike_in_sample = static_cast<float>(input[i].l) / 32768.0f;
+
+92	PerformanceState s;
+93	  cv_scaler.Read(part.mutable_patch(), &s);
+94	  s.gate |= ui.gate();
+95	  for (size_t i = 0; i < n; ++i) {
+96 	   float blow_in_sample = static_cast<float>(input[i].r) / 32768.0f;
+97 	   float strike_in_sample = static_cast<float>(input[i].l) / 32768.0f98;
+98	
+99 	   float error, gain;
+100	    error = strike_in_sample * strike_in_sample - strike_in_level;
+101 	   strike_in_level += error * (error > 0.0f ? 0.1f : 0.0001f);
+102	    gain = strike_in_level <= kNoiseGateThreshold 
+103	         ? (1.0f / kNoiseGateThreshold) * strike_in_level : 1.0f;
+104	    strike_in[i] = gain * strike_in_sample;
+105    
+106	    error = blow_in_sample * blow_in_sample - blow_in_level;
+107	    blow_in_level += error * (error > 0.0f ? 0.1f : 0.0001f);
+108	    gain = blow_in_level <= kNoiseGateThreshold 
+109 	         ? (1.0f / kNoiseGateThreshold) * blow_in_level : 1.0f;
+110 	   blow_in[i] = gain * blow_in_sample;
+111	  }
+112	  part.Process(s, blow_in, strike_in, out, aux, n);
+113	  for (size_t i = 0; i < n; ++i) {
+114	    output[i].r = SoftConvert(out[i]);
+115	    output[i].l = SoftConvert(aux[i]);
+116	  }
+
+113	void Init() {
+  System sys;
+  
+  sys.Init(true);
+
+  // Init and seed the random parameters and generators with the serial number.
+  part.Init(reverb_buffer);
+  part.Seed((uint32_t*)(0x1fff7a10), 3);
+
+  cv_scaler.Init();
+  ui.Init(&part, &cv_scaler);
+  
+  if (!codec.Init(32000, CODEC_PROTOCOL_PHILIPS, CODEC_FORMAT_16_BIT)) {
+    ui.Panic();
+  }
+  if (!codec.Start(&FillBuffer)) {
+    ui.Panic();
+  }
+  
+132	  if (cv_scaler.freshly_baked()) {
+
+139	sys.StartTimers();
+
+142	int main(void) {
+
+https://github.com/pichenettes/eurorack/blob/master/elements/drivers/system.h
+https://github.com/pichenettes/eurorack/blob/master/elements/drivers/system.cc
+starts tuimers p much.
+
+
+
+
+
+

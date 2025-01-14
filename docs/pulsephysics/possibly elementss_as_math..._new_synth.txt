@@ -1,0 +1,407 @@
+3d modal fir waveguide delayline parametric synth!
+
+
+			custom user		custom user			new mixes?			custom load
+   			envelopes etc.		filter maps			machines learning?		spectra of spaces
+			    |			       |				|			      |
+			    v			       v				v			      v
+analogue		multivoice		3d real time			mix-space is 1/2𝑛		spectral
+vco			pulsar grain   ---->	manipulation of	    ---->	the surface of a    ---->	mapping	effect    ---->
+|			    ^			FIR filter banks		hypersphere in			spatialisation
+v			    |							gain-space
+Virtual Analog	 ---->	populates		- real time			
+Models of the		wavetabe		parametric control		- each point in 𝜙		- parametric control
+Lockhart		    ^			of convolution models		is a unique mix	spectral	      ^
+wavefolder		    |				|			centroid travel	allows		      |			
+			custom user		modulation...			exploring these mixes.		modulation here?
+- allows control of	waves from usb		:O				even can be algorithmically	or more set n forget?
+analogue modelled	/sd/?			people love modulation		auto? only 3 parameters		depends on cpu avail
+digital wavefolding				imagine dynamic scanning!	i generally need.
+
+------
+- majority cpu load depends on modes/harmonics/partials+am/fm x voices -> complexity of model employed x modulation:
+- therefore max main load is complex in x mod + most complex model x max waves x modulation + mix + spatial:
+- total control ins from ui/resolution?
+- pulsar details as before p much but with w fold.
+- mix is only doing mid-side x 3eq x gain per
+- spatial is probly single static map?
+------
+auto machine learning parametric mix out?			
+
+mix of n tracks		mix=∑_𝑛=1^𝑁.Ch_𝑛[𝑡] (1)				a point in an n-dimensional vector space, with each axis as the gain 									of a given track.
+
+
+adding a gain vector, 	𝑦[𝑛]=∑_𝑘=1^𝐾.𝑎_𝑘[𝑛].𝑥_𝑘[𝑛]				allowing for time-dependent changes to the track gains			
+'a' to each track
+
+
+			mix𝑙(𝑛)=∑_𝑚=0^𝑀−1.∑_𝑘=0^𝐾−1.𝑐_𝑘,𝑚,𝑙(𝑛).𝑥_𝑚(𝑛)	generic control vectors c which modulate the input signals x
+
+
+
+but, these equations considers the mix as the sum of the input tracks - hence these expressions characterise not strictly the mix itself but the output of as a sum also.
+the set of unique mixes is a subset of this set referred to as 'the mix-space'.
+rather than exploring the sum out put or individual gain-space parameters, exploring only the parameter space 𝜙 avoids the redundancies in g, which represents the gain vector of the system:
+
+					(𝑔1, 𝑔2, 𝑔3 , ⋯, 𝑔𝑛) = (𝑟,      ⏟𝜙1, 𝜙2, ⋯, 𝜙𝑛−1)
+			  		 -------------         --	-------------
+			  		   gain-space	  master volume	   mix-space
+
+track level, pan position and equalisation are commonly adjust parameters, but i prefer track level, dynamic eq [compression linked]/multiband compression and mid-side processing.
+
+at this point i quote directly from paper:
+
+"Consider the trivial case where two audio signals are to be mixed, where only the absolute levels of each signal can be adjusted. the gains of two signals are represented by x and y, where both are positive-bound. Consider the point p as a configuration of the signal gains, i.e., (p𝑥,p𝑦). From this point, the values of x and y are both increased in equal proportion, arriving at the point p′. The magnitude of p is less than that of p′ (∥p∥<∥p′∥) yet since the ratio of x to y is identical, the angles subtended by the vectors from the y-axis are equal (∠p=∠p). In the context of a mix of two tracks, what this means is that the volume of p′ is greater than p, yet the blend of input tracks is the same.
+As an alternate to Equation (1), a mix can be thought of as the relative balance of audio signals. From this definition, the points p and p′ are the same mix, only p′ is being presented at a greater volume. If the listener has control over the master volume of the system, then any difference between p and p′ becomes ambiguous."
+
+i.e. at any given time the mix is the ratio of all the components - in this case the two components p and p'.
+
+"From p, the level of fader y can be increased by Δy, arriving at q. In this particular example, the value of Δy was chosen such that
+∥q∥=∥p′∥. However, for any |Δy|>0, ∠q≠∠p′. Therefore, q clearly represents a different mix to either p or p′. Consequently, the definition of a mix can be also defined by what it is not:"
+
+when two different audio streams contain the same blend of input tracks but the result is at different overall amplitude levels, these two outputs can be considered the same mix.
+
+mathematically, for n = 2 signals represented by a total of n gain values, the mix is dependant on 𝑛−1 variables - appatently in this case the angle to the vector. The ℓ2 norm of the vector is simply proportional to the overall loudness of the mix.
+
+as n increases to n = 3 we expand into a 3 track gainspace, although this is generalisable to any number of tracks n, using hyperspherical coordinates. As in the two-dimensional case, it is the angles which determine the parameters of the mix and the norm of the vector is related to the overall loudness - i.e. the surface of the sphere (𝕊^2) represents all possible mixes.
+
+unfortunately, this total gainspace contains many redundant mixes since there are many places that would result in the same mix being chosen multiple times at different overall volumes.
+
+considering the mix-space, 𝜙, as a more compact representation of audio mixes than the gain-space, g; so far we've been using polar and spherical coordinates, for n=2 and n=3 respectively, to extend the concept to any n dimensions hyperspherical coordinates must be used.
+
+carrying out the inverse of the conversion from cartesian to hyperspherical, i.e. from hyperspherical to Cartesian 
+
+
+				g_𝑛 = 𝑟.∏_𝑖=1^𝑛−1.sin.𝜙_𝑖		where g_n is the gain of the nth track of a total of n tracks. 
+
+
+the angles are represented by 𝜙𝑖. By convention, 𝜙_𝑛−1 is the equatorial angle, over the range [0,2𝜋) radians, while all other angles range over [0,𝜋] radians.
+
+In the case of music mixing, only the positive values of g are of interest. Subsequently, the interesting region of the mix-space is only a small proportion of the total hypersurface. This fraction is 1/2^𝑛.
+
+As each point in 𝜙 represents a unique mix, the process of mixing can be represented as a path through the space. although real mix engineers do not traverse a random path through the space in order to arrive at the final desires mix, generating a large number of mixes randomly via computer processing and then estimating parameters using statistical methods, further generation and statistical analysis of time-varying mixes could eventually be used to produce a large dataset of 'good' mixes to choose from, or even result in machine learning techniques allowing automatic mixing algorithms.
+
+note: linear distributions, such as the normal distribution, are not appropriate as the domain in question is not linear but a spherical surface. statistics of such distributions are described by a number of equivalent terms in the literature, such as circular, spherical or directional statistics. to generate points close to a desired position on the (𝑛−1)-sphere, points are generated from a von-Mises–Fisher (vMF) distribution. the probability density function of the vMF distribution for a random n-dimensional unit vector 𝐱 is given by:
+
+
+					𝑓_𝑛.(X;u,K) = C_𝑛.(K).e^K𝜇^T_𝐱
+
+
+where K≥0, ||u||=1, n≥2 and the normalisation constant C_𝑛(K) is given by
+
+
+					C_n.(K) = (K^𝑛/2−1)/((2𝜋)^𝑛/2.I_𝑛/2−1.(K))
+
+
+in which I_v is the modified Bessel funtion of the first order v. u and K atre the mean direction and concentration paramters. high K results in high concentration of distribution around the mean direction, i.e. lower variance.
+
+for our purposes:
+
+u where |u| = 1 represents the mix about which others are distribute, akin to the mean in a normal diistribution.
+K represents the diversity of mixes generated, inversely proportional to variance.
+
+people have done some fantastic studies considering for example since vocals are often desired louder in a mix, adding a boost of 6.54dB to the vocal track prouduce a vector that when normalised by dividing by the ℓ2 (Euclidean) norm, resulting in yet another vector, the new u
+ on the unit 7-sphere about which a set of mixes will be generated.
+Each mix generated draws a gain value for each track such that the ℓ2 norm is equal to 1, the median values closely matching the vector u, as expected. although this method doesnt guaranantee mix out comes conforming to thos emedian values, it was demonstrated it can be successful!
+it also was tried for multi instrument/multichannel mixing - changing whole vector groupings at once with success.
+
+one problem - we've still been working entirely mono - summing all tracks too one channel. D:
+
+instead of altering vectors of u in the range [-1,1] in the mix space, it was demonstrated that pan positions p_n where -1 and 1 wer eleft and right allowed the mix space to be  treated as a pan space to generate ppsitions for each teack in the stereo field. pan-space if denoted by 𝜃, we get
+
+
+					(p_1, p_2, p_3, ⋯, p)  =      (r_pan,     ⏟𝜃_1, 𝜃_2, ⋯, 𝜃_𝑛−1)
+			  		   ----------------        -------------   ----------------
+		         		   absolute panning        width-scaling       pan-space
+
+
+interestingly, although this is somewhat problematic for panning in that as the mix-space for gains (𝜙) takes advantage of the fact that a mix (in terms of track gains only) is comprised of a series of inter-channel gain ratios, the radius r is arbitrary and represents a master volume. In terms of track panning, one obtains a series of inter-channel panning ratios, the precise meaning of which is not intuitive. additionally, the radius r_pan would still be required to determine the exact pan position of the individual tracks. Therefore, the pan-space describes the relative pan positions of audio tracks to one another. not entirely useful.
+
+otoh as i mentioned before, i prefer mid-side processing to panning - which as a series of ratios relating different channel m/s widths to each other proportionally iss quite inuitive, and its certainly if anything convenient to work from an overall scaling master  ecessary to determine any individual m/s postitioning.
+
+the papaer solved the panning problem by analysing tracks as stereo pairs, with separate u_l and u_r - the vectors of which when summed to mono give the total u vector as processed previously. absolute magnitude of gain values were used to to avoidphase inversions from summing negative track gains produced when generating audio mixes.
+
+as a result the calculated furture pan vectors with a scaling gain vector u_pan alongside the pan vector r_pan. this meant that as K incread the dsistribution of pan positions was narrower - more concentrated on specific pan psotitions specified in randomly chose mixes form various u_pan vectors. in general changing r_pan would alter the spread of pan in a mix woiout changing realitive gains or relatie pan positions. actually appels to me even more than mid-side control!
+
+likewise eq splits can be produced - e.g. g_low/g_mid/g_high although requiring conversion to spherical coordinates [r_EQ,𝜓_1,𝜓_2] - where the values of 𝜓_n control the EQ filter applied, and r_EQ is the total amplitude change produced by equalisation. it's not as intuitive as mid-side or u_pan/r_pan - instead, if all three bands are increased or decreased by the same proportion, then the tone of the instrument does not change apart from an overall change in presented amplitude, r_EQ. instead, the value of 𝜓_2 adjusts the balance between g_mid and g_high, while 𝜓_1 adjusts the balance of g_low to the previous balance. not intuitive.
+
+
+			(pg_1, pg_2, pg_3, ⋯, pg_nbands)  =  (r_EQ, ⏟    𝜓_1,𝜓_2, ⋯, 𝜓_n𝑛−1)  .  (r_pan,		𝜃_1, 𝜃_2, ⋯, 𝜃_𝑛−1)
+			      ----------------------         -------	    ------------       ----------        ----------------
+			   gains of panned filterbands	     scaling	     tone-space	      width-scaling          pan-space
+
+  
+the rest of the paper is a heck of a lot of research involving scary stats to result in deciding centroids are so much a case of each position is a total diferent balance of the same combining terms that you cant just move a centroid around in any useful predictable manner. it might be worth including centroid control for experimental fun but seems a bit silly.
+
+
+				(g_1, ..., g_nbands)  =  (r_c(x),	h_1, ..., h_n-1)
+				
+				
+
+
+------
+
+overall math:
+
+
+
+
+lockhart			V_out = aV_in−𝜆.𝜂.V_T.W(Δexp(𝜆𝛽Vin))   where   a = 2R_L/R, 𝛽 = 2R_L + R/𝜂V_T.R and Δ = R_L.I_s/𝜂V_T
+folder
+				v_out(n) = f(v_in(n))
+
+
+unfortunately named 'audlet'.
+
+industry is stuck on using filterbanks in stuff like modal syntheisis to first analyse existing instruments/spaces/etc., process, and then re-synthesize sounds - in the hope of achieveing realistic feproduction of stuff without using sampling - means you can ditch huge sample banks and also vry more than just pitch or tome basic eq shit. by having a filterbank custom reproducing an analysed real instrument or space etc. you get parametric real time control of a plethora of parameters not possible with samples/samplebank.
+
+prob is the analysis–synthesis system is vulnerable to reconstruction error; it has to be minimized to avoid audible artifacts. approximating the frequency analysis performed in the auditory periphery, some aspects of auditory perception can be exploited in the signal chain. 'gammatone' filterbanks are an example of this. supposed issues of gammatone are only partial reconstruction ability and stability at requiring high redundancies. audlet attemptted to use oversampling, variety in filter density and shape, more efficient design and adaptable redundancy to get better reconstruction accuracy. 
+
+i guess its important to stress right now, i dont want to do accurate reconstruction - if i wsnted to play a violin i lean violin. if i wanted to morph from guutar to violin - wll why not morph to something that doesnt even exist - if i can have parametric control over core parameters defining synthesis results, why not maniuplate tem to puhs extremes or create something new - to _synthesise_ not just resynthesise!
+
+the audlet method gives a filterbank of not just different freq/qsettings on a universal function fir filter multiplied up, although of universal functional _form_, hence still having parameters that map across the whole bank so allowing easy control - e.g. one cutoff or one res etc., are varying in specifc function as far as unique coefficients etc. so the bank can produce a spectral mapping. by varying the function defining the filterbank total we get a variety of different spectral mappings we can scan thrugh in 2d yet retaining a simple set of universal parametric controls. this 2d scanning also benefits from stability and low redundancy.
+
+the distortions so feared by the industry trying to reconstruct the same old crap come from sub-band processing, the analysis–synthesis system needs stability - this results from:
+- ensuring coefficients are bounded if and only if the input signal is bounded
+- sub-channel processing - numerical precision cant save anything if perfect reconstruction isnt already in place.
+- noise, and aliasing suppression in sub-bands
+althoughi dont care greatly about reconstution accuracy, aliasing and noise and distortion i ant to avoid, and likewise, a low redundancy (i.e., a redundancy between 1 and 2) lowers the computational costs so has appeal.
+
+time-frequency concentration of the filters together with the downsampling factors in the sub-bands defines the time-frequency resolution and redundancy of the transform. the frequency analysis performed in the auditory system, the auditory frequency scale, is complex and in many aspects nonlinear, but nonlinear systems may complicate the inversion of the signal processing chain - hence linear approximations of the auditory system are often preferred in audio applications gammatone filters approximate well the auditory periphery at low to moderate sound pressure levels and are easy to implement as FIR or IIR filters, even though i dont care about acuracte reconstruction its easy enough to reintroduce nonlinearities after 'reconstruction' i.e. i my ccase whereever the hell i like.
+
+the magic is in variable time-frequency resolution. this requires in my case non-uniform fitlerbanks that retain unversal functional transforms and i do see appeal in employing some auditory frequency scale ascpects becsue it allows unique tweaking of paremeters such the  resutling changes in synthesised sound are most appealing to the user.
+
+
+signals in ℓ_2(ℤ) are samples of a continuous signal with sampling frequency f_s, with the Nyquist frequency of f_N = f_s/2.
+the normalized frequency is 𝜉 = f/f_s, i.e., the interval [0,f_N] corresponds to [0,1/2].
+the 'inner product' of two signals x, y is 〈x,y〉 = ∑_n.x[n]·y[n]
+the energy of the signal is from inner product |x| = 〈x,x〉
+floor, ceiling and rounding operatprs are ⌊·⌋, ⌈·⌉, and ⌊·⌉
+the z-transform is 𝒵: x[n]↦X(z)
+if z = e^2i𝜋𝜉 for 𝜉 ∈ (−1/2,1/2], the z-transform equals the discrete-time Fourier transform (DTFT).
+the frequency domain associated to the DTFT is circular and therefore only consider real-valued signals we deal with symmetric DTFTs, which allows us to process only the positive-frequency range.
+"H is the complex conjugation.
+
+analysis:
+non-uniform analysis filterbanks consist of K+1 analysis filters H_k(z) the z-transform of the impulse response hk[n] of the filter, ahaving downsampling factor d_k, that divide a signal x into a set of sub-bands y_k where y_k = |d_k{h_k * x}.[n] if d_k are identical for all values of k ∈ {0...K}, it's referred toas a uniform filterbank.				v						
+
+synthesis:
+a synthesis filterbank consists of K+1 swynthesis fitlers G__k(z) with upsampling factors d_k, that reecombine the sub-bands y_k into output signal ~x according to ~x[n] = 2R( ∑k=0^K.(g_k * ^d_k{y_k}).[n] ) where R denotes real part and factor of 2 a consequence of positive range only.					|
+
+a syntheis filterbank can be generalised to a synthesis system as a linear operator ~? that takes input sub-bands y_k and yelids output ~x as ~?(.,(G_kd_k)_k where (G_k,d_k)_k is the synthesis filterbank.
+
+supposedly the ideal analysis bank is invertible allowing for perfect reconstruntion. i.e. the requirement is a synthesis system ?that recovers x from the  sub-bands y_k without error, i/e. ~x = x for all x ∈ . the fact that in fact ((H_k,d_k)k,?) doesnt have perfect reconstruction property due to the order of numerical precision introdcuing errors isnt my bother.  
+
+the mathematical theory of frames, a frame over the space of finite energy signalsof the total sampled continuous input signal is a set of functions spanning the space in a stable fashion. a filterbank is only a frame if:
+
+0 < A ≤ B < ∞	where A |x|^2 ≤ ∑_K |y_k|^2 ≤ B |x|^2  ∀x ∈ ℓ^2( ℤ )
+
+where A and B are called the lower and upper frame bounds of the system, respectively and guarantee the invertibility of the filterbank.
+the ratio √B/A corresponds to the condition number of the filterbank. i.e., it determines the stability and reconstruction error of the system.
+ratio B/A characterizes the overall frequency response of the filterbank:
+B/A = 1 means a perfectly flat frequency response, desired in signal processing because, in that particular case, the analysis and synthesis filterbanks are the same, and, since the synthesis filters are obtained by time-reversing the analysis filters, G_k(z) = "H_K(z)
+
+The Bark, the equivalent rectangular bandwidth (ERB), and Mel scales commonly used in hearing science and audio signal processing are nonlinear functions of frequency and bandwidth of the critical band frequencies of the 'auditory filters' in te human auditory system.
+
+reprasenting these functions as F: f → Scl where f is frequency and Scl is n auditory unit depending ont the scale, 
+
+the ERB rate is F_ERB(f) = 9.265ln(1+f/228.8455) inverted is f = F^−1_ERB(F_ERB) = 228.8455 (e^F_ERB/9.265 −1)
+
+centred at f the ERB of the auditory filter is B_ERB(f) = 24.7 + f/9.265
+
+this is mostly relevant to me cos:
+to obtain a perfect reconstruction system, the frequency response of the system should optimally cover the frequency range [0,f_N]
+since the amplitude of the filter H1 (and/or H_K−1) may vanish at frequencies between 0 and f_1 (resp., between f_K−1 and f_N) - as a result, a low-pass filter H_0 and high-pass filter H_K were employed.
+While the content in the frequency bands 0 and K might carry some perceptually relevant information, most applications will not modify the corresponding coefficients. Consequently, it is crucial that H_0 and H_K are mostly concentrated outside [f_1,f_K−1], but their time domain behavior is only of secondary importance. a construction was proposed that retains some smoothness in frequency and thus, by Fourier duality, h_0 and h_K have appropriate decay.
+to reduce any rippling and introduce strict band-limitation of H_0 and H_K, localized plateau functions P_0 and P_K were introduced.
+
+The filters H_0 and H_K are finally defined by their DTFTs as H_0^(e^2𝜋i(·)) = P_0·ℋ^(r)_inv, and H_K(e^2𝜋i(·)) = P_KL·ℋ^(r)_inv.
+
+Downsampling the filters’ outputs, i.e., using d_k > 1 for some or all k ∈ {0, …, K}, has the advantage of reducing R but introduces aliasing.
+While an alias-free system is not always achievable, choosing d_k’s to be inversely proportional to the filters’ bandwidth yields a close-to-optimal solution.
+deriveing d_0 and d_k may result in a large amount of aliasing because �H_0 and H_K may feature large plateaus depending on f_min and f_max. We propose instead choosing d_0 and d_K accordingly.
+
+Note that in the painless case, evoked in Section 3.2, the operator ~?(𝒜(x,(H_k,d_k)k), (G_k,d_k)_k) equals the identity and thus, synthesis is performed simply by applying ~?((y_k)k,(G_k,d_k)_k) once.
+This general mathematical framework described in the previous section is valid for band-limited filters and more classical FIR filters,
+
+filterbank			The analysis filterbank consists of Audlet filters H_k, K ∈ {1, …, K−1}, starting at a low-pass filter 						H_0, up to a high-pass filter H_K. in total, it consists of K+1 filters. The Audlet filters are 						defined by
+
+				w_csGT,4,1.019.(𝜉)    =     {H_GT,4,1.019.(e^2i𝜋𝜉)  if |H_GT,4,1.019(e^2i𝜋𝜉)| ≥ 𝜖,
+						     	    {0			   otherwise
+					
+				synthesis filters are generated as a set of gammatone filters using w = 2_csGT,y,a and 𝛽 = 1 (if a 						painless system is desired), where g_k[n] = _hk[-n] i.e. time reversed FIR versions of the 							analysis filters with w = 2_csGT,4,1.019. replacin the fir filters in the following as a bank of firs from 				here then could scan though banks of if firs?
+
+real time cross convolution:
+
+the TVFIR filter expression, here referred to as time-varying convolution, (assuming that c_k(n) = 0, w(n) = 0, and x(n) = 0 for n <0)
+
+			y(n) = v_k=0^N−1.c_k.(n).x.(n−k)	c_k(n) = {w(n)	       k = nnodN,
+									 {c_k(n−1)     otherwise
+
+
+where an arbitrary input signal of length N as an impulse response varies on a sample-by-sample basis, set of coefficients c_k, derived from w(n), is completely replaced every N samples. There is, in fact, no particular distinction between the two inputs to the system x(n)
+ and w(n), and we may wish to view either as the “filtered” signal or the “impulse response”. 
+
+taking, e.g. w(n), as the filter coefficients, we can determine the filter frequency response for an input x(n) from the filter transfer function, which has to be determined at every sample. a function of two variables, frequency k and time n, can be evaluated by taking its DFT at every N samples:
+
+feed in sample				W(n,k) = ∑_m=0^2N−1.w_n(𝑚)e^−l𝜔k	𝜔 = 2𝜋m/N, w_n(𝑚) or x_n(𝑚) the result of applying a 												rectangular window of length N to w(n) or x�(n)
+										localised at time index n = lN, l a non-negative
+feed in other sample			X(n,k) = ∑_m=0^2N−1.x_n(𝑚)e^−l𝜔k	integer
+
+				
+output of this				y(n,k) = W(n,k).X(n,k)			resulting spectrum in a sample-by-sample multiplication												of the short-time input spectra. now the convolution 												spectrum can be gotten by applying an inverse DFT of size 											v2N
+
+i.e. the resulting filter can be implemented either in the time-domain with a tapped delayline or in the frequency-domain using the fast Fourier transform (FFT).
+
+time-varying convolution effect is a type of cross-synthesis of two input signals. it tends to emphasise their common components and suppress the ones that are absent in one of them. The size of the filter will have an important role in the extent of this cross-synthesis effect and the amount of time smearing that results. As with this class of spectral processes, there is a trade-off between precise localisation in time and frequency. With shorter filter sizes, the filtering effect is not as distinct, but there is a better time definition in the output. With longer lengths, we observe more of the typical cross-synthesis aspects, but the filter will react more slowly to changes in the input signals.
+
+c_k(n) coefficient update can be described by c_nmodN = w(n−dN), where d is a non-negative integer that depends on how long w(n) is being kept static. we can have a more complex sample-by-sample switching that could hold certain coefficients static, while allow others to be updated. since there is no distinction between w(n) and x(n) in terms of their function in the cross-synthesis process, similar observations apply to the updating of the input signal samples. If we implement sample-by-sample update switches to each input, then we allow a whole range of signal “freezing” effects, although, depending on the size of the filter, different results might apply.
+
+If the frozen signal is a genuine impulse response, say of a given space, this will work as an ordinary linear time-invariant (LTI) convolution operation. Thus, the TVFIR principles might be applied as a means of switching between different impulse responses. Smooth cross-fading can be implemented as a way of moving from one fixed FIR filter to another using the ideas developed here.
+
+thus forms the idea - take filterbank 2d scan function, cross convolve as fir filter scan in another d - 3d filterbank scan with parametric cntrol!
+
+
+then:
+
+paramertric	(pg_1, pg_2, pg_3, ⋯, pg_nbands)  =  (r_EQ, ⏟    𝜓_1,𝜓_2, ⋯, 𝜓_n𝑛−1)  .  (r_pan,		𝜃_1, 𝜃_2, ⋯, 𝜃_𝑛−1)
+mix out		      ----------------------         -------	    ------------       ----------        ----------------
+auto:		   gains of panned filterbands	     scaling	     tone-space	      width-scaling          pan-space
+
+
+
+
+applied spatial		D = −PU	   =>	𝜽 = arctan(X/Y)	   with    𝝍 = 1−||−𝑫||/C{E}     where     E = 1/2p_0.(P^2/Z^2_0 + ||U||^2)	
+recording from
+database				𝝓 = arccos(Z||D||)
+
+
+
+--------
+
+
+analogue vco			?
+loklhart			https://www.mdpi.com/2076-3417/7/12/1328
+pullsar				?
+filterbank			https://www.mdpi.com/2076-3417/8/1/96
+live convoution			https://www.mdpi.com/2076-3417/8/1/103
+parametric multitrack mixing	https://www.mdpi.com/2076-3417/7/12/1329
+Spatial Acoustic		https://www.mdpi.com/2076-3417/7/11/1204
+
+-------
+
+in code it takes two input signals and implements time-varying convolution.
+no distinction is made beteen the impulse response and the input signal.
+length of the filter and partitions are parameters, and uses switches to optionally fix coefficients instead of updating them continuously: asig tvconv ain1, ain2, xupdate1, xupdate2, ipartsize, ifilsize,
+- ain1, ain2: input signals
+- xupdate1, xupdate2: update switches u for each input signal. If u = 0, there is no update from the respective input signal, thus fixing the filter coefficients. If u > 0, the input signal updates the filter as normal. 
+parameter can be driven from an audio signal would work on a sample-by-sample basis, from a control signal, which would work on a block of samples at a time (depending on the ksmps system parameter, the block size), or it can be a constant. each input signal can be independently frozen using this parameter
+- ipartsize: partition size, an integer P, 0 < P ≤ N, where N is the filter size.
+- ifilsize: filter size, an integer N, N ≥ P, where P is the partition size.
+
+This opcode is programmed in C++ using the Csound Plugin Opcode Framework (CPOF), as the TVConv class. In this code, there are, in fact, two implementations of the process, which are employed according to the partition size:
+
+For ipartsiize = 1: direct convolution in the time domain:
+The vectors in and ir hold the two delay lines, inputs from the signals in inp and irp
+variables frz1 and frz2 are signals that control the freezing/updating operation for each input
+
+Listing 1: Direct convolution implementation time domain, any filter size is allowed
+
+	 int dconv() {
+ 	    csnd::AudioSig insig(this, inargs(0));
+	    csnd::AudioSig irsig(this, inargs(1));
+	    csnd::AudioSig outsig(this, outargs(0));
+	    auto irp = irsig.begin();
+ 	    auto inp = insig.begin();
+	    auto frz1 = inargs(2);
+	    auto frz2 = inargs(3);
+	    auto inc1 = csound->is_asig(frz1);
+ 	    auto inc2 = csound->is_asig(frz2);
+                    
+	    for (auto &s : outsig) {
+ 	     if(*frz1 > 0) *itn = *inp;
+	      if(*frz2 > 0) *itr = *irp;
+	      itn++, itr++;
+	      if(itn == in.end()) {
+	         itn = in.begin();
+	         itr = ir.begin();
+	      }
+	      s = 0.;
+	      for (csnd::AuxMem<MYFLT>::iterator it1 = itn,
+	            it2 = ir.end() - 1; it2 >= ir.begin();
+	            it1++, it2--) {
+	        if(it1 == in.end()) it1  = in.begin();
+	        s += *it1 * *it2;
+	      }
+	      frz1 += inc1, frz2 += inc2;
+ 	      inp++, irp++;
+	    }
+	    return OK;
+	  }
+
+
+
+if ipartsize >1, then partitioned convolution needed - through an overlap-add algorithm implemented in the spectral domain.  for efficiency, power-of-two partition and filter sizes are enforced internally. actual ipartsize will be quantised to Q = 2K, K ∈ ℤ, Q ≤P. actual ifilsize will be quantised to O = 2K, K ∈ ℤ, O ≤ N.
+
+
+	Listing 2: Partitioned convolution implementation.
+
+	  int pconv() {
+	    csnd::AudioSig insig(this, inargs(0));
+	    csnd::AudioSig irsig(this, inargs(1));
+	    csnd::AudioSig outsig(this, outargs(0));
+	    auto irp = irsig.begin();
+	    auto inp = insig.begin();
+	    auto *frz1 = inargs(2);
+	    auto *frz2 = inargs(3);
+	    auto inc1 = csound->is_asig(frz1);
+	    auto inc2 = csound->is_asig(frz2);
+                 
+	    for (auto &s : outsig) {
+	      if(*frz1 > 0) itn[n] = *inp;
+	      if(*frz2 > 0) itr[n] = *irp;
+                 
+	      s = out[n] + saved[n];
+	      if (++n == pars) {
+	        cmplx *ins, *irs, *ous = to_cmplx(out.data());
+ 	        std::copy(itn, itn + ffts, itnsp);
+	        std::copy(itr, itr + ffts, itrsp);
+ 	        std::fill(out.begin(), out.end(), 0.);
+	        // FFT
+	        csound->rfft(fwd, itnsp);
+	        csound->rfft(fwd, itrsp);
+	        // increment iterators
+	        itnsp += ffts, itrsp += ffts;
+	        itn += ffts, itr += ffts;
+	        if (itnsp == insp.end()) {
+		  itnsp = insp.begin();
+	          itrsp = irsp.begin();
+	          itn = in.begin();
+	          itr = ir.begin();
+	        }
+	        // spectral delay line
+	        for (csnd::AuxMem<MYFLT>::iterator it1 = itnsp,
+	        it2 = irsp.end() - ffts; it2 >= irsp.begin();
+	             it1 += ffts, it2 -= ffts) {
+	          if (it1 == insp.end()) it1 = insp.begin();
+	          ins =  to_cmplx(it1);
+	          irs =  to_cmplx(it2);
+	          // spectral product
+	          for (uint32_t i = 1; i < pars; i++)
+	            ous[i] += ins[i] * irs[i];
+	          ous[0] += real_prod(ins[0], irs[0]);
+	        }
+	        // IFFT
+	        csound->rfft(inv, out.data());
+	        n = 0;
+	      }
+	      frz1 += inc1, frz2 += inc2;
+	      irp++, inp++;
+	    }
+	    return OK;
+	  }
+
+
+
+-------
+

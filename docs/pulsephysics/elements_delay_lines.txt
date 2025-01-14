@@ -1,0 +1,218 @@
+	// (my notes)	from
+	// (my notes)	https://github.com/pichenettes/stmlib/blob/master/dsp/delay_line.h
+	// (my notes)	41	const size_t kDelayLineSize = 2048;
+	// (my notes)	
+	// (my notes)	60	delay_ = 1.0f / frequency_;
+	// (my notes)	
+	// (my notes)	from
+	// (my notes)	https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.h
+	// (my notes) 	103	frequency_ = frequency;
+	// (my notes)	
+	// (my notes)	from
+	// (my notes)	https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.cc
+	// (my notes)	54	set_frequency(220.0f / kSampleRate);
+	// (my notes)	
+	// (my notes)	from
+	// (my notes)	https://github.com/pichenettes/eurorack/blob/master/elements/dsp/dsp.h
+	// (my notes)	39	static const float kSampleRate = 32000.0f;						
+
+
+from:
+https://github.com/pichenettes/stmlib/blob/master/dsp/delay_line.h
+
+39	template<typename T, size_t max_delay>
+40	class DelayLine {
+41	 public:
+42	  DelayLine() { }
+43	  ~DelayLine() { }
+	
+55	 inline void set_delay(size_t delay) {
+56	   delay_ = delay;
+
+59	inline void Write(const T sample) {
+60	    line_[write_ptr_] = sample;
+61	   write_ptr_ = (write_ptr_ - 1 + max_delay) % max_delay;
+
+	// (my notes)	sample = (sample - 1 + 2048) rem 2048  so write sample = 0 at sample = 1 ?
+
+84	inline const T Read(float delay) const {
+	    MAKE_INTEGRAL_FRACTIONAL(delay)
+	    const T a = line_[(write_ptr_ + delay_integral) % max_delay];
+	    const T b = line_[(write_ptr_ + delay_integral + 1) % max_delay];
+	    return a + (b - a) * delay_fractional;
+	  }
+
+	// (my notes) urious as to ho crap integral_fractional calcs are
+  
+91	  inline const T ReadHermite(float delay) const {
+	    MAKE_INTEGRAL_FRACTIONAL(delay)
+	    int32_t t = (write_ptr_ + delay_integral + max_delay);
+	    const T xm1 = line_[(t - 1) % max_delay];
+	    const T x0 = line_[(t) % max_delay];
+	    const T x1 = line_[(t + 1) % max_delay];
+	    const T x2 = line_[(t + 2) % max_delay];
+	    const float c = (x1 - xm1) * 0.5f;
+	    const float v = x0 - x1;
+	    const float w = c + v;
+	    const float a = w + v + (x2 - x0) * 0.5f;
+	    const float b_neg = w + a;
+		    const float f = delay_fractional;
+104	    return (((a * f) - b_neg) * f + c) * f + x0;
+
+	// (my notes) Hermite polynomial of x of t order n value is returned:
+	// (my notes) (-1)^n.e^x^2.d^n/dx^n.e^-x^2
+
+------
+------
+
+from:
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.cc
+
+49	string_.Init();
+50	stretch_.Init();
+51	fir_damping_filter_.Init();
+52	iir_damping_filter_.Init();
+
+	// (my notes) from:
+	// (my notes) https://github.com/pichenettes/eurorack/blob/master/elements/dsp/dsp.h
+	// (my notes) 		39	static const float kSampleRate = 32000.0f;						
+
+54	set_frequency(220.0f / kSampleRate);
+55	set_dispersion(0.25f);
+
+	// (my notes) from:
+	// (my notes) https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.h
+	// (my notes) 
+	// (my notes) 	91	typedef stmlib::DelayLine<float, kDelayLineSize> StringDelayLine;
+	// (my notes) 	92	typedef stmlib::DelayLine<float, kDelayLineSize / 2> StiffnessDelayLine;
+	// (my notes) 
+	// (my notes) 	102	inline void set_frequency(float frequency) {		
+	// (my notes) 	103	frequency_ = frequency;          // (my notes) frequency_ = 220/32000 
+	// (my notes) 	104	}										
+	// (my notes) 
+	// (my notes)	111  inline void set_dispersion(float dispersion) {
+	// (my notes)	111    	dispersion = dispersion < 0.24f
+	// (my notes)	112          ? (dispersion - 0.24f) * 4.166f
+	// (my notes)	113          : (dispersion > 0.26f ? (dispersion - 0.26f) * 1.35135f : 0.0f);
+	// (my notes)	114     dispersion_ = dispersion;
+	// (my notes)	115  }
+	// (my notes) 
+	// (my notes) 	136	float dispersion_;
+	// (my notes)
+	// (my notes)	158	StringDelayLine string_;	// (my notes) string_ is DelayLine with 2048 sample length
+	// (my notes)	159 	StiffnessDelayLine stretch_;	// (my notes) stretch_ is  DelayLine with 2048/2 = 1024 sample length
+								
+79	float delay = 1.0f / frequency_;			// (my notes) delay = 1/(220/32000) = 145.454545455 
+80	CONSTRAIN(delay, 4.0f, kDelayLineSize - 4.0f);		// (my notes) var = 145.454545455, min = 4, max = 2048 - 4 
+		
+	// (my notes) from
+	// (my notes) https://github.com/pichenettes/stmlib/blob/master/stmlib.h
+	// (my notes) 	41	#define CONSTRAIN(var, min, max) \
+	// (my notes) 	42	  if (var < (min)) { \			// (my notes) if 145.454545455 < min then = 4 
+	// (my notes) 	43	    var = (min); \
+	// (my notes) 	44	  } else if (var > (max)) { \		// (my notes) other wise if 145.454545455 > max then = 2044 
+	// (my notes) 	45	    var = (max); \
+	// (my notes) 	46	  }					// (my notes) so frequency_ = 145.etc ==<min and >== max
+	// (my notes)							// (my notes) so frequency_ = 145.etc ?
+									
+95	// Linearly interpolate all comb-related CV parameters for each sample.
+
+100	ParameterInterpolator dispersion_modulation(
+101     &previous_dispersion_, dispersion_, size); 
+
+	// (my notes) 	from:
+	// (my notes) 	https://github.com/pichenettes/stmlib/blob/master/dsp/parameter_interpolator.h
+	// (my notes) 	36	class ParameterInterpolator {
+	// (my notes) 	37	 public:
+	// (my notes) 	38	  ParameterInterpolator() { }
+	// (my notes) 	39	  ParameterInterpolator(float* state, float new_value, size_t size) {
+	// (my notes) 	40	    Init(state, new_value, size);
+	// (my notes) 	41	  }
+	// (my notes) 	
+	// (my notes)	53	inline void Init(float* state, float new_value, size_t size) {
+	// (my notes)	54	    state_ = state;
+	// (my notes)	55	    value_ = *state;
+	// (my notes)	56	    increment_ = (new_value - *state) / static_cast<float>(size);
+	// (my notes)	57	  }
+	// (my notes) 											
+	// (my notes) 	59	inline float Next() {
+	// (my notes) 	60	  value_ += increment_;
+	// (my notes) 	61	  return value_;					
+	// (my notes) 	62	}
+
+139		#ifndef MIC_W
+140		      delay *= damping_compensation_modulation.Next();  // IIR delay.
+141		#endif  // MIC_W
+142		      delay -= 1.0f; // FIR delay.
+143    
+144		      float s = 0.0f;
+								
+151		float dispersion = dispersion_modulation.Next(); 
+152		float stretch_point = dispersion <= 0.0f
+153		? 0.0f
+154		: dispersion * (2.0f - dispersion) * 0.475f;
+
+166		float ap_gain = -0.618f * dispersion / (0.15f + fabs(dispersion));
+
+173		float ap_delay = delay * stretch_point;
+		float main_delay = delay - ap_delay															if (ap_delay >= 4.0f && main_delay >= 4.0f) {
+				s = string_.ReadHermite(main_delay);
+				s = stretch_.Allpass(s, ap_delay, ap_gain);
+			} else {
+			        s = string_.ReadHermite(delay);
+		        }
+
+------
+------
+
+all of the above just to get to go back to:
+https://github.com/pichenettes/stmlib/blob/master/dsp/delay_line.h
+
+64		inline const T Allpass(const T sample, size_t delay, const T coefficient) {	 
+65		    T read = line_[(write_ptr_ + delay) % max_delay];
+66		    T write = sample + coefficient * read;
+67		    Write(write);
+68		    return -write * coefficient + read;
+69		  }
+
+so i can figure how shit this filter is...
+
+------
+------
+
+i confus by:
+
+how does it decide on dispersion value?
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.cc
+55
+using 
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.h
+111
+
+MIC_W where in the name of fuck does this come from?
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.cc
+139	
+
+what is 'fabs'?
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.cc
+166
+
+
+------
+------
+
+either way
+
+since from
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.cc
+set_frequency(220.0f / kSampleRate);
+affects entire synth
+
+changing sample rate affects entire synth engine and filters etc.
+
+
+likewise, amongst others:
+changing 32bit architecture to 128 or whatever would be big effect on stuff like these:
+
+hermite read/interpolation based on int32_t - would need and fixing upgrading
+fractional_intergal calc based on int32_t - would need upgrading and fixing

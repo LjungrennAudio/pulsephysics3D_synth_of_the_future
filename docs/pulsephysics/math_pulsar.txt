@@ -1,0 +1,178 @@
+
+it is worth noting straight-off that although some complexity has been removed from mi elements functionality and hence there's has been computing capacity free'd up, never-the-less, although the available resouces from the arm cortex m4 32 bit risc, available cpu power is still limited overall and so every possible success in reducing compiled code/saving space and being efficient mathemtically in every way possbile will likely prove essential - gotta reduce computations and increase effiency, always, everytime!!!
+
+------
+pulsar synthesis math!
+------
+
+curtis roads paper goes entirely with a basis of:
+
+pulasr synthesis is a form of electronic sound synthesis based on creating pitched tones and pulses similar to some previous obscure old instruments that employed filtered pulse trains as the source of sound. although employing filtered impulse generation and processing to create electronic sounds that are easily altered and controlled in ways that are interstig/creative/different to basic attempts to model physical soudns via certain synthesis tehcniques impelemnting such similar pulse traains, fltered or inherently mathematically processed  too produce resulting sounds akin to passing through at certain stages forms of filtering that could affect timbre/tone/formant etc., pulsar synthesis manages to involve techniques from 'microsound' or 'particle synthesis' in such a particular unique manner so to result in ability to produce sounds similar to those from a bandpass filtered impulse generator based synth, yet employs no filter, and hence, 
+
+pulsar synthesis involves 'pulsar trains' similar to the 'impulse trains' mentioned above, but also having elements similar to certain forms of particle synthesis: a pulsar is a single particle ofa pulsar train. a pulsar consists of a wveform w with a period d, followed by a silent period s. this combination of both wavefr and silent period is absolutely crucial to the operation of pulsar synthesis and both makes it, and allows it to be unique such as it is. the core equation for calculating an indiviual pulsar is:
+
+p = d + s
+
+where these are, variously;
+p = pulsar period [i.e. duration of a single particle]
+d = duty cycle [of the audible part of the pulsar particle technically, tho since in a way, the silence also plays a contribution this is misleading]and,
+s = silence duration [kinda self explanatory and hence easier to remember].
+
+repetitions of this pulsar are chained together t form a pulsar train, which repeats with periods:
+
+fp = 1/p	[1hz- 5khz]: the total repetition period, the frequency variable resulting in the waveform pitch.
+fd = 1/d	[80hz - 10khz]: duty cycle frequency, i.e. the variable resulting in the formant effect akin to filtering.
+
+fp and fd are contiuously variable values, but specifically are both controlled by envelopes, which vary across a span of an entire pulsar train, i.e. multiple pulsar repeats. this [pulsar] train may last between a few hundred milliseconds and multiple minutes - producing a chain of notes/a phrase, of which the resultant is generally employed as a sound that can be used in an organisation, forming an individual unit in a larger musical arrangement.
+
+imagine triggering chains of notes or a phrase in a composition, such that each is a kind of litte melody, bird call, animal noise, effect or whatever sharing some commonalitiy as far as perhaps a degree of tone/timbre/somthing in sound quality that regardless of evolution/modulation/shift/warping etc. neverthless has a unique qualty that can be followed in the sound - this gives a kind of effect of spitting out sets of chirrups and scats and trills and things that might emanate from a creature or an instrument being played, each separate phrase and call and so on being sometime massively different from instance to instance, especialy regardless of pich or pattern of note, still in so resultant tone and timbre and feel etc.
+
+evertheess, any one given pulsar train produces sorta a kinda coherent item that, recognisably belongs as part of itself and is a whole - defined in and of itself. its hard to explain in words or grasp fully from such descriptions and furthermore even when heard or if successfully imagined, still tricksy to see potential past a machine for creating lil bird calls/honks/growls/saxophone and trumpet improvs/vocal scatting/and other real wild rich varying emissions of complex timbre changing and totally different resultant sounds as the different parameters shift and vary. 
+
+this is where both the creativity of the user, alng with the special extra possibilities imbued by my hybridisation/expansion/additon/combination and additons/extras and further cintr=olls might add to ability to gt desired results or totally to the contrary, be even more random and weird and bizarre, only seeming to have scope for more esoteric sound esign purposes, but then, boooooy is the resultant machine produced from my experimention an absolute dream for sound designers/creators/experimenters/those who get bored easily...
+
+------
+
+since p affects the overall frequency of pulsars in the pulse chai, and results in variations in pitch, whilst 
+d:s is a balance between the silent period and duty cycle [of its nature duty cycle never goes outside ofthe boudns of max or min, it being duty cycle not an absolute value with unlimited bounds], the duty cycle/silence _ratio_ can never exceed a value of 1 or drop below 0.   
+
+as a result; d:s varies whilst p is constant, so:
+
+_both_ the 'fundamental frequency' [rate of pulsar emission] _and_ 'formant frequency' [duty cycle] can be portrayed according to separate envelopes which are _independent_ ,and yet can be used simultaneously or stand alone independent of the other.
+
+this allows just pitch to be varied for a given timbre/range of contrlled timbres, and likewise, just timbre/tones/etc. to be varied for a given continuous pitch or string of pitches/phrse, and/o, a combination of d:s and p be varied together to result in a very complex final output so really inspiring creativty/experimentation
+
+------
+
+::a lower fundamental frequency = increased s [changing silence legnth gives a safe change in fundamental pitch, whilst avoiding changing d, duty cycle, which would change timbre]
+
+::a raised fundamental frequency = decreased s [again, s has to be varied because changing s has no effect on output sound in a way that matters other than the desired  - compared to altering d and thereby the resultant duty cycle change bringing about a different total time of the actively audible element, specifically altering the percieved formant - i.e. the sound emulating the effects of a filter, so changing timbre/tone/nature of sound alongside any concommitant possible alterations to amplitude/decaytime that admittedly shouldnt evenoccur, but ofc, undestandably as a concept, nevertheless would be heard and raise issue if they were to alter out of place.]
+
+------
+since a pulsaret can be any waveform including multicycle choices. [***wofl fundamental crucial note and point of idea/inspiration no.1, _the output impulse of the mi elements modal synth voice could, for example, be used_ @.@***]
+
+if w is this multicycle impulse waveform, and time is limited by rectangular function v, this rectangular function would be delineated the 'pulsaret envelope'.
+[n.b. technically v can be any shape, this shape having a strong effect upon the pulse train spectrum - hint hint - this needs looking into and not to be forgot!]
+
+this pulsaret envelope, v, gives the main shape of the individual particles repeated as part of the chain and although doesnt alter pictch or amplitude in any significant way, affects timbre, as would fd/its ssociated envelope, and whilst one intentbeing maybe to employ the elements output to do the work at fd aste envelope as instead of the actual pulsaret souce itself, as crucially noted, since v can be _any_ shape, the pulsaret envelope might also/alternatively be well employed as a place to introduce the elements output impulse, using to shape a waveform other than the modal impulse from the elements, and instead using a simpler/more constant/identifiable/boring/trad/maybe very plain but organic or whatever sound/wavefrm, possibly proving more suitable to remaining as a source of period/silence repeats for a pulsar train, whilst being relatively consistent as far as possibly making for more predictable/controllable/usable/musical main source, so resulting in the output from this synth as a whole beig evry workable, if not much more so than elements out = fd or simply = d.
+
+------
+
+***a relevant and super unique, but crucially important next part of pulsar synthesis:***
+
+really need to think long and hard about the any waveform thingy - it stronkly gives ideas not jus about 'pwm'ing stuff like weird waves otherwise not simple and readily 'pwm'able in other circumstances - e.g., consider 'pwm'ing elements output wavforms as pulses and therefore any resultant down stream possibilities not normally acheiveble, involving taking advantage of, exploiting, using and abusing the sounds out - in other words, using elements impulse as the source for d, there is provision to add PulWM options to the resulting operations on elements out...
+
+PWM is a modulation of an analogue rectangular/pulse/square waveform such that the modulation controlling the duty cycle, whilst maintaining constant fundamental frequency, results in a variation of upper odd harmonics giving a unique and very identifiable, pleasant, 'sawing' effect - akin to some varities of sync in particular, as closest likening possible, and perhaps some other phase/harmonic modulations to a lesser degree. it's a real cool option that not just gives that very identifiable and eternally popular tearing/searing, somehow with zero alteration to pitch. it also, being a timbre based dynamic variation in sound that preserves the fundamental, i.e. pitch in a constant/consistent manner - yes, you read it right... the damn thing's still entirely open to being musical!
+
+even tho theres a helluva modulation going on, this means a pitched/tonal wave can be modulated to alter tone/timbre without altering the overall pitch in anyway whatsoever else to a pulse trains setup - PulWM on a pulsar train, for these reasons, remember [rn]? considered as the train of a pulsarwave, even though pitch remains stable/continuous therefore predictable [evidentally, if not fully thrilling as yet, relevant...] furthermore allowing to infer that [yeah, technically its of the overall peroid of the pulsar, varying width of a given pulse, not just 's'] the whole pulsar changes _duty cycle_, not just 's' or only 'd', but the ratio [the spacings between s:d and d:s and also s on its own] are generally preserved and so pitch is continuous even tho all manner of wild events are occurring to timbre and tone etc.
+
+so therefore, since it seems keeping pitch constant is desirable in these papers, even if generally not neceassarily as popular for reasons, and hence making it worth considering that as long as this is even remotely commercially driven, and there's reason to try an remain musical, it worth noting in the synth world after all, damn and hecc to following the  
+
+- identifying target market way before you ever embark upon any major commitments to embarking on any design aspects and definitely before concept even- you wanna know what others want and how far youre willing to bend/break/just to urn out to be fucked before people go easy on you - its a continuous case oftryig to get noticed/shout louder/longer - i.e. make something, unique, different and generally really fucking original. dont be a sheeple.
+
+IIIIII
+- also, consider what will producers not only know as far as the what the best synth will be for their locked in, home usage/words, 
+
+[guess there will always be haters and trouble makers regardless of situation and circumstance, giving a choice involving the whole topic of babies/preserving life/freedom of choice/etc.; it's open without consequence here folks! :D ]
+
+- rt ratio i.e. overall length intervals/total length is changing, becasue length of p varied i this was retains the space/impulse relstionship and total spacing, so once application operating within one synth wpud2 in synth could ,and this could result in variance the  the output in a way that varies both timbre/tone, but also - resulting  not simply as there is in the obvious intentional results had but, as currennt not really sure yet, also clear possibilities that stem directly inovlved in this.]
+
+[[yis i am aware that modals been done, even well, an yet i still cant remeeber goddamn names of famous actors/actually
+
+[gotta some choose/help to (reduce to thign sorta linear but within reasonable same of proportion within the vaiancs/dose response curves, chice of behavior as far as rectangles, etc., but slow  .s  
+
+but also the concept that just cos in a war, dont mean that people dont want em or at least consider having a dialogue upon - 
+IIIIII
+
+------
+
+kinda imporant math wrt pulwmas opposed to the above more wordy explain bs bit...
+
+similar to the existence of PWM for rectangular waveformms, we can achieve PulWM - modulating the duty cycle, d, with time such that new timbres/tones are generated.
+in normal PWM when the duty cycle is zero, i.e. d = 0, silence occurs and likewise, when d = p then the signal reaches constant amplitude = 1, i.e. even though technically sustained max amplitude, generally this would be heard as silence since nothin is changing i.e. oscillating, and hence theres no resultant sound.
+
+there's a number of advantages to PulWM:
+i) PulWM can be used for any pulsaret - i.e. not just rectangular waves, but _any_ waveform, even multicycle complex waveforms - ***i.e. this allows application involving our modal synth impulse.***
+
+
+p is pulsar period, d is duty cycle, s is silence duration. 
+
+
+[p] : [p] :  [p] : ...
+
+[p = d + s] : [P = d + s] : [p = d + s] : ...
+
+[/-\_] : [/-\_] : [/-\_] : ...
+
+with PulWM, not only does d = 0 still generate an audible signal, but even p < d produces an audible signal, i.e. when the fundmental period cuts off the duty cycle of the pulsaret, we just have to choose what occurs - either we accept a sharp cutoff and hence a high edge factor or implement a user-controlled crossfade.  
+
+[/-_] : [ /-_] : [/-_] : ...
+
+either /- is a sharp edge so something like a ramp in this v simple case, or
+
+/- /-. /-.. fades in a way we need yet another knob for.  
+
+
+------
+finally, there is the additional possibility of 'overlapped' or OPulWM, where the fundamental period is defined as the rate of pulsar emission independent of duty cycle. i.e. duty cycle always completes even when it drops below the fundamental frequency. whenever the fundamental period expires it spawns a new pulsar - although because d > p resulting in multiple pulsars overlapping with others whose duty cycle have yet to complete, it means that as d increases the number of overlapping pulsars generated continues to increase
+
+
+[p] : [p] : [p] : ...
+
+[/ - \_] :  [/ - \_] :
+      [/ - \_] : [/ - \_] : ...
+
+**an arbitrary overlap limit has to be imposed. note for efficency/optimisation thoughts as well as sound design reasons...***
+
+generally, because OPulWM results in a high degree of phase cancellation across the various overlaps, the sound is more subtle and hence there is a distinct difference in sound when employing OPulWM.
+
+------
+
+
+
+
+
+ got some crucial in but might not need all...
+
+
+pulsar synthesis operates across a variety of timescales - i.e. since it generates a stream of 'microsonic particles' at a  _variable_ rate, spanning infrasonic as well as audio frequencies, when the distance between successive impulses is less than approx. 1/20th sec, human hearing percieves this as a continuous tone. this is known as 'the forward masking effect'.
+
+between 20-35hz it is difficult to percieve the pitch of a sutained tone, reliable perception taking hold at around 40hz, depending on waveform. 
+
+thus, for approx. p = 25 ms [fp = 40hz] and 200us [fp = 5khz], listeners ascribe the characteristic of pitch to a periodic sustained tone.
+
+when infrasonic [fp < 20hz] the sensation of continuous tone evapourates and we can percieve pulsars individually.
+
+when [62.5 ms > fp > 8s] i.e. fp lies between a 32d note and 2 tied whole notes at 60 MM we hear rhythm. at this point the fundamental frequency envelope becomes a graph of rhythm. although rudimentary in that it doest tell us directly the end point and hence duration of a given note,  we can calculate, for example that a particle emission lasting a certain time on the graph, at a certain fixed frequency rate would emit a particular number of particles of that duration  in that time period. this tells us, for example, that a line sloping upward from left-to-right represents an accellerating string of notes, and similiarly a complete return to baseline zero-point for aa period of time implies nothing occurrs. 
+
+------
+
+needed y/n?
+
+
+pulsar sythesis can be further expanded as advanced pulsar synthesis:
+of interest to us are two aspects of this;
+i] multiple generator useage, and,
+ii] convolution of the pulse train with samples.
+
+i] considering multiple generators, a pulsar generator has 7 service prameters:
+- pulse train duration
+- pulse train fundamental frequency envelope, fp
+- pulsaret formant frequency envelope, fd
+- pulsaret waveform,w
+- pulsaret envelope, v
+- pulsar train amplitude envelope, a
+- pulsar train spatial path, s
+
+althugh a single, common envelope controls fundamental frequency, fp; each generator has its own formant trajectory envelope, fd1, fd2, etc.
+this possibility of multiple separate pulsar generators as in this case allows for complex spatial creativity involving more than one spatial path, for example s1/s2/s3/etc. as necessary - even within a phrase or tone.
+
+------
+
+wort developing/investigating or not?
+
+convolution applications for processing samples:
+
+- normally there woud be no relevant control parameters with respect to convolution applications, nature of effect achieved depending purely upon choice of input signal.
+- https://static1.squarespace.com/static/5ad03308fcf7fd547b82eaf7/t/5b75b1181ae6cfab10991421/1534439741265/SoundCompwithPulsars.pdf
+appears to contain relevant info but i dont grasp it yet. :<

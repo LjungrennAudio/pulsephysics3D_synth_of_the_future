@@ -1,0 +1,604 @@
+having investigated the code in:
+`https://github.com/pichenettes/eurorack/tree/master/elements`
+
+this synth actualy employs a combination of transfer function modelling and Digital Waveguide Mass-String Modelling as a modal synthesis voice with some cool tweaks.
+
+transfer funtion modelling
+with linear time-invariant (LTI) systems, instead of building an explicit discrete-time model for each element, instead its possible to model only the transfer function between selected inputs and outputs of the physical system as long as the relevant portion of the system is LTI, or at least sufficiently close to LTI.
+it models an entire physical subsystem, such as a guitar body, using a single transfer function relating specific inputs and outputs since a transfer function can of course be a matrix relating a vector of inputs to a vector of outputs.
+the problem with transfer funtion modelling is that maximum computational efficiency is typically obtained by deciding which LTI portions of the model can be ``frozen'' as ``black boxes'' characterized only by their transfer functions. In return for increased computational efficiency, we sacrifice the ability to access the interior of the black box - i.e. we lose parametric control over individual aspects of the model.
+
+The impulse-invariant method converts analog filter transfer functions to digital filter transfer functions in such a way that the impulse response is the same (invariant) at the sampling instants the order of the filter is preserved, and IIR analog filters map to IIR digital filters although the digital filter's frequency response is an aliased version of the analog filter's frequency response.
+
+modal synthesis employs a parallel filter bank where the source-filter synthesis model filter transfer functionof the filter bank acts as the sum of the total separate modes required to be modelled.
+
+the physical system is represented as a superposition of individual modes driven by some external excitation (such as a pluck, strike, or bow)
+
+When a subset of the resonating modes is nearly harmonically tuned, it can be much more computationally efficient to use a filtered delay loop to generate an entire quasi-harmonic series of modes where Nk is the length of the delay line in the kth comb filter, and Hk(z) is a low-order filter which can be used to adjust finely the amplitudes and frequencies of the resonances of the kth comb filter.
+such superpositions of such quasi-harmonic mode series can provide a computationally efficient psychoacoustic equivalent approximation to arbitrary collections of modes in the range of human hearing
+
+
+
+A (lossless) digital waveguide is defined as a bidirectional delay line at some wave impedance, however, since we now have a bidirectional delay line, we have two traveling waves, one to the ``left'' and one to the ``right'', while a single delay line can model an acoustic plane wave, a bidirectional delay line (a digital waveguide) can model any one-dimensional linear acoustic system such as a violin string, clarinet bore, flute pipe, trumpet-valve pipe, or the like. in real acoustic strings and bores, the 1D waveguides exhibit some loss and dispersion so we will need some filtering in the waveguide to obtain an accurate physical model of such system
+
+A digital waveguide input signal corresponds to a disturbance of the 1D propagation medium. For example, a vibrating string is plucked or bowed by such an external disturbance. The result of the disturbance is wave propagation to the left and right of the input point. By physical symmetry, the amplitude of the left- and right-going propagating disturbances will normally be equal
+
+Modeling traveling-wave attenuation by a scale factor is only exact physically when all frequency components decay at the same rate. For accurate acoustic modeling, it is usually necessary to replace the constant scale factor g by a digital filter G(z) which implements frequency-dependent attenuation. In principle, a linear time-invariant (LTI) filter can provide an independent attenuation factor at each frequency.
+
+In many acoustic systems, such as piano strings wave propagation is also significantly dispersive. A wave-propagation medium is said to be dispersive if the speed of wave propagation is not the same at all frequencies. As a result, a propagating wave shape will ``disperse'' (change shape) as its various frequency components travel at different speeds. Dispersive propagation in one direction can be simulated using a delay line in series with a nonlinear phase filter.
+
+It is convenient to have separate damping and dispersion filters in the string model. The damping filter in piano strings is significantly less demanding than the dispersion filter.
+
+https://ccrma.stanford.edu/~jos/pasp/Excitation_Factoring.html
+
+i havent read much past this.
+
+
+------
+first off we set some basic overall rules:
+
+------
+starting with
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/dsp.h`
+
+38	static const float kSampleRate = 32000.0f;
+39	const size_t kMaxBlockSize = 16;
+
+
+------
+our various filters are here:
+https://github.com/pichenettes/stmlib/blob/master/dsp/filter.h
+
+a one pole, LUT for values for M_PI/powers and main svf via:
+
+command is 'set_f_q<FREQUENCY_ACCURATE>'
+
+220	// Set frequency and resonance from true units. Various approximations
+  	// are available to avoid the cost of tanf.
+222	template<FrequencyApproximation approximation>
+223 	 inline void set_f_q(float f, float resonance) {
+224	g_ = OnePole::tan<approximation>(f);
+225	r_ = 1.0f / resonance;
+226	h_ = 1.0f / (1.0f + r_ * g_ + g_ * g_);
+
+where onepole approximmations are:
+
+124	} else if (approximation == FREQUENCY_ACCURATE) {
+      // These coefficients don't need to be tweaked for the audio range.
+      const float a = 3.333314036e-01f * M_PI_POW_3;
+      const float b = 1.333923995e-01f * M_PI_POW_5;
+      const float c = 5.33740603e-02f * M_PI_POW_7;
+      const float d = 2.900525e-03f * M_PI_POW_9;
+      const float e = 9.5168091e-03f * M_PI_POW_11;
+      float f2 = f * f;
+      return f * (M_PI_F + f2 * (a + f2 * (b + f2 * (c + f2 * (d + f2 * e)))));
+
+note:	FREQUENCY_FAST 16Hz to 16kHz range, with a sample rate of 48kHz.
+	FREQUENCY_DIRTY Optimized for frequencies below 8kHz.
+	FREQUENCY_EXACT Clip coefficient to about 100
+	reason for choosing freq accurate i'm unclear
+
+54	#define M_PI_F float(M_PI)
+55	#define M_PI_POW_2 M_PI * M_PI
+56	#define M_PI_POW_3 M_PI_POW_2 * M_PI
+57	#define M_PI_POW_5 M_PI_POW_3 * M_PI_POW_2
+58	#define M_PI_POW_7 M_PI_POW_5 * M_PI_POW_2
+59	#define M_PI_POW_9 M_PI_POW_7 * M_PI_POW_2
+60	#define M_PI_POW_11 M_PI_POW_9 * M_PI_POW_2
+
+
+
+
+
+
+
+------
+from:
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.h`
+
+we create a string model using:
+
+delay lines and filters from
+29	#include "stmlib/dsp/delay_line.h"
+30	#include "stmlib/dsp/filter.h"
+
+------
+we create an fir damping filter from scratch - maybe so it can it vary with [brightness], specific to elements
+
+40	const size_t kDelayLineSize = 2048;
+
+43	class DampingFilter {
+
+57	inline void Configure(float damping, float brightness, size_t size) {
+64	float step = 1.0f / static_cast<float>(size);
+65      damping_increment_ = (damping - damping_) * step;
+66      brightness_increment_ = (brightness - brightness_) * step;
+67	    }
+
+70	inline float Process(float x) {
+71	float h0 = (1.0f + brightness_) * 0.5f;
+72	float h1 = (1.0f - brightness_) * 0.25f;
+73	float y = damping_ * (h0 * x_ + h1 * (x + x__));
+74	x__ = x_;
+75	x_ = x;
+76	brightness_ += brightness_increment_;
+77	damping_ += damping_increment_;
+78	return y;
+
+
+we need two delay line types, so
+
+91	typedef stmlib::DelayLine<float, kDelayLineSize> StringDelayLine;
+92	typedef stmlib::DelayLine<float, kDelayLineSize / 2> StiffnessDelayLine;
+defines 'string delayline' aznd 'stiffness delayline'
+
+------
+definition of some other terms...
+
+
+107	frequency_ += coefficient * (frequency - frequency_)
+defines frequency coefficient
+
+111	dispersion = dispersion < 0.24f
+112     ? (dispersion - 0.24f) * 4.166f
+111	: (dispersion > 0.26f ? (dispersion - 0.26f) * 1.35135f : 0.0f);
+defines dispersion
+
+129	inline StringDelayLine* mutable_string() { return &string_; }
+defines the object 'mutable string'
+
+141	float delay_;
+142	float clamped_position_;
+143	float previous_dispersion_;
+144	float previous_damping_compensation_;
+  
+146	bool enable_dispersion_;
+147	bool enable_iir_damping_;
+148	float dispersion_noise_;
+
+------
+and so here's our bits
+
+- 2 delay lines
+158	StringDelayLine string_;
+159	StiffnessDelayLine stretch_;
+
+[1 string/1 stretch using stmlib/blob/master/dsp/delay_line.h]
+
+and
+
+
+- 3 filters
+161	DampingFilter fir_damping_filter_;
+162	stmlib::Svf iir_damping_filter_;
+163	stmlib::DCBlocker dc_blocker_;
+
+an fir damping built custom
+
+an iir damping using 'svr' from stmlib/blob/master/dsp/filter.h
+- i.e. not the chamberlin or the modified chambelin also defined in stmlb
+modified chamberlin 2006: https://www.dafx.de/paper-archive/2006/papers/p_053.pdf
+- let alone the improved chamberlin ive discovered from a coupla yrs ago not in emilies file.
+improved chamberlin 2021: https://arxiv.org/pdf/2111.05592v1.pdf
+
+note: svf from stmlib/dsp/filter.h 
+and a dc blocker fom stmlib/dsp/filter.h]
+
+
+------
+and in:
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/string.cc`
+
+54	set_frequency(220.0f / kSampleRate);
+55	  set_dispersion(0.25f);
+56	  set_brightness(0.5f);
+57	  set_damping(0.3f);
+58	  set_position(0.8f);
+
+60	 delay_ = 1.0f / frequency_;
+
+70	 dc_blocker_.Init(1.0f - 20.0f / kSampleRate);
+
+93	 float clamped_position = 0.5f - 0.98f * fabs(position_ - 0.5f);
+
+103	 // For damping/absorption, the interpolation is done in the filter code.
+104	 v
+113	 is code for damping/f otherwise
+
+115	// Crossfade to infinite decay.
+116	code
+
+124	 fir_damping_filter_.Configure(damping_coefficient, brightness, size);
+125	 iir_damping_filter_.set_f_q<FREQUENCY_ACCURATE>(damping_f, 0.5f);
+126	 ParameterInterpolator damping_compensation_modulation(
+127      &previous_damping_compensation_,
+128      1.0f - Interpolate(lut_svf_shift, damping_cutoff, 1.0f),
+129      size);
+
+
+
+
+
+
+146	if (enable_dispersion) {
+147        float noise = 2.0f * Random::GetFloat() - 1.0f;
+148        noise *= 1.0f / (0.2f + noise_filter);
+149       dispersion_noise_ += noise_filter * (noise - dispersion_noise_);
+
+
+
+211	void String::Process(const float* in, float* out, float* aux, size_t size) {
+
+
+------
+from
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/voice.h`
+
+
+
+
+50	enum ResonatorModel {
+51	  RESONATOR_MODEL_MODAL,
+52 	 RESONATOR_MODEL_STRING,
+53 	 RESONATOR_MODEL_STRINGS,
+54	};
+
+212	 if (resonator_model_ == RESONATOR_MODEL_MODAL) {
+then sets patches
+223	  } else {
+224	   size_t num_notes = resonator_model_ == RESONATOR_MODEL_STRING
+
+
+
+
+------
+from
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/voice.cc`
+
+64	resonator_model_ = RESONATOR_MODEL_MODAL;
+we define resonator model modal
+
+
+
+76	float chords[11][5] = {
+77	    { 0.0f, -12.0f, 0.0f, 0.01f, 12.0f },
+78	    { 0.0f, -12.0f, 3.0f, 7.0f,  10.0f },
+79	    { 0.0f, -12.0f, 3.0f, 7.0f,  12.0f },
+80	    { 0.0f, -12.0f, 3.0f, 7.0f,  14.0f },
+81	    { 0.0f, -12.0f, 3.0f, 7.0f,  17.0f },
+82	    { 0.0f, -12.0f, 7.0f, 12.0f, 19.0f },
+83	    { 0.0f, -12.0f, 4.0f, 7.0f,  17.0f },
+84	    { 0.0f, -12.0f, 4.0f, 7.0f,  14.0f },
+85	    { 0.0f, -12.0f, 4.0f, 7.0f,  12.0f },
+86	    { 0.0f, -12.0f, 4.0f, 7.0f,  11.0f },
+87	    { 0.0f, -12.0f, 5.0f, 7.0f,  12.0f },
+88		};
+
+
+
+carrying on from
+103	 // Compute the envelope.
+through
+183	defining bowstrength buffer,
+we can then say:
+
+
+212	 if (resonator_model_ == RESONATOR_MODEL_MODAL) {
+then we simply process with bow
+221	// Process through resonator.
+222	    resonator_.Process(bow_strength_buffer_, raw, center, sides, size);
+i.e. we inclue the bow strength
+
+
+otherwise
+223	else {
+224	    size_t num_notes = resonator_model_ == RESONATOR_MODEL_STRING
+we calc it
+254	string_[i].Process(raw, center, sides, size);
+255	    }
+just as normal
+
+
+234	float chord = patch.resonator_geometry * 10.0f;
+235    float hysteresis = chord > chord_index_ ? -0.1f : 0.1f;
+236    int chord_index = static_cast<int>(chord + hysteresis + 0.5f);
+237    CONSTRAIN(chord_index, 0, 10);
+238    chord_index_ = static_cast<float>(chord_index);
+
+243	 float transpose = chords[chord_index][i];
+244      string_[i].set_frequency(frequency * SemitonesToRatio(transpose));
+
+248	 if (num_notes == 1) {
+249        string_[i].set_dispersion(patch.resonator_geometry);
+250      } else {
+251        float b = patch.resonator_brightness;
+252        string_[i].set_dispersion(b < 0.5f ? 0.0f : (b - 0.5f) * -0.4f);
+
+
+
+
+
+
+
+------
+from:
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/resonator.h`
+
+setting maxmodes/maxdelayline
+
+43	const size_t kMaxModes = 64;
+44	const size_t kMaxBowedModes = 8;
+45	const size_t kMaxDelayLineSize = 1024;
+
+------
+bow strength is defined
+
+54	const float* bow_strength,
+55	const float* in,
+56	float* center,
+57	float* sides,
+
+92	inline float BowTable(float x, float velocity) const {
+93	x = 0.13f * velocity - x;
+94	float bow = x;
+95	bow *= 6.0f;
+96	bow = fabs(bow) + 0.75;
+97	bow *= bow;
+98	bow *= bow;
+99	bow = 0.25f / bow;
+100	if (bow < 0.0025f) bow = 0.0025f;
+101	(bow > 0.245f) bow = 0.245f;
+102	return x * bow;
+
+------
+other shit started up
+
+108	float frequency_;
+109	float geometry_;
+110	float brightness_;
+111	float position_;
+112	float previous_position_;
+113	float damping_;
+  
+114	float modulation_frequency_;
+115	float modulation_offset_;
+116	float lfo_phase_;
+
+118	float bow_signal_;
+
+------
+
+
+123	stmlib::Svf f_[kMaxModes];
+124	stmlib::Svf f_bow_[kMaxBowedModes];
+125	stmlib::DelayLine<float, kMaxDelayLineSize> d_bow_[kMaxBowedModes];
+
+
+------
+geometry knob has some control here:
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/resonator.cc`
+
+
+67	float stiffness = Interpolate(lut_stiffness, geometry_, 256.0f);
+
+74	  float brightness_attenuation = 1.0f - geometry_;
+75	  // Reduces the range of brightness when geometry is very low, to prevent
+76	  // clipping.
+77	  brightness_attenuation *= brightness_attenuation;
+78	  brightness_attenuation *= brightness_attenuation;
+79	  brightness_attenuation *= brightness_attenuation;
+80	  float brightness = brightness_ * (1.0f - 0.2f * brightness_attenuation);
+81	  float q_loss = brightness * (2.0f - brightness) * 0.85f + 0.15f;
+82	  float q_loss_damping_rate = geometry_ * (2.0f - geometry_) * 0.1f;
+
+
+
+
+------
+do overall output calcs
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/part.cc`
+
+define performance state
+41	struct PerformanceState {
+42	  bool gate;
+43	  float note;
+44	  float modulation;
+45	  float strength;
+
+
+
+mixdown
+
+pre-clippinh
+
+apply reverb
+
+
+
+
+------
+questions open:
+
+
+where the fuck is the mysterious MIC_W switch hidden?
+
+
+how does:
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/exciter.cc`
+result in
+
+63	void Exciter::Process(const uint8_t flags, float* out, size_t size) {
+64	  damping_ = 0.0f;
+65	  (this->*fn_table_[model_])(flags, out, size);
+
+outputting
+lut_approx_svf_gain
+lut_approx_svf_g
+lut_approx_svf_r
+
+
+
+
+why does:
+`https://github.com/pichenettes/eurorack/blob/master/elements/dsp/tube.cc`
+31	#include <cstdio>
+
+
+how do these two
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/tube.h
+https://github.com/pichenettes/eurorack/blob/master/elements/dsp/tube.cc
+manage to make a proper tube model?
+other than in voice.cc it interacts with resonator damping
+
+
+-------
+required
+
+adjust out out of my new exciter source to suit the input requirements / sampling method of this 
+adjust the mixing and sampling and filtering method of this to suit my exciter source
+
+
+-------
+desires
+
+upgrade filters					depends why the filter was used
+make it run past 52 modes max			down to computing
+way more nonlinearities				just add the math to the model
+better interpoltion?				def can be improved
+extend/warp geometry morph filt function?	not even used - may become relevant if mutliple models employed
+add models?					will look into
+try dif variables				https://ccrma.stanford.edu/~jos/pasp/Alternative_Wave_Variables.html
+impove interpolation in delauline		uses hermite - could be better
+iir filters 				could have better interpolation too
+delayline CONSTRAIN(delay, 4.0f, kDelayLineSize - 4.0f);
+other waveguides: fir filters? tube?
+
+
+
+dsp.h sets us at:
+static const float kSampleRate = 32000.0f;
+const size_t kMaxBlockSize = 16;
+
+stiffnessdelay line is same delayline so same interpolate etc.
+voice.h limits knumbstrings = 5
+voice.cc resonator resolution limited = 52 
+
+resonator.h 	const size_t kMaxModes = 64;
+		const size_t kMaxBowedModes = 8;
+		const size_t kMaxDelayLineSize = 1024;
+
+		inline void set_resolution(size_t resolution) {
+    		resolution_ = std::min(resolution, kMaxModes);
+
+		stmlib::Svf f_[kMaxModes];
+  		stmlib::Svf f_bow_[kMaxBowedModes];
+ 		stmlib::DelayLine<float, kMaxDelayLineSize> d_bow_[kMaxBowedModes];
+
+
+resonator.cc
+		// Update the first 24 modes every time (2kHz). The higher modes are
+    		// refreshed as a slowest rate.
+
+
+		 if (i < kMaxBowedModes) {
+ 		       size_t period = 1.0f / partial_frequency;
+		       while (period >= kMaxDelayLineSize) period >>= 1;
+		       d_bow_[i].set_delay(period);
+		       f_bow_[i].set_g_q(f_[i].g(), 1.0f + partial_frequency * 1500.0f);
+
+i.e. kbowedmodes limits max delayline size, and makes tuning less accurate.
+
+
+	    // Note: For a steady sound, the correct way of simulating the effect of
+	    // a pickup is to use a comb filter. But it sounds very flange-y when
+	    // modulated, even mildly, and incur a slight delay/smearing of the
+	    // attacks.
+	    // Thus, we directly apply the comb filter in the frequency domain by
+	    // adjusting the amplitude of each mode in the sum. Because the
+	    // partials may not be in an integer ratios, what we are doing here is
+	    // approximative when the stretch factor is non null.
+	    // It sounds interesting nevertheless.
+
+i.e. at a certain number of modes a bandpass cob filter fiddle is used - not necessarily bad tho
+
+
+remaining is just gain normalising i think - probly no loss in qulaity even tho  filter is changed slightly due to q.
+
+
+
+
+exciters are all 8bit!
+
+exciters are filtered by:
+https://raw.githubusercontent.com/pichenettes/eurorack/master/elements/resources.cc
+
+i.e. svf lookup tables ewwwwwww
+
+
+
+exciter.cc
+lp_.Init();
+
+float Exciter::GetPulseAmplitude(float cutoff) {
+  uint32_t cutoff_index = static_cast<uint32_t>(cutoff * 256.0f);
+  return lut_approx_svf_gain[cutoff_index];
+
+void Exciter::Process(const uint8_t flags, float* out, size_t size) {
+  damping_ = 0.0f;
+  (this->*fn_table_[model_])(flags, out, size);
+  // Apply filters.
+  if (model_ != EXCITER_MODEL_GRANULAR_SAMPLE_PLAYER &&
+      model_ != EXCITER_MODEL_SAMPLE_PLAYER) {
+    uint32_t cutoff_index = static_cast<uint32_t>(timbre_ * 256.0f);
+    if (model_ == EXCITER_MODEL_NOISE) {
+      uint32_t resonance_index = static_cast<uint32_t>(parameter_ * 256.0f);
+      lp_.set_g_r(
+          lut_approx_svf_g[cutoff_index],
+          lut_approx_svf_r[resonance_index]);
+    } else {
+      lp_.set_g_r_h(
+          lut_approx_svf_g[cutoff_index],
+          2.0f,
+          lut_approx_svf_h[cutoff_index]);
+    }
+    lp_.Process<FILTER_MODE_LOW_PASS>(out, out, size);
+
+
+exciter.h
+inline const stmlib::Svf& filter() const { return lp_; }
+
+
+tube.cc
+really crappy filtered self assembled delayline tube model with some extra tweaks for breath and reed - such poor effort.
+
+
+
+https://github.com/pichenettes/stmlib/blob/master/utils/dsp.h
+LUT for interpolations/crossfades
+
+which feed this:
+https://github.com/pichenettes/stmlib/blob/master/dsp/parameter_interpolator.h
+
+i.e. all interpolations except delayline hermteand svf are LUT!
+
+
+
+https://github.com/pichenettes/stmlib/blob/master/dsp/units.h
+https://github.com/pichenettes/stmlib/blob/master/dsp/units.cc
+use the:
+
+https://github.com/pichenettes/stmlib/blob/master/dsp/dsp.h
+integral fractional
+
+plus LUT for pitch ratios - i.e all tuning. 
+
+may not matter cos quantised midinote?
+
+
+
+https://github.com/pichenettes/stmlib/blob/master/dsp/dsp.h
+all other interpolation in here from integral fractional/hermite.
+could be improved.
+
+
+

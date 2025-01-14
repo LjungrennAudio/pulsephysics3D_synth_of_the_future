@@ -1,0 +1,103 @@
+comparing:
+- modelling of lockhart/serge
+- neural net bb modelsof diode shit
+- circuit errors
+- modelica models [used by wolfram]
+- 
+
+___________________________________________________________________________________________________________________
+note errata::
+
+bookmarked:
+http://research.spa.aalto.fi/publications/papers/smc17-wavefolder/media/Errata.pdf
+local:
+C:\Users\Tab\Desktop\synth\lockhart serge Errata.pdf
+____________________________________________________________________________________________________________________
+main lockhart::
+
+bookmarked:
+https://www.mdpi.com/2076-3417/7/12/1328
+local:
+file:///C:/Users/Tab/Desktop/synth/applsci-07-01328-v2.pdf
+
+
+
+
+In Ken Stone’s version of the circuit, Vin is assumed to be bounded between approximately ±1.2 V
+
+
+
+
+
+V_{out}		= \{λ}\{η}V_{T}W.(\{∆}exp(\{λ}\{β}V_{in})) − \{α}V_{in}																				(26_orig)
+
+
+F(V_{in})	= \fract{V_T}{2\β}.[W(\∆exp(\λ\βV_{in})).(W(\∆exp(\λ\βV_{in}))+2)] − \fract{\α}{2}.V_{in}^{2}
+													(26_new)
+
+
+
+α = \fract{2.R_{L}}{R}, β = \fract{2.R_{L} + R}{\{η}.V_{T}.R} and ∆ = \fract{R_{L}.I_{s}}{\{η}.V_{T}}
+
+Parameter values for the Lockhart wavefolder described by Equation (26_new):
+
+Name	Value	Name	Value	Name	Value
+R	15kΩ	I_{s}	10−17A	VT	25.864mV
+R_{L}	1–50kΩ	\η	1	–	–
+
+\α = \fract{2.R_{L}}{R}, \β = \fract{2.R_{L} + R}{\η.V_{T}.R} and \∆ = \fract{R_{L}.I_{s}}{\η.V_{T}}
+
+
+
+Ken Stone’s circuit features an inverting stage before the output which can be modeled by inverting the polarity of the right-hand side of eqn(26) givng:
+
+V_{out}		= \αV_{in} − \λ\ηV_{T}W.(\∆exp(\λ\βV_{in}))					
+													(28_orig)
+
+converting using:
+
+F(V_{in})	= \fract{V_T}{2\β}.[W(\∆exp(\λ\βV_{in})).(W(\∆exp(\λ\βV_{in}))+2)] − \fract{\α}{2}.V_{in}^{2}
+													(26_new)
+
+
+
+where \λ	= sgn(V_{in}) and sgn() is the signum function
+
+sgn(x)		:=		−1 if x < 0
+				0 if x = 0
+				1 if x > 0.
+
+
+the voltages inside the Lockhart wavefolder are time-dependent. therefore, we can describe the continuous-time model defined by eqn(26) as being of the form
+
+V_{out}(t)	= f(V_{in}(t))
+													(27_orig)
+
+where f() is the transfer function of the system and t is time. in the synthesis literature, the term “transfer function” is commonly used to denote the waveshaping function [4]. it should not be confused with the s- and z-domain transfer functions used in linear system analysis.
+
+V_{out}		= \αV_{in} − \λ\ηV_{T}W(\∆exp(\λ\βV_{in}))					
+													(28_orig)									
+w_{m+1}		= w_{m} − \fract{p_{m}}{r_{m} − p_{m}.s_{m}}						
+													(28_new)
+
+
+
+
+
+____________________________________________________________________________________________________________________
+bookmarked:
+https://zenodo.org/record/6566846
+local:
+file:///C:/Users/Tab/Desktop/synth/0.pdf
+
+explains how to neural net blackbox the diodes stuff for faster more accurate wavedigital - but is bb.
+
+_but_ this assumes lambert W() function come from look up tables being slow/inaccurate
+
+the following mentions some interpolation in matlab and gives pre errata maxmsp:
+
+
+computer shit pre errata/interpol::
+bookmark:
+http://research.spa.aalto.fi/publications/papers/smc17-wavefolder/
+local:

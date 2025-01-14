@@ -1,0 +1,33 @@
+eg/lfo per blok is essential:
+
+i.e.;
+- 3 x vco, 3x vcf, 3x vca = 9 x modulation realistically at core - fx may be spared a lil and sub blocks...
+
+ideally for the LjunggrenAudio PulsePhysics n-space:
+count comes to 33 at guess?
+matrix necessary.
+see ableton wavetable - for 2x ocs and 2 x flt has 3eg 2lfo
+
+so for my 3x rows of stuff then - 4x eg, 3x lfo matrix? amybe double cos extra chaine etc?
+
+6eg and 4lfo? still not enough - check what is wb/gb/bb so can decide maybe?
+
+
+	eg1	eg2	eg3	eg4	eg5	eg6	lfo1	lfo2	lfo3	lfo4
+param::	x>>>>>			<x	<<<<<x					x>>
+via  ::
+map  ::		x>>				x>>>		
+sel  ::
+     ::							<x
+     ::			<<<<<x							x>>>
+
+then click fx for settings: e.g. sel eg2 and there will be log/lin/expo for each section, delay, attack, hold, dec, sus, rel, window/compare? etc.
+
+how to do crossmods?
+learned today that the displays that show mod actualy appening are beyond valuable no matter who you are -  as i've always hated excess displays of blikenlites, nevertheless am well aware a choice led that dims/brightens with a cv or whatever can massiveky aid in tracing where a signal is stalled or weak or w/e.
+
+hence i really tempted by the nordlead style endless encoder with led ring, but for cv etc., the ring actually ebbe n flow round n back as the levels change.
+
+otoh there will 4-5 lcs screens to clearly see current waveform state in that synth/fx/mod section - wouldnt be hard to have 2 modes - patching where ther's only a coupla layers deep of select by simplified graphic representation of e.g. 60's pultec transformer model or waveguide pvc tube or fft morph or studer reel2reel etc.
+- then at pressof button screens got to performance mode - waveform display of given stage with levels 3 sel paramaters avail for realtime manipulation...
+

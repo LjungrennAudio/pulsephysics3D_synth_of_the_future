@@ -1,0 +1,576 @@
+%+++++++++++++++++++++++++++++++++++
+% Diode Clipper
+% p = 1 non-it scheme
+%+++++++++++++++++++++++++++++++++++
+clear all
+close all
+%+++++++++++++++++++++++++++++++++++
+% custom parameters
+base_fs = 44100; %-- base fs
+T = 0.01 ; %-- time
+OFNIT = 1 ; %-- oversampling
+Is = 2.52e-9 ; %-- sat curr
+vt = 26e-3 ; %-- th volt
+C = 33e-9 ; %-- cap
+R = 1e3 ; %-- res
+AmpV = 1; %-- input amp
+sinF = 200 ; %-- input freq
+a = 2.0 ; %-- free param.
+%+++++++++++++++++++++++++++++++++++
+% derived parameters
+fs = base_fs*OFNIT ;
+k = 1 / fs ;
+Ts = floor(T*fs) ;
+tv = (0:Ts-1).’/fs ;
+vi = AmpV*sin(sinF*2*pi*tv) ;
+c1 = 1/R/C;
+c2 = 2*Is/C;
+c3 = c2/vt;
+c4 = 1/vt ;
+%+++++++++++++++++++++++++++++++++++
+% init
+outNIT = zeros(Ts,1) ;
+x = 0.00 ;
+%+++++++++++++++++++++++++++++++++++
+% main loop
+for n = 2 : Ts
+vin = c1*vi(n) ;
+xvt = c4*x ;
+sh = sinh(xvt) ;
+ch = sqrt(1 + sh * sh) ;
+f = x*c1 + c2*sh ;
+fx = c1 + c2*sh/x ;
+if abs(x) < 1e-13
+fx = c1 + c3 ;
+end
+fp = c3*ch + c1;
+sigma = q*k*fp ;
+x = ((1+sigma)*x-0.5*k*f+k*vin)/(1+sigma+0.5*k*fx) ;
+outNIT(n-1) = x ;
+end
+%+++++++++++++++++++++++++++++++++++
+% plot
+plot(tv,outNIT);
+grid on;
+xlabel(’t (s)’) ; ylabel(’x (V)’)
+%+++++++++++++++++++++++++++++++++++
+
+
+
+
+
+**************************************************
+**************************************************
+
+Matlab code to calculate a constant Q transform by the "brute force method" as described in:
+
+``Calculation of a Constant Q Spectral Transform"
+
+logftS.m calculates a transformation matrix using genlgkern.m and logft.m with input minimum and maximum frequencies and geometric spacing of the bins.
+
+
+% logftS.m  7/01  file to run logft calculation
+%	 EX with defaults: 
+%			[cqtrans, tt, freqs, kerncos, kernsin] = logftS(vsc11);
+%
+%   EX inputting all values (same as defaults here)
+%			[cqtrans, tt, freqs, kerncos, kernsin] =  ...
+%           logftS(vsc11, 'SR', 11025, 'minfreq', 174.6141,'freqrat', 1.0293, 'maxfreq', 5512, ...
+%		     'windsizmax', 1102, 'hopsiz', 150, 'graphit', 0 , 'wintype', 'kaiser8', 'complex', 0, 'constwind', 0 , 'Phase0', 0);
+%
+%   EX if kernels previously calculated; will speed up calc
+%			[cqtrans, tt, freqs, kerncos, kernsin] =  ...
+%           logftS(vsc11, 'SR', 11025, 'minfreq', 174.6141,'freqrat', 1.0293, 'maxfreq', 5512, ...
+%		     'windsizmax', 1102, 'hopsiz', 150, 'graphit', 0, 'complex', 0, 'kerncos', kerncos, 'kernsin', kernsin, 'constwind', constwind);
+
+function  [cqtrans, tt, freqs, kerncos, kernsin] = logftS(infile, varargin);
+
+% change so  windsizmax and hopsiz in ms
+
+% DEFAULTS
+ SR  = 11025;					 % sample rate
+ minfreq = 174.6141;         % G3 = freq of G below middle C in Hz
+ freqrat  = 2^(1/24);        % quarter tone spacing = 1.0293022366;  
+ gflag = 0; 						% 'graphit', 1   will draw a waterfall plot of the transform
+ Winnam = 'hamming';
+ ccx = 0;
+ constwind = 0;
+ phase0 = 0;
+%  constwind = 0;
+% OPTIONAL INPUTS with examples
+% maxfreq  = SR/2 ;					 % maximum frequency
+% windsizmax = 1102;          % maximum window size in samples = 100 ms at SR 11025
+% hopsiz = 150;					 % samples between frames = 15 ms at SR 11025
+
+	for jj = 1: length(varargin)
+		if(strcmp(varargin{jj}, 'SR') == 1)
+		   SR = varargin{jj + 1};
+			jj = jj + 1;
+	   elseif(strcmp('minfreq', varargin{jj}))
+			minfreq = varargin{jj+1};
+		   jj = jj + 1;
+	   elseif(strcmp('freqrat', varargin{jj}))
+			freqrat = varargin{jj+1};
+			jj = jj + 1;
+	   elseif(strcmp('maxfreq', varargin{jj}))
+			maxfreq = varargin{jj+1};
+			jj = jj + 1;
+	   elseif(strcmp('windsizmax', varargin{jj}))
+			windsizmax = varargin{jj+1};
+			jj = jj + 1;
+	   elseif(strcmp('hopsiz', varargin{jj}))
+			hopsiz = varargin{jj+1} ;
+			jj = jj + 1;
+	   elseif(strcmp('graphit', varargin{jj}))
+			gflag = varargin{jj+1} ;
+			jj = jj + 1;
+	   elseif(strcmp('kerncos', varargin{jj}))
+			kerncos = varargin{jj+1} ;
+			jj = jj + 1;
+	   elseif(strcmp('kernsin', varargin{jj}))
+			kernsin = varargin{jj+1} ;
+			jj = jj + 1;
+        elseif(strcmp('wintype', varargin{jj}))
+			Winnam = varargin{jj+1} ;
+			jj = jj + 1;
+        elseif(strcmp('complex', varargin{jj}))
+			ccx = varargin{jj+1} ;
+			jj = jj + 1;        
+        elseif(strcmp('constwind', varargin{jj}))
+			constwind = varargin{jj+1} ;
+			jj = jj + 1;
+        elseif(strcmp('Phase0', varargin{jj}))
+			phase0 = varargin{jj+1} ;
+			jj = jj + 1;
+		end
+	end
+		
+if ~exist('windsizmax') 
+   windsizmax = floor( .1 * SR);
+	fprintf('logftS: No input maximum window size. Taking $.1f ms max = %.0f samples.\n',1000* SR/windsizmax, windsizmax);
+end 
+
+if ~exist('maxfreq'), 	maxfreq = fix(SR/2); end % Calc to Nyq if not input
+if maxfreq > SR/2 
+	maxfreq = fix(SR/2);
+	fprintf('logftS: WARNING! Input maxfreq is over Nyquist; taking Nyquist = %.0f instead', maxfreq); 
+end
+if exist('constwind') & constwind ~= 0, fprintf('logftS: calculation with constant window size %.0f \n', constwind); end
+	% Get number of bins for these min and max freqs
+nfreqs = 1 + fix( log(maxfreq/minfreq)/log(freqrat) ); 
+fprintf('logftS: Calculating %.0f freq bins from %.0f to %.0f .\n', nfreqs, minfreq, maxfreq);
+
+if ~exist('hopsiz'), hopsiz = floor(.015*SR);  end     % 15 ms
+
+freqs = minfreq * (freqrat .^ [(0:1:nfreqs-1)]);
+
+		% Generate kernels for BASIS FNS if not previously calculated
+if ~exist('kerncos') | ~exist('kernsin')
+	fprintf('Calculating kernels'); 
+    if phase0 == 0, fprintf(' with center of window symmetric. \n\n');
+    else, fprintf(' with phase 0 wrt beginning of window. \n\n'); end
+   [kerncos, kernsin, freqs] = genlgftkern(minfreq, freqrat, SR, nfreqs, windsizmax, Winnam, constwind,  phase0);           % GENLGFTKERN
+else fprintf('Kernels previously calculated; hope they re appropriate for this infile..\n')
+end
+[rrr ccc] = size(kerncos);
+if (ccc > length(infile)), error('Length of infile < max window size\n'); end
+		%	Calculate cq transform
+[cqtrans, tt]  = logft(infile, hopsiz, kerncos, kernsin,  windsizmax, nfreqs, SR, ccx);                                         %LOGFT
+
+if gflag == 1
+    figure
+	waterfall(freqs, tt, abs(cqtrans)); view(0, 70)
+	set( gca, 'XScale', 'log'); axis tight; grid off
+	%set(gca,'XTick', [100 300 1000 3000 ])
+end
+
+
+----------
+
+
+% logft.m  7/99  from logft.c
+%    uses kernels calc from genlgftkern.m
+% View with:
+%  waterfall(cq)  
+%   view(0, 40)
+% 
+%  Must run genlgftkern  FIRST to have the kernels
+% Example:    cq = logft(vsc32, 512,  kerncos, kernsin,  windsizmax, nfreqs);
+% NB: kernels + windsizmax and nfreqs have been returned by running genlgftkern
+%  returns rows of length nfreqs
+
+        function  [cq, time]  = logft(infile,hopsiz, kerncos, kernsin,  windsizmax, nfreqs, SR, ccx);
+
+% infile = vsc11;
+% hopsiz = 256;
+% 
+% infile has to be a column array
+[nrows ncols] = size(infile);
+
+if ncols ~= 1 & nrows ~= 1
+
+   error('infile not a row or col array');
+
+elseif ncols ~= 1
+
+   infile = infile';
+
+end
+
+
+% fprintf('logft: windsizmax= %.0f= %.1f ms  ;     nfreqs = %.0f \n', windsizmax,1000*windsizmax/SR,   nfreqs);
+[nr nc] = size(kerncos);
+if nc < windsizmax
+	windsizmax = nc;
+	fprintf('logft: NOTE: winsizmax longer than need for this minfreq; changing to %.0f = %.1f ms(freq=%.0f)\n', nc, 1000*nc/SR, SR/nc);
+end
+nhops = 1 + floor((length(infile)-windsizmax)/hopsiz) ;
+cq = zeros(nfreqs, nhops);
+
+    for jj = 0:nhops-1
+	 	ninit = jj*hopsiz+1;
+ 		nfnl  =  jj*hopsiz +1 + windsizmax - 1;
+		%	fprintf('%.0f\t %.0f\n',ninit, nfnl);
+		infile2 = infile(ninit:nfnl);
+	 	reOinfil = kerncos * infile2;
+	 	imOinfil = kernsin * infile2;
+        if ccx == 1,
+            cq(:,jj+1) = reOinfil  +  i * imOinfil;
+        else
+ 		    cq(:,jj+1) = ((reOinfil .^ 2) + (imOinfil .^ 2)) .^(.5);
+        end
+    end
+    cq = cq';
+    [rowcq collcq] = size(cq);
+    time = (hopsiz / SR )  * [1 : rowcq] ;
+        
+    % semilogx(freqs, cq)
+    % waterfall(freqs, time, cq);
+
+--------
+
+
+% genlgftkern 7/99 write this in the time domain
+%            write a genkern like genkern.c for a const Q trans (?? genkern was for transform from fft)
+% %  		
+% % Example:   [kerncos, kernsin, freqs ] =  genlgftkern(174.6141, 1.0293022366 , 11025, 120, 1102);
+%
+% nfreqs and windsizmax optional but must input 0 if not a value
+% 	will choose 100 ms max and nfreqs up to Nyq
+% minfreq =  440/(2^(1/12))^16 ; % F3  174.6141     G3 = 195.9977
+% nfreqs  = 60;
+% freqrat = 2^(1/12);  % 2^(1/24) = 1.0293022366
+% SR = 11025 ;
+% windsizmax = fix(.1 * SR);  % take a 100 ms max
+
+function  [kerncos, kernsin, freqs] = genlgftkern(minfreq, freqrat, SR, nfreqs, windsizmax, winnam, constwind);
+
+if (exist('constwind') & constwind ~= 0 ), fprintf('genlgftkern; Calculating kernels with constant windowsiz = %.0f\n', constwind); 
+elseif   ~exist('constwind'), constwind = 0; 
+end
+	% Put these steps back in if want to run this prog indep of logftS
+% if (nargin < 5 | windsizmax == 0)   %  no input windsizmax
+%if windsizmax == 0
+%	windsizmax = floor( .1 * SR);  % take a 100 ms max
+%	fprintf('No input maximum window size. Taking 100 ms max.\n');
+%end
+% if (nargin < 4 | nfreqs == 0)   % no nfreqs either
+%if nfreqs == 0
+%   nfreqs = fix( log(SR/(2*minfreq))/log(freqrat) ); % to give highest freq at the Nyq
+%	fprintf('No input number of freqs; taking freqs from minfreq to Nyquist = %.0f freq bins\n', nfreqs);
+%end
+
+% winnam = 'hamming';
+if ~exist('winnam'), winnam = 'hamming';
+    fprintf('Using default window Hamming\n');
+else, fprintf('Input window %s \n', winnam);
+end  
+if winnam(1:4) == 'rect', winnam = 'boxcar'; end
+    
+Q = 1/(freqrat - 1);
+TWOPI = 2*pi;
+mindigfreq = TWOPI * minfreq / SR;
+freqs = minfreq * (freqrat .^ [(0:1:nfreqs-1)]);
+pos = find(freqs < SR/2);
+freqs = freqs(pos);
+nfreqs = length(freqs);
+digfreq =  freqs * TWOPI/SR;
+	% shouldn't need the following since fixed up freqs
+if sum(find(digfreq > pi)) ~= 0, error('freq over Nyq'); end
+
+flag = 1;
+if constwind == 0
+    windsizOk = fix (TWOPI*Q ./digfreq);  % period in samples time Q
+    % arg = (pi/2) * ones(nfreqs, windsiz);
+    windsizmax;
+    windsizOk(1);
+    if (windsizmax >  windsizOk(1)),
+        windsizmax = windsizOk(1);
+        flag = 0;  
+    end
+    pos = find(windsizOk > windsizmax);
+    % if windsizmax < windsizOk(1) so get some windows not as long as necess for that Q
+    if (flag)
+        fprintf('genlgftkern: Const window %.0f up to freq position %.0f and frequency %.0f out of %.0f frequencies. windsizMinfreq = %.0f Q=%.1f\n', ...
+            windsizmax, max(pos), digfreq(max(pos)) * SR/(2*pi), length(digfreq), windsizOk(1), Q);
+    else
+        fprintf('genlgftkern: No const window; windsizmax = %.0f = windsizMinfreq = %.0f Q=%.1f\n', ...
+            windsizmax,  windsizOk(1), Q);
+    end
+    fprintf('\n');          
+    windsizOk(pos) = windsizmax;
+    
+    kerncos = zeros(nfreqs, windsizOk(1) );
+    kernsin = zeros(nfreqs, windsizOk(1) );
+    numzeros = windsizOk(1) - windsizOk;
+    numzerosO2 = round(numzeros/2);
+    
+else
+     kerncos = zeros(nfreqs, constwind );
+    kernsin = zeros(nfreqs, constwind );
+end
+
+% Get kaiser number if window is kaiser
+           if length(winnam) > 5   
+              if   winnam(1:6) == 'kaiser'
+                if length(winnam) == 7, kaiserno = winnam(7); 
+                elseif length(winnam) == 8, kaiserno = winnam(7:8); 
+                else, kaiserno = '8'; % default is 8 for no input kaiser number
+                end
+                winnam = 'kaiser';   
+              end
+            end
+           
+  if constwind == 0,
+      for k = 1:nfreqs
+          sz = windsizOk(k);
+          switch(winnam)
+          case 'kaiser'
+              winstr = [ winnam '(' num2str(sz) ',' kaiserno ')'];
+          otherwise
+              winstr = [ winnam '(' num2str(sz) ')'];
+          end
+          % fprintf(' calc window %s \n', winstr);
+          wind = eval(winstr); 
+          wind = wind';
+          
+          %        wind = boxcar(windsizOk(k))'; 
+          numz = 1;
+          if numzerosO2(k) ~= 0, numz =  numzerosO2(k); end;
+          kerncos(k, numz: numz + windsizOk(k)-1) = (1/windsizOk(k)) * ...
+               cos(digfreq(k)*( -sz/2 : sz/2 - 1 )).* wind;
+           %   cos(digfreq(k)*(0:windsizOk(k)-1)).* wind;
+          
+          %		    cos(digfreq(k)*(0:windsizOk(k)-1)).* wind((1:windsizOk(k)));
+          kernsin(k, numz: numz + windsizOk(k)-1) = (1/windsizOk(k)) * ...
+                    sin(digfreq(k)*( -sz/2 : sz/2 - 1 )).* wind;
+          %    sin(digfreq(k)*(0:windsizOk(k)-1)).* wind;
+          %		    sin(digfreq(k)*(0:windsizOk(k)-1)).* wind((1:windsizOk(k)));
+      end
+  else
+      for k = 1:nfreqs
+          sz = constwind;
+          switch(winnam)
+          case 'kaiser'
+              winstr = [ winnam '(' num2str(sz) ',' kaiserno ')'];
+          otherwise
+              winstr = [ winnam '(' num2str(sz) ')'];
+          end
+          % fprintf(' calc window %s \n', winstr);
+          wind = eval(winstr); 
+          wind = wind';
+          
+          %        wind = boxcar(windsizOk(k))'; 
+          
+           kerncos(k, 1 : constwind) = (cos(digfreq(k)*( -constwind/2 : constwind/2 -1 ))).* wind; 
+          % kerncos(k, 1 : constwind) = (cos(digfreq(k)*(0:constwind-1))).* wind;
+          
+          %		    cos(digfreq(k)*(0:windsizOk(k)-1)).* wind((1:windsizOk(k)));
+          kernsin(k, 1 : constwind) = (sin(digfreq(k)*( -constwind/2 : constwind/2 -1 ))).* wind; 
+         % kernsin(k, 1:constwind) =  (sin(digfreq(k)*(0:constwind-1))).* wind;
+      end
+  end
+  
+  % fprintf('nfreqs = %.0f ;    windsizmax = %.0f \n',nfreqs, windsizmax);
+
+-----------
+
+The transform can also be done as a single matrix multiplication with kerncos and kernsin from above and infile shaped by makmatrix.m.
+
+
+
+% outfile = makmatrix(infile, windsiz, hopsiz)    8/02
+%     converts a row or column to a matrix of columns of length windsiz i.e. windsiz rows 
+%     each column is a time frame and they are separated by hopsiz
+%     ie output numbers in COLUMNS so use waterfall of the transpose to plot
+
+function    outmat = makmatrix(infile, NN, HH);
+
+% test = 1:1000;
+% nhops = 20;
+% NN = 15;
+% HH = 5;
+
+[nr, nc] = size(infile);
+if nr > nc, infile = infile'; end   % make input row matrix
+
+nhops = (length(infile) - NN)/HH  + 1
+clear outmat
+for jj = 0 : nhops - 1
+    begind = (jj)*HH + 1;
+    endind = begind + NN-1;
+    outmat(jj+1,:) = infile(begind:endind);
+end
+outmat = outmat';
+[nr, nc] = size(outmat);
+fprintf('infile is %.0f samples; outmat is windsiz = %.0f by nframes = %.0f\n', length(infile), nr, nc);
+
+
+
+---------
+
+
+T = kerncos + i * kernsin;
+cqtrans = T * makmatrix( infile, windsiz, hopsiz);
+
+A really inadequate inverse can be approximated using:
+
+
+
+ilogftS.m bromken link :<
+
+
+% ilogft.m  5/02    inverse transform of complex cq
+% enter cqcxin in sonagram form ie  as output from logftS transposed
+% [timfil]  = ilogft(cqcxin , freqs, 150,  150, 11025 );
+%       input cqcxin - calc from logftS with complex out; change to sonagram in
+%       freqs           output from logftS
+%       hopsiz          from logftS
+%       Nmax           the output windowsiz; should coord with hopsiz if no overlap
+%       SR               from logftS
+%                   calculates with Hamming window
+
+        function  [timfil, icqt]  =  ilogft(cqcxin , freqs, hopsiz,  Nmax, SR);
+        
+        %  cqcxin = cqcxin'; % change to sonagram form
+%         SR = 11025;
+%          windsizTfn = 256;
+%          hopsiz = 80;
+        TWOPIoSR = 2*pi/SR;
+ %       calcwin = 1;
+        
+        
+        digfreq =  (freqs* TWOPIoSR)' ; %make sure column
+        if cols(digfreq) ~= 1 , digfreq = digfreq'; end
+        
+                        %  Nmax x nfreqs
+        iexp = (exp(i * digfreq * [0 : Nmax - 1]))'  ;
+        % transform matrix - time basis fns in columns ; frequency varies over the freqs calc for cqtrans
+        
+       % if calcwin == 1, 
+         %   iexp = iexp .* (hamming(Nmax) * ones(1, length(freqs)));
+            % end
+            
+            %    Nmax x nfreqs     nfreqs x number of frames ie transform in columns
+        icqt = iexp * cqcxin;
+            % temporal estimation in columns
+        % ==========================================
+        %  from ifftgen.m
+        % resize the output matrix for row out
+        icqt = icqt';
+        nhops = rows(icqt) ;
+        windsiz = Nmax;
+        outsmps = (nhops -1) * hopsiz + windsiz;
+        outfilT = zeros(1, outsmps);
+
+        for ii = 1:nhops
+           init = 1 + (ii - 1)* hopsiz;
+            fnl = init + windsiz - 1;    %  fnl - init = windsiz -1  or windsiz numbers
+            outfilT(init:fnl) = outfilT(init:fnl) + icqt(ii,:);
+        end
+        timfil = real(outfilT);
+
+        
+        
+        
+        
+        % end from ifftgen
+        % timfil = real(timfil(:));
+
+
+
+---------
+
+
+ (this is only useful for looking at a single input frame)
+
+% ilogft2.m  5/02    inverse transform of complex cq
+%      7/02  add output of indiv comps of inverse transform
+% enter cqcxin in sonagram form (spectra in cols) ie  as output from logftS transposed
+% [timfil]  = ilogft(cqcxin , freqs, 150,  150, 11025 );
+%       input cqcxin - calc from logftS with complex out; change to sonagram in
+%       freqs           output from logftS
+%       hopsiz          from logftS
+%       Nmax           the output windowsiz; should coord with hopsiz if no overlap
+%       SR               from logftS
+%                   calculates with Hamming window
+
+        function  [timfil, icqt, Xintermed]  =  ilogft2(cqcxin , freqs, hopsiz,  Nmax, SR);
+        
+        %  cqcxin = cqcxin'; % change to sonagram form
+%         SR = 11025;
+%          windsizTfn = 256;
+%          hopsiz = 80;
+        TWOPIoSR = 2*pi/SR;
+ %       calcwin = 1;
+        nfreqs = length(freqs);
+        
+        
+        digfreq =  (freqs* TWOPIoSR)' ; %make sure column
+        if cols(digfreq) ~= 1 , digfreq = digfreq'; end
+        
+                        %  Nmax x nfreqs
+        iexp = (exp(i * digfreq * [0 : Nmax - 1]))'  ;
+        % transform matrix - time basis fns in columns ; frequency varies over the freqs calc for cqtrans
+        
+       % if calcwin == 1, 
+         %   iexp = iexp .* (hamming(Nmax) * ones(1, length(freqs)));
+            % end
+            
+            %    Nmax x nfreqs     nfreqs x number of frames ie transform in columns
+       %Dont' care about this but leave it.
+       icqt = iexp * cqcxin;
+            % temporal estimation in columns
+            
+        % But check out indiv comps
+        Xintermed = zeros(nfreqs, Nmax);
+        
+        for kk = 1: nfreqs
+   
+               Xintermed(kk,:) = cqcxin(kk) * exp(i*digfreq(kk) * [0: Nmax - 1]);
+        
+           
+       end
+       
+        % ==========================================
+        %  from ifftgen.m
+        % resize the output matrix for row out
+        icqt = icqt';
+        nhops = rows(icqt) ;
+        windsiz = Nmax;
+        outsmps = (nhops -1) * hopsiz + windsiz;
+        outfilT = zeros(1, outsmps);
+
+        for ii = 1:nhops
+           init = 1 + (ii - 1)* hopsiz;
+            fnl = init + windsiz - 1;    %  fnl - init = windsiz -1  or windsiz numbers
+            outfilT(init:fnl) = outfilT(init:fnl) + icqt(ii,:);
+        end
+        timfil = real(outfilT);
+
+        
+        
+        
+        
+        % end from ifftgen
+        % timfil = real(timfil(:));
